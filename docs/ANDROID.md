@@ -21,19 +21,19 @@ The initial environment had JDK 11 and no Android SDK. A follow-up installed JDK
 
 ## Development
 
-From `apps/mobile`, set `.env` for the reachable API/asset host and run `npm start`. Use a compatible Expo Go/development client on your own device. Android emulator can use `10.0.2.2`; a phone must use your computer's LAN address. Server and phone must be on a reachable network. Production uses HTTPS.
+From the ecommerce-apps repository root, set `.env` for the reachable API/asset host and run `npm start`. Use a compatible Expo Go/development client on your own device. Android emulator can use `10.0.2.2`; a phone must use your computer's LAN address. Server and phone must be on a reachable network. Production uses HTTPS.
 
 ## Local standalone preview APK
 
-Install the Android Studio SDK and the JDK supported by the generated Gradle/Android plugin. Set JAVA_HOME and ANDROID_HOME. From root, set the following environment variables to **your real staging endpoints**, then:
+Install the Android Studio SDK and the JDK supported by the generated Gradle/Android plugin. Set JAVA_HOME and ANDROID_HOME. Set the following environment variables to **your real staging endpoints**, then:
 
 ```bash
 # EXPO_PUBLIC_API_URL=https://your-api-domain/api
 # EXPO_PUBLIC_ASSET_URL=https://your-web-domain
-bash scripts/build-android.sh
+npm run prebuild, then run Gradle assembleRelease in the generated android folder
 ```
 
-This regenerates native files then runs `:app:assembleRelease`. Expected artifact location, if Gradle succeeds: `apps/mobile/android/app/build/outputs/apk/release/app-release.apk`.
+This regenerates native files then runs `:app:assembleRelease`. Expected artifact location, if Gradle succeeds: `android/app/build/outputs/apk/release/app-release.apk`.
 
 The generated release build defaults to a **development signing key**. It is only for private preview. Production requires replacing signing with a private owner-controlled release/upload keystore and protecting it outside source control. Do not publish a development-signed app or treat the package name `com.ghiyar.marketplace.dev` as an approved final application ID.
 
@@ -61,7 +61,7 @@ Observed project versions from the installed lock and generated native project:
 
 Regenerate with the committed Expo config and use the generated wrapper, not a globally installed Gradle. Inspect version catalogs after `npm ci` if lockfile dependencies change. Current generic React Native setup documentation describes older SDK/JDK examples and should not override the actual generated configuration for this lockfile.
 
-Run `npm ci`, configure the API/asset endpoints, then `bash scripts/build-android.sh`. Capture the complete build log on the chosen host, allow the first compilation to finish, verify the generated file exists, record its SHA256 and install it on a real test device. Verify startup, sign-in, catalog/search/detail, cart quantities, address selection and a disposable test checkout against TEST_CHECKOUT=true staging. Check images load and repeat after killing/reopening the app. Do not use real customer data or payments.
+Run `npm ci`, configure the API/asset endpoints, then `npm run prebuild, then run Gradle assembleRelease in the generated android folder`. Capture the complete build log on the chosen host, allow the first compilation to finish, verify the generated file exists, record its SHA256 and install it on a real test device. Verify startup, sign-in, catalog/search/detail, cart quantities, address selection and a disposable test checkout against TEST_CHECKOUT=true staging. Check images load and repeat after killing/reopening the app. Do not use real customer data or payments.
 
 A standalone preview needs reachable HTTPS API/assets. No staging server is deployed or approved by this source package. For a local emulator/phone workflow, use Expo development mode with the workstation's reachable API/asset address. A phone cannot reach the workstation using 127.0.0.1 or the emulator-only 10.0.2.2 alias. Do not label an APK testable against the API until its endpoint reachability has been verified.
 

@@ -36,7 +36,7 @@ Date: 2026-11-24. Development milestone 0.1.
 
 ## Not tested / not claimed
 
-Docker builds; actual server deployment; reverse proxy/TLS; real payments/OTP/email/courier; 50,000-row import/load; device-native Android behavior; APK compilation, installation or signing; iOS native build; full security audit or penetration test.
+actual server deployment; reverse proxy/TLS; real payments/OTP/email/courier; 50,000-row import/load; device-native Android behavior; APK compilation, installation or signing; iOS native build; full security audit or penetration test.
 
 ## Reproduction
 

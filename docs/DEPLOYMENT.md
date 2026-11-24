@@ -1,21 +1,15 @@
-# Server preparation, not a production clearance
+# Server preparation without Docker, not a production clearance
 
-No server deployment was authorized or performed. Container definitions were created but could not be run here because Docker was unavailable. Local Node production builds were run instead. MySQL migrations and the current32 API integration checks were exercised on Oracle MySQL8.4.6 locally (earlier core checks also used MariaDB10.6). The supplied container configuration itself still needs staging build/run verification.
+No server deployment was authorized or performed. This repository does not use Docker. The steps below run directly on a Linux server with Node 22, npm and MySQL 8.
 
-## Container starting point
+1. Install Node 22, MySQL 8 and a reverse proxy (nginx or Caddy) with HTTPS.
+2. Create the database and a least-privilege user. Copy apps/api/.env.example to apps/api/.env and apps/web/.env.example to apps/web/.env. Set a unique DATABASE_URL password, CORS_ORIGINS to the real web origin, WEBAUTHN_RP_ID and WEBAUTHN_ORIGIN to the real domain.
+3. Run `pnpm install --frozen-lockfile`, then `pnpm build:api` and `pnpm --filter @ghiyar/api db:migrate`.
+4. Create the real admin in a private terminal with `pnpm --filter @ghiyar/api admin:create` (set ADMIN_EMAIL, ADMIN_NAME, ADMIN_PASSWORD first). Do not enable demo seed on a public server.
+5. Start the API with `pnpm --filter @ghiyar/api start` (port 4000). Build the website with `NUXT_PUBLIC_API_BASE=https://your-domain/api pnpm build:web`, then `pnpm --filter @ghiyar/web start` (port 3000). Keep both running with systemd or pm2.
+6. Proxy the web domain to port 3000 and /api to port 4000. Back up the database and the MEDIA_DIR folder.
 
-Install current Docker/Compose on your own staging server. Copy `.env.example` to `.env`, set unique database passwords and public endpoint values, then:
-
-```bash
-docker compose build
-docker compose up -d mysql
-docker compose run --rm api npm run db:migrate
-docker compose up -d api web
-```
-
-The API and web ports bind only to server loopback. Put an HTTPS reverse proxy in front of them. Expose web on its domain and `/api` via a proxy to 4000, or a separate API domain. Set `NUXT_PUBLIC_API_BASE` to the browser-reachable API, not the internal container hostname. Set API CORS to the actual web origin. Mobile needs a reachable HTTPS API and asset host embedded at build time.
-
-Passwords in Compose DATABASE_URL must be URL-safe or encoded consistently. Do not commit `.env`. Do not enable demo seed on a public server. Bootstrap a real admin using a private terminal and `npm run admin:create` in the API environment. Default `TEST_CHECKOUT=false` keeps test ordering unavailable.
+Static-test OTP is refused when NODE_ENV=production, so connect Twilio (or another SMS provider) before real customers sign in. TEST_CHECKOUT must be true for orders to be accepted in this release; see docs/ROADMAP.md for remaining launch gates. The mobile app needs the HTTPS API and asset URLs at build time.
 
 ## Release blockers
 

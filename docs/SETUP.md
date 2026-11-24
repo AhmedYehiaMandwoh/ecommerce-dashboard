@@ -2,39 +2,49 @@
 
 ## Requirements
 
+Install MySQL 8 (or MariaDB) directly on your machine, then create an empty database and user, for example in the mysql client:
+
+```sql
+CREATE DATABASE ghiyar CHARACTER SET utf8mb4;
+CREATE USER 'ghiyar'@'localhost' IDENTIFIED BY 'choose-a-password';
+GRANT ALL ON ghiyar.* TO 'ghiyar'@'localhost';
+```
+
+Put that in DATABASE_URL in apps/api/.env, for example mysql://ghiyar:choose-a-password@127.0.0.1:3306/ghiyar.
+
+
 - Node 22.22.3+ on the Node 22 line (development verification used 22.23.5).
-- npm 10+.
+- pnpm 12 (install: `npm i -g pnpm` or `corepack enable`).
 - A **disposable development** MySQL 8.4 database, or MariaDB for compatibility testing.
-- Current Android development tools only if you want to compile a native Android app.
+- No Docker. The mobile app is a separate repository (ecommerce-apps) with its own setup.
 
 Run from repository root:
 
 ```bash
-npm ci
+pnpm install --frozen-lockfile
 cp apps/api/.env.example apps/api/.env
 cp apps/web/.env.example apps/web/.env
-cp apps/mobile/.env.example apps/mobile/.env
 ```
 
 Edit `apps/api/.env` with your own local database URL. Do not commit it. A password containing reserved URL characters must be URL-encoded in the connection URL.
 
 ```bash
 cd apps/api
-npm run db:generate
-npm run db:migrate
+pnpm --filter @ghiyar/api db:generate
+pnpm --filter @ghiyar/api db:migrate
 ```
 
 Create an administrator using environment variables in your own terminal (do not use a real password in shared chat or commit it):
 
 ```bash
 # Set ADMIN_EMAIL, ADMIN_NAME and ADMIN_PASSWORD in your local environment first.
-npm run admin:create
+pnpm --filter @ghiyar/api admin:create
 ```
 
 For fictional local demo data only, supply a temporary `DEMO_PASSWORD` of at least 12 characters in your local environment and then:
 
 ```bash
-ALLOW_DEMO_SEED=true npm run db:seed
+ALLOW_DEMO_SEED=true pnpm --filter @ghiyar/api db:seed
 ```
 
 This creates `customer@example.test`, `merchant@example.test`, `admin@example.test`. They use the password **you** supplied, not a bundled default. Seed is refused when `NODE_ENV=production`. Re-running seed resets only these demo account password hashes and preserves existing catalog/offer data. Use a fresh disposable database for repeatable tests.
@@ -43,16 +53,15 @@ In separate terminals, from root:
 
 ```bash
 # apps/api/.env must explicitly contain TEST_CHECKOUT=true for local test orders.
-npm run dev:api
-npm run dev:web
-npm run dev:mobile
+pnpm dev:api
+pnpm dev:web
 ```
 
 Web: `http://localhost:3000`. API: `http://localhost:4000/api`. The app reads its API from `EXPO_PUBLIC_API_URL`.
 
 For Android emulator, `10.0.2.2` addresses the host computer. For a physical phone, use the development computer's reachable LAN IP. `localhost` on a phone means the phone, not your computer. Never place a database password or private API secret in `EXPO_PUBLIC_*` or `NUXT_PUBLIC_*` variables.
 
-The source archive deliberately does not include installed dependencies, generated Prisma client, `.nuxt`, `.output`, native signing files or compiled binaries. `npm ci`, Prisma generate and the documented builds recreate these.
+The source archive deliberately does not include installed dependencies, generated Prisma client, `.nuxt`, `.output`, native signing files or compiled binaries. `pnpm install --frozen-lockfile`, Prisma generate and the documented builds recreate these.
 
 ## Phone testing
 
@@ -75,15 +84,13 @@ Uploaded product images use MEDIA_DIR, default media under API working directory
 ## Commands
 
 ```bash
-npm test
-npm run build:api    # requires DATABASE_URL in apps/api/.env for Prisma config
-npm run build:web
-npm run typecheck -w apps/web
-npm run check -w apps/mobile
-npm run export -w apps/mobile
+pnpm test
+pnpm build:api    # requires DATABASE_URL in apps/api/.env for Prisma config
+pnpm build:web
+pnpm --filter @ghiyar/web typecheck
 ```
 
-Integration tests use a running test API and mutate the connected database. They create orders, alter stock and test admin moderation. **Never run them against production.** Set `TEST_API_URL` and `DEMO_PASSWORD`, seed a disposable database, enable test checkout, then run `npm run test:integration -w apps/api`.
+Integration tests use a running test API and mutate the connected database. They create orders, alter stock and test admin moderation. **Never run them against production.** Set `TEST_API_URL` and `DEMO_PASSWORD`, seed a disposable database, enable test checkout, then run `pnpm --filter @ghiyar/api test:integration`.
 
 ## Reproducible local checks
 

@@ -26,7 +26,7 @@ Still to close: final source freeze, final docs/manifest/secret scan, final sour
 
 - Replace static OTP with privately configured Twilio and approve any paid SMS testing.
 - Physical Android/iOS biometric/passcode/storage invalidation and HTTPS-domain passkey/recovery/phone-change acceptance.12h access/30d device lifetime are testing defaults.
-- Docker build/run, server TLS/proxy, backup/restore, distributed abuse controls, production session/XSS security and capacity review.
+- server TLS/proxy, backup/restore, distributed abuse controls, production session/XSS security and capacity review.
 - Real merchant inventory sample mapping, queued multi-batch50k onboarding and supplier connectors. Current50k test is catalog/query, not50k single import.
 - Actual inventory/image rights, merchant records, taxes/commissions, returns eligibility/legal/retention/incident policy and cash-dispute procedure.
 - No online gateway. No actual money transfers. Each shop delivers independently.

@@ -2,7 +2,7 @@
 
 This is the full configuration inventory for the current source. No production passwords or API keys have been supplied. Public repositories may include the files and non-secret test values, but must never include actual credentials. Copy the examples into the corresponding `.env` files locally. Do not invent a shared default password.
 
-## Root `.env`, Docker Compose
+## Database variables (used in your DATABASE_URL, no Docker)
 
 | Variable | Development example | Production requirement |
 | --- | --- | --- |
@@ -34,9 +34,9 @@ This is the full configuration inventory for the current source. No production p
 
 `NUXT_PUBLIC_API_BASE=http://localhost:4000/api` is the only current web variable. It is public configuration, not a secret. The browser must be able to reach it.
 
-## App `apps/mobile/.env`
+## Mobile app
 
-`EXPO_PUBLIC_API_URL=http://10.0.2.2:4000/api` and `EXPO_PUBLIC_ASSET_URL=http://10.0.2.2:3000` are Android-emulator development values. For a phone use your workstation's reachable LAN address. For production use reachable HTTPS URLs. These are compiled into the client and are never a place for secrets.
+The React Native app is in the ecommerce-apps repository; see its .env.example and README.
 
 ## Services not configured
 

@@ -8,13 +8,14 @@ A connected multi-merchant spare-parts foundation using Ahmed's selected stack:
 
 - Nuxt 4 website, merchant dashboard and platform administration.
 - NestJS API, Prisma 7 and MySQL schema/migrations.
-- React Native customer app using Expo 58, with Android build configuration.
+- The React Native (Expo) customer app lives in its own repository: https://github.com/AhmedYehiaMandwoh/ecommerce-apps
 - Arabic RTL screens in the accepted blue/orange visual direction.
 
 The current connected source lets a customer browse fictional parts, compare shop offers, sign in with test phone OTP (or development email/password), save an address and vehicle, place a **test order**, and follow its status. The shop can see its own orders, move them through allowed states, and maintain price/stock. Admin reviews shop applications, products, shipping/cancellations/returns and support. See docs/HANDOVER.md for exact tested scope and remaining real-launch gates.
 
 ## Start here
 
+0. No Docker is needed or supplied. Everything runs directly with Node, pnpm and MySQL.
 0. Read [docs/ENVIRONMENT.md](docs/ENVIRONMENT.md) for every environment variable and safe example handling.
 1. Read [docs/SETUP.md](docs/SETUP.md) for a development setup and demo data.
 2. Read [docs/VERIFICATION.md](docs/VERIFICATION.md) for what was actually tested.
@@ -29,10 +30,7 @@ No live deployment, external account, paid service or production signing identit
 ```
 apps/api/          NestJS services, DTOs, schema, migrations, tests
 apps/web/          Nuxt website + merchant/admin dashboard
-apps/mobile/       React Native/Expo customer app
 scripts/           Android build helper, environment check, browser verification
-compose.yaml       MySQL 8.4 + API + web deployment starting point, not executed here
-Dockerfile.*       Container build definitions, not executed here
 docs/              Setup, architecture, API, verification, remaining work
 ```
 

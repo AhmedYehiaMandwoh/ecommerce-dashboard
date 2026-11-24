@@ -12,7 +12,7 @@ Synthetic test:50k catalog products queried in124-354ms locally;1k import previe
 
 - Static OTP is deliberately insecure and refused in production. Configure actual Twilio privately and obtain permission before paid SMS tests.
 - Native biometric/device-passcode/protected storage needs physical-device testing.12h access/30d device expiry are testing defaults. Recovery/phone change remains later work.
-- Docker definitions have not been built/run because verification host lacks Docker. HTTPS/proxy, backups/restore, production security/distributed abuse/retention/capacity review remain operator gates.
+- No Docker is used. HTTPS/proxy, backups/restore, production security/distributed abuse/retention/capacity review remain operator gates.
 - Web development bearer sessions use sessionStorage, not hardened HttpOnly production auth. Large view components remain a maintainability limitation.
 - Real catalog fitment/image rights/inventory connectors need verified source data. No guessed fitment. CSV is approved existing catalog,1000-row absolute snapshots with bound preview/history, not a supplier connector.
 - Returns are case-by-case admin review, no invented window or eligibility. Cash/refund/shipping evidence records never transfer money. Commercial tax/commission/returns/legal policies remain owner decisions.

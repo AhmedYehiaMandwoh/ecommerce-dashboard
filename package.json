@@ -7,11 +7,11 @@
     "apps/web"
   ],
   "scripts": {
-    "build:api": "npm run build -w apps/api",
-    "build:web": "npm run build -w apps/web",
-    "test": "npm run test -w apps/api",
-    "dev:api": "npm run dev -w apps/api",
-    "dev:web": "npm run dev -w apps/web"
+    "build:api": "pnpm --filter @ghiyar/api build",
+    "build:web": "pnpm --filter @ghiyar/web build",
+    "test": "pnpm --filter @ghiyar/api test",
+    "dev:api": "pnpm --filter @ghiyar/api dev",
+    "dev:web": "pnpm --filter @ghiyar/web dev"
   },
   "engines": {
     "node": ">=22.22.3 <23 || >=24.15 <25"
@@ -21,8 +21,5 @@
     "effect": "3.22.1",
     "minimatch": "11.0.9"
   },
-  "overrides": {
-    "effect": "$effect",
-    "minimatch": "$minimatch"
-  }
+  "packageManager": "pnpm@12.23.0"
 }

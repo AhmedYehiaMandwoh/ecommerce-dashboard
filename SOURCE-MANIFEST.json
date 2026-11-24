@@ -3,29 +3,9 @@
   "nonLive": true,
   "files": [
     {
-      "path": ".dockerignore",
-      "bytes": 134,
-      "sha256": "d8fd5c30af22f43c96ef6f13c4b3d81f5103a3e222a9ebb70157a49c14d4b7ba"
-    },
-    {
-      "path": ".env.example",
-      "bytes": 252,
-      "sha256": "d471b69d836b1bb901661250ac2d9d785302d6ff5b861e8d50a725d155c27037"
-    },
-    {
       "path": ".gitignore",
       "bytes": 275,
       "sha256": "ec68b3591a955436a1c1b8d4a8aeeacc3494df2ba03fc7ecc5642fbd14b67afe"
-    },
-    {
-      "path": "Dockerfile.api",
-      "bytes": 752,
-      "sha256": "97a1c052253929529586999677f75a85d3a5a7a6eb07435ff0496ca434f232ee"
-    },
-    {
-      "path": "Dockerfile.web",
-      "bytes": 449,
-      "sha256": "29b4b87144c3260d6fd3f34c0164e1d63ab44437472227b3a6ceac8de6197100"
     },
     {
       "path": "README-REPOSITORY.md",
@@ -34,8 +14,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 4319,
-      "sha256": "87400d75ce0ae8d1487e61f312072281723db398eb2aa8e37f816437291c624a"
+      "bytes": 4248,
+      "sha256": "f40ef84d82624b0da985e8d16d9478bbb40edfa8c1f3dc67b5fb6959cf3dd23e"
     },
     {
       "path": "apps/api/.env.example",
@@ -46,6 +26,11 @@
       "path": "apps/api/package.json",
       "bytes": 1228,
       "sha256": "72373af821d4acab79551bdd832f9829ae1a7f7ed30673d9209df2708e11c427"
+    },
+    {
+      "path": "apps/api/prisma.config.ts",
+      "bytes": 232,
+      "sha256": "25006e6c4dce2aed71873774222e17a2b123ea507ac94a18563e77bcc2d6e182"
     },
     {
       "path": "apps/api/prisma/migrations/20261124110000_initial/migration.sql",
@@ -106,11 +91,6 @@
       "path": "apps/api/prisma/seed.ts",
       "bytes": 3245,
       "sha256": "7a5775b84ed46a3c5ad4f21a39d85f8e4948161b7256051a6a942f84d7c049d3"
-    },
-    {
-      "path": "apps/api/prisma.config.ts",
-      "bytes": 232,
-      "sha256": "25006e6c4dce2aed71873774222e17a2b123ea507ac94a18563e77bcc2d6e182"
     },
     {
       "path": "apps/api/scripts/create-admin.ts",
@@ -368,14 +348,9 @@
       "sha256": "e02fab3fb7003c84c771b43a9dd8ea5f3dea615eb88c94734ddf13a7ec22988e"
     },
     {
-      "path": "compose.yaml",
-      "bytes": 1494,
-      "sha256": "0e61b1635bfcfd28c861720a27d592ec130eb7ae172e72832e0ca2a5d916833a"
-    },
-    {
       "path": "docs/ANDROID.md",
-      "bytes": 5933,
-      "sha256": "c6b898b85fa52b14b600f9e3a945204e106131a878865c7c0d40a2ea2fa10785"
+      "bytes": 6035,
+      "sha256": "3b9ebf01f9867f366212060ee0e4e0e9ca5afeb03c13b5b2d7cd4bcf79b618eb"
     },
     {
       "path": "docs/API.md",
@@ -389,18 +364,18 @@
     },
     {
       "path": "docs/DEPLOYMENT.md",
-      "bytes": 2796,
-      "sha256": "d227d9e4953293b3a640b00628d97a4e21c0b9b84e0db97f7aaad3b90b46363b"
+      "bytes": 2844,
+      "sha256": "2cfb951c5a29fa5462301a96fce6f602c295a1b315e6458cfea99d3c07f9fb64"
     },
     {
       "path": "docs/ENVIRONMENT.md",
-      "bytes": 4991,
-      "sha256": "fdb1b14316d099954726e52550fd47b5dc51ed377bf1e10e3e5cfa5fa8d53d80"
+      "bytes": 4794,
+      "sha256": "1aa40b445e189611aa7df90f4a50321ab7c9473dbf2323e734016ef9aa9c7452"
     },
     {
       "path": "docs/HANDOVER.md",
-      "bytes": 2475,
-      "sha256": "aded590da71f2b4bc0cef2f27acaf202fa63439e9635cdd230eb4202fd33c1bc"
+      "bytes": 2411,
+      "sha256": "f3ccf141878683f868220af15aa1c70bdf602641cfebf0bf206e39b94a0492aa"
     },
     {
       "path": "docs/README-AR.md",
@@ -409,18 +384,18 @@
     },
     {
       "path": "docs/ROADMAP.md",
-      "bytes": 3463,
-      "sha256": "27e0ffb6925ab6d2428695588c0804e771c31faff442e31fae6b608d7f7cc92d"
+      "bytes": 3445,
+      "sha256": "5914fbd17630cb878b254ced8d7d798a1cd77c3cebd293d2149cf22258d66fc8"
     },
     {
       "path": "docs/SETUP.md",
-      "bytes": 5447,
-      "sha256": "f5b2a6787e8a57547f9ddacaac567445dc1295fe514eab422d2eed108914a51a"
+      "bytes": 5912,
+      "sha256": "913788375473bacb10e03c690f7d77eb04b5f50827f2b93321b3c6864beaa1f3"
     },
     {
       "path": "docs/VERIFICATION.md",
-      "bytes": 16844,
-      "sha256": "c7843559fe9af6d02a34ae47916f1790ff66bbbdaf98a0f1b8dcc7ad51b570c4"
+      "bytes": 16829,
+      "sha256": "b5dc43b2c075da77ae847acfd835fe4839d0a77b28639dd27d89df81528f229e"
     },
     {
       "path": "docs/templates/verify-workflow.yml",
@@ -478,29 +453,24 @@
       "sha256": "4c8dd31b72126f7c52343f9b13fe38cfe457ff7135605ff51d18e98fdb4608f6"
     },
     {
-      "path": "package-lock.json",
-      "bytes": 409038,
-      "sha256": "3b09442834d390c344fe5669ce3e9833a572ef362907ba2f1810ec7492936156"
-    },
-    {
       "path": "package.json",
-      "bytes": 616,
-      "sha256": "6b1df2f595922b3b4af421de5261c76c959bad75307899e707315efe6f694b48"
+      "bytes": 604,
+      "sha256": "4dffd25d576175f4c80633df3929b32bc24d65e6a2d5497f073e21637f410c9a"
     },
     {
-      "path": "scripts/build-android.sh",
-      "bytes": 1641,
-      "sha256": "84128516756f3691ae16f23ef80fe357e1b020bba9b642fce673bd4fec008776"
+      "path": "pnpm-lock.yaml",
+      "bytes": 286303,
+      "sha256": "1e12acafa96f144e0e52b6adce1328fca99f4ab6864ba93ae917d88ea8d0530e"
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "bytes": 168,
+      "sha256": "f4194213d7726581cb3db491993a86a4c08c6b17b12cb4b0ab5615b01b9cf784"
     },
     {
       "path": "scripts/check-env.mjs",
       "bytes": 524,
       "sha256": "651c846b094e178024d30456e7861d75840940052457b2f7e743fedca725f1e0"
-    },
-    {
-      "path": "scripts/package-repositories.py",
-      "bytes": 3746,
-      "sha256": "473c9b6cf4d3c6409da85c0ee85f3384e0aaa92c045ee1a2a4940c20959e488e"
     },
     {
       "path": "scripts/reference-check.mjs",
@@ -509,8 +479,8 @@
     },
     {
       "path": "scripts/verify-local.mjs",
-      "bytes": 2216,
-      "sha256": "ead3d51787073c7cde4f9fd8f877ab9ee6d0f09e196e6f1d4f1a6553c5a766d7"
+      "bytes": 2227,
+      "sha256": "fb38887c667725bfada3548424108f3ee757cb4310be9d8c0d7b539db5c30932"
     },
     {
       "path": "scripts/visual-test.mjs",
