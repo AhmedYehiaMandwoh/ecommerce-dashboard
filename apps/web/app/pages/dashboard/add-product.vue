@@ -40,7 +40,7 @@ async function submit() {
       <h2 class="mb-3 text-lg font-extrabold">بيانات المنتج</h2>
       <form class="space-y-3" @submit.prevent="submit">
         <div class="space-y-3">
-          <label class="flex h-36 w-full cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed text-sm text-muted-foreground">
+          <label class="flex h-24 w-full cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed text-sm text-muted-foreground">
             <img v-if="preview" :src="preview" alt="معاينة الصورة" class="h-full w-full rounded-xl object-contain" />
             <template v-else><Camera class="size-6" /> إضافة صورة المنتج</template>
             <input type="file" accept="image/png,image/jpeg,image/webp" class="sr-only" aria-label="صورة المنتج" @change="pick" />
@@ -48,16 +48,16 @@ async function submit() {
           <div class="space-y-1"><Label for="p-title">اسم المنتج</Label><Input id="p-title" v-model="productForm.title" required placeholder="فحمات فرامل أمامية" />
             <Label for="p-part">رقم القطعة</Label><Input id="p-part" v-model="productForm.partNumber" required dir="ltr" placeholder="BP-001" /></div>
         </div>
-        <div class="grid grid-cols-1 gap-3">
+        <div class="grid grid-cols-2 gap-3">
           <div class="space-y-1"><Label for="p-brand">الماركة (العلامة التجارية)</Label><Input id="p-brand" v-model="productForm.brand" required placeholder="BOSCH" /></div>
           <div class="space-y-1"><Label>القسم</Label>
             <Select v-model="productForm.category"><SelectTrigger class="w-full" aria-label="القسم"><SelectValue placeholder="اختر القسم">{{ productForm.category || undefined }}</SelectValue></SelectTrigger>
               <SelectContent><SelectItem v-for="c in (categories || [])" :key="c" :value="c">{{ c }}</SelectItem></SelectContent></Select></div>
         </div>
-        <div class="space-y-1"><Label for="p-desc">الوصف</Label><Textarea id="p-desc" v-model="productForm.description" required /></div>
+        <div class="space-y-1"><Label for="p-desc">الوصف</Label><Textarea id="p-desc" v-model="productForm.description" required rows="2" class="min-h-14" /></div>
         <div class="space-y-3 rounded-xl bg-secondary p-3">
           <b class="flex items-center gap-2"><Car class="size-5 text-primary" /> بيانات التوافق</b>
-          <div class="grid grid-cols-2 gap-2">
+          <div class="grid grid-cols-3 gap-2">
             <Select v-model="draft.make" @update:model-value="() => { draft.model = ''; draft.fromYear = ''; draft.toYear = ''; draft.engine = ''; }"><SelectTrigger class="w-full bg-white" aria-label="الماركة"><SelectValue placeholder="اختر الماركة" /></SelectTrigger><SelectContent><SelectItem v-for="m in catalog.makes" :key="m.make" :value="m.make">{{ m.make }}</SelectItem></SelectContent></Select>
             <Select v-model="draft.model" :disabled="!mk"><SelectTrigger class="w-full bg-white" aria-label="الموديل"><SelectValue placeholder="اختر الموديل" /></SelectTrigger><SelectContent><SelectItem v-for="m in (mk?.models || [])" :key="m.model" :value="m.model">{{ m.model }}</SelectItem></SelectContent></Select>
             <Select v-model="draft.fromYear" :disabled="!md"><SelectTrigger class="w-full bg-white" aria-label="من سنة"><SelectValue placeholder="من سنة" /></SelectTrigger><SelectContent><SelectItem v-for="y in years" :key="y" :value="y">{{ y }}</SelectItem></SelectContent></Select>

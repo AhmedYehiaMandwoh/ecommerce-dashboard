@@ -26,8 +26,8 @@ async function update() {
           <Badge :variant="badgeVariant(selected.status)">{{ statusLabels[selected.status] }}</Badge>
           <div class="text-right"><h2 class="text-xl font-extrabold">طلب #{{ selected.id.slice(0, 8) }}</h2><p class="text-sm text-muted-foreground">{{ selected.shop.name }}</p></div>
         </div>
-        <div v-for="i in selected.items" :key="i.id" class="mt-3 flex items-center gap-3 rounded-xl bg-secondary p-3">
-          <img :src="imageUrl(i.offer?.product?.image || '/assets/shop-icon.png')" alt="" class="size-24 rounded-lg bg-white object-contain" />
+        <div v-for="i in selected.items" :key="i.id" class="mt-2 flex items-center gap-3 rounded-xl bg-secondary p-2">
+          <img :src="imageUrl(i.offer?.product?.image || '/assets/shop-icon.png')" alt="" class="size-20 rounded-lg bg-white object-contain" />
           <div class="flex-1 text-right"><div class="font-bold">{{ i.title }}</div><div class="text-xs text-muted-foreground">{{ i.partNumber }}</div></div>
           <b>×{{ i.quantity }}</b>
         </div>
