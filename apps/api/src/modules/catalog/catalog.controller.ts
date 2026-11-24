@@ -29,6 +29,7 @@ export class CatalogController {
     private db: Db,
     private catalogSvc: CatalogService,
   ) {}
+  @Get('vehicle-catalog') async vehicleCatalog(){const rows=await this.db.fitment.findMany({where:{product:{approved:true}},select:{make:true,model:true,fromYear:true,toYear:true,engine:true}});const t:Record<string,Record<string,{from:number;to:number;engines:string[]}>>={};for(const f of rows){const m=(t[f.make]??={});const e=(m[f.model]??={from:f.fromYear,to:f.toYear,engines:[]});e.from=Math.min(e.from,f.fromYear);e.to=Math.max(e.to,f.toYear);if(f.engine&&!e.engines.includes(f.engine))e.engines.push(f.engine);}return {makes:Object.entries(t).map(([make,models])=>({make,models:Object.entries(models).map(([model,v])=>({model,...v}))}))};}
   @Get("products") catalog(@Query() q: any) {
     return this.catalogSvc.catalog(q);
   }

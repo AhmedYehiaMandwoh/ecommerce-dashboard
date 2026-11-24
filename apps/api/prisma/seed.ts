@@ -73,6 +73,11 @@ async function main() {
         },
         update: {},
       });
+      if (!(await db.fitment.count({ where: { productId: p.id } })))
+        await db.fitment.createMany({ data: [
+          ["Toyota", "Corolla", 2014, 2022, "1.6L"], ["Hyundai", "Elantra", 2016, 2023, "1.6L"],
+          ["Kia", "Cerato", 2014, 2021, "1.6L"], ["Nissan", "Sunny", 2013, 2022, "1.5L"],
+        ].map(([make, model, fromYear, toYear, engine]) => ({ productId: p.id, make: String(make), model: String(model), fromYear: Number(fromYear), toYear: Number(toYear), engine: String(engine), verified: false })) });
       await db.offer.upsert({
         where: { shopId_sku: { shopId: shop.id, sku: String(partNumber) } },
         create: {
