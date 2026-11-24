@@ -36,6 +36,9 @@ export class DashboardService {
           .reduce((s, o) => s + o.total, 0),
         offers: shops.reduce((s, v) => s + v.offers.length, 0),
       },
+      ...(user.role === "MERCHANT"
+        ? { products: await this.db.product.findMany({ where: { OR: [{ approved: true }, { submittedBy: user.id }] }, take: 200, orderBy: { title: "asc" }, include: { fitments: true } }) }
+        : {}),
       ...(user.role === "ADMIN"
         ? {
             products: await this.db.product.findMany({

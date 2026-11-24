@@ -377,6 +377,46 @@ async function main() {
     await req('/checkouts','POST',{items:groupedItems,addressId:address.id,deliveryAreaId:area.id,discountCode:dcode,requestKey:dkey+'b',expectedTotal:dq.total},customer.token,400);
     await req('/orders/quote','POST',{items:groupedItems,addressId:address.id,deliveryAreaId:area.id,discountCode:dcode},customer.token,400);
     ok('Discount code applies per shop before proportional shipping allocation, keeps fixed zone fee, is idempotent, and enforces max uses');
+    // post-discount pre-delivery cancellation keeps the fixed zone fee and reallocates on discounted values
+    const dcode2='TSU'+Date.now().toString(36).toUpperCase();
+    await db.discountCode.create({data:{code:dcode2,percent:20}});
+    const dq2=await req('/orders/quote','POST',{items:groupedItems,addressId:address.id,deliveryAreaId:area.id,discountCode:dcode2},customer.token,201);
+    const dco2=await req('/checkouts','POST',{items:groupedItems,addressId:address.id,deliveryAreaId:area.id,discountCode:dcode2,requestKey:'disc2-'+Date.now(),expectedTotal:dq2.total},customer.token,201);
+    const d2first=dco2.orders.find((o:any)=>o.shopId==='demo-shop'),d2second=dco2.orders.find((o:any)=>o.shopId===secondShop.id);
+    await req('/orders/'+d2second.id+'/status','PATCH',{status:'CANCELLED'},customer.token);
+    const afterCancel=await db.checkout.findUniqueOrThrow({where:{id:dco2.id},include:{orders:true}});
+    const keep=afterCancel.orders.find(o=>o.id===d2first.id)!,gone=afterCancel.orders.find(o=>o.id===d2second.id)!;
+    assert.equal(keep.delivery,3700);assert.equal(keep.subtotal,d2first.subtotal);assert.equal(keep.total,d2first.subtotal+3700);assert.equal(gone.total,0);
+    assert.equal(afterCancel.delivery,3700);assert.equal(afterCancel.total,d2first.subtotal+3700);assert.equal(afterCancel.discount,dco2.discount);
+    ok('Pre-delivery cancellation after a discount keeps the fixed zone fee and uses post-discount subtotals');
+    // tracking number
+    const trk=await req('/orders/'+d2first.id+'/status','PATCH',{status:'ACCEPTED',trackingNumber:'TRK-2026-001'},merchant.token);
+    assert.equal(trk.trackingNumber,'TRK-2026-001');
+    await req('/orders/'+d2first.id+'/status','PATCH',{status:'PREPARING',trackingNumber:'bad;drop'},merchant.token,400);
+    ok('Merchant can save a valid tracking number and invalid ones are rejected');
+    // support image attachment
+    const png='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
+    const withImg=await req('/support-tickets','POST',{subject:'Ticket with photo',message:'Ticket with a small test photo',attachment:png},customer.token,201);
+    assert.equal(withImg.attachment,png);
+    await req('/support-tickets','POST',{subject:'Ticket bad attachment',message:'Not an image attachment here',attachment:'data:text/html;base64,PHNjcmlwdD4='},customer.token,400);
+    ok('Support ticket accepts a valid image attachment and rejects non-image data');
+    // merchant product submit, image and fitment workflow
+    const sub=await req('/products','POST',{brand:'Tst'+Date.now(),partNumber:'SUB-1',title:'Merchant submitted part',category:'فرامل',description:'Submitted for review in test'},merchant.token,201);
+    const mfit=await req('/products/'+sub.id+'/fitments','POST',{make:'Toyota',model:'Corolla',fromYear:2015,toYear:2020,engine:'1.6L'},merchant.token,201);
+    assert.equal(mfit.verified,false);
+    await req('/products/'+sub.id+'/fitments','POST',{make:'Toyota',model:'Corolla',fromYear:2015,toYear:2020,engine:'1.6L'},other.token,403);
+    await req('/products/'+sub.id+'/fitments','POST',{make:'Toyota',model:'Corolla',fromYear:2015,toYear:2020,engine:'1.6L'},customer.token,403);
+    await req('/products/'+sub.id+'/fitments','POST',{make:'Toyota',model:'Corolla',fromYear:2021,toYear:2020,engine:'1.6L'},merchant.token,400);
+    const mform=new FormData();mform.append('image',new Blob([Buffer.from(png.split(',')[1],'base64')],{type:'image/png'}),'t.png');
+    const up=await fetch(base+'/products/'+sub.id+'/image',{method:'POST',headers:{Authorization:'Bearer '+merchant.token},body:mform});assert.equal(up.status,201);
+    const upBody=await up.json();assert.match(upBody.image,/^\/api\/media\/[0-9a-f-]+\.webp$/);assert.equal(upBody.approved,false);
+    const badForm=new FormData();badForm.append('image',new Blob(['not an image'],{type:'image/png'}),'t.png');
+    assert.equal((await fetch(base+'/products/'+sub.id+'/image',{method:'POST',headers:{Authorization:'Bearer '+merchant.token},body:badForm})).status,400);
+    assert.equal((await fetch(base+'/products/'+sub.id+'/image',{method:'POST',headers:{Authorization:'Bearer '+other.token},body:mform})).status,403);
+    await req('/admin/products/'+sub.id,'PATCH',{approved:true},admin.token).catch(()=>{});
+    await db.product.update({where:{id:sub.id},data:{approved:true}});
+    await req('/products/'+sub.id+'/fitments','POST',{make:'Kia',model:'Cerato',fromYear:2015,toYear:2020,engine:'1.6L'},merchant.token,409);
+    ok('Merchant submits product with own image and unverified fitment; other roles, invalid files and approved products are rejected');
     const rollbackBefore=await db.offer.findUniqueOrThrow({where:{id:offer.id}});
     await db.offer.update({where:{id:secondOffer.id},data:{stock:0}});
     await req('/checkouts','POST',{...groupData,requestKey:'fail-group-'+Date.now()},customer.token,409);

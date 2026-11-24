@@ -2,6 +2,8 @@ import {
   UseInterceptors,
   UploadedFile,
   BadRequestException,
+  ForbiddenException,
+  ConflictException,
   Controller,
   Get,
   Post,
@@ -54,6 +56,12 @@ export class MerchantController {
   ) {
     return this.shopsSvc.updateOffer(r.user, id, d);
   }
+  private async ownPending(user:any,id:string){requireRole(user,'MERCHANT');const p=await this.db.product.findUnique({where:{id}});if(!p||p.submittedBy!==user.id)throw new ForbiddenException('Only your own submitted product can be edited');if(p.approved)throw new ConflictException('Approved products can only be changed by the admin');return p;}
+  @Post('products/:id/fitments') async merchantFitment(@Req() r:any,@Param('id') id:string,@Body() d:D.MerchantFitmentDto){await this.ownPending(r.user,id);if(d.fromYear>d.toYear)throw new BadRequestException('Year range is invalid');if(await this.db.fitment.count({where:{productId:id}})>=20)throw new BadRequestException('Maximum 20 fitment rows per product');return this.db.fitment.create({data:{...d,productId:id,verified:false}});}
+  @Delete('products/:id/fitments/:fid') async merchantFitmentDelete(@Req() r:any,@Param('id') id:string,@Param('fid') fid:string){await this.ownPending(r.user,id);return this.db.fitment.deleteMany({where:{id:fid,productId:id}});}
+  @Post('products/:id/image')
+  @UseInterceptors(FileInterceptor('image',{limits:{fileSize:5242880,files:1}}))
+  async merchantProductImage(@Req() r:any,@Param('id') id:string,@UploadedFile() file:Express.Multer.File){await this.ownPending(r.user,id);if(!file||!['image/jpeg','image/png','image/webp'].includes(file.mimetype))throw new BadRequestException('Use JPEG, PNG or WebP under 5MB');let buffer:Buffer;try{buffer=await sharp(file.buffer,{limitInputPixels:25000000}).rotate().resize(1600,1600,{fit:'inside',withoutEnlargement:true}).webp({quality:85}).toBuffer();}catch{throw new BadRequestException('Invalid image content');}const name=randomUUID()+'.webp';const folder=resolve(process.env.MEDIA_DIR||'media');await mkdir(folder,{recursive:true});await writeFile(join(folder,name),buffer,{flag:'wx'});return this.db.product.update({where:{id},data:{image:'/api/media/'+name}});}
   @Post("products") product(@Req() r: any, @Body() d: D.ProductDto) {
     return this.shopsSvc.createProduct(r.user, d);
   }

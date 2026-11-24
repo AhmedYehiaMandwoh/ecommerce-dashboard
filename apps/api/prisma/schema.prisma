@@ -91,6 +91,7 @@ model Product {
  description String @db.Text
  image String @default("/parts.png")
  approved Boolean @default(false)
+ submittedBy String?
  fitments Fitment[]
  offers Offer[]
  @@unique([brand,partNumber])
@@ -182,6 +183,7 @@ model CancellationReview {
 }
 model Order {
  discount Int @default(0)
+ trackingNumber String?
  returns ReturnRequest[]
  id String @id @default(uuid())
  checkoutId String?

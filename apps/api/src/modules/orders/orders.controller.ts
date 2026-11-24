@@ -43,6 +43,6 @@ export class OrdersController {
     @Param("id") id: string,
     @Body() d: D.StatusDto,
   ) {
-    return this.ordersSvc.transition(r.user, id, d.status);
+    return this.ordersSvc.transition(r.user, id, d.status, d.trackingNumber);
   }
 }

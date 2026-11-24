@@ -87,6 +87,7 @@ export class OfferUpdateDto {
 export class StatusDto {
   @IsIn(["ACCEPTED", "PREPARING", "SHIPPED", "DELIVERED", "CANCELLED"])
   status!: any;
+  @IsOptional() @IsString() @Matches(/^[A-Za-z0-9\-_.\/ ]{3,40}$/) trackingNumber?: string;
 }
 export class ApprovalDto {
   @IsBoolean() approved!: boolean;
@@ -179,6 +180,13 @@ export class CatalogEditDto {
  @IsString() @MinLength(2) @MaxLength(150) title!:string;
  @IsString() @MinLength(1) @MaxLength(80) category!:string;
  @IsString() @MaxLength(3000) description!:string;
+}
+export class MerchantFitmentDto {
+ @IsString() @MinLength(1) @MaxLength(60) make!:string;
+ @IsString() @MinLength(1) @MaxLength(60) model!:string;
+ @IsInt() @Min(1950) @Max(2100) fromYear!:number;
+ @IsInt() @Min(1950) @Max(2100) toYear!:number;
+ @IsString() @MinLength(1) @MaxLength(60) engine!:string;
 }
 export class FitmentDto {
  @IsString() @MinLength(1) @MaxLength(60) make!:string;

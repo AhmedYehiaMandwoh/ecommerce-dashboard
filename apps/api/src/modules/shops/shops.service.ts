@@ -67,6 +67,7 @@ export class ShopsService {
         brand: data.brand.trim().toUpperCase(),
         partNumber: data.partNumber.trim().toUpperCase(),
         approved: false,
+        submittedBy: user.id,
       },
     });
   }

@@ -277,7 +277,7 @@ export class OrdersService {
       return {ok:true,state:'APPROVED'};
     },{isolationLevel:Prisma.TransactionIsolationLevel.Serializable});
   }
-  async transition(user: any, id: string, status: any) {
+  async transition(user: any, id: string, status: any, trackingNumber?: string) {
     return this.db.$transaction(async (tx) => {
       const order = await tx.order.findUnique({
         where: { id },
@@ -298,7 +298,7 @@ export class OrdersService {
         throw new ConflictException("Invalid status transition");
       const result = await tx.order.updateMany({
         where: { id, status: order.status },
-        data: { status,...(status==='SHIPPED'?{deliveryStartedAt:new Date(),deliveryStartedBy:user.id}:{}) },
+        data: { status,...(trackingNumber&&user.role!=='CUSTOMER'?{trackingNumber}:{}),...(status==='SHIPPED'?{deliveryStartedAt:new Date(),deliveryStartedBy:user.id}:{}) },
       });
       if (result.count !== 1)
         throw new ConflictException("Order changed, refresh");
