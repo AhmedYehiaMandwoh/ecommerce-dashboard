@@ -417,6 +417,27 @@ async function main() {
     await db.product.update({where:{id:sub.id},data:{approved:true}});
     await req('/products/'+sub.id+'/fitments','POST',{make:'Kia',model:'Cerato',fromYear:2015,toYear:2020,engine:'1.6L'},merchant.token,409);
     ok('Merchant submits product with own image and unverified fitment; other roles, invalid files and approved products are rejected');
+    // server-persisted proposed price/stock (piasters) with approval gate
+    const pp=await req('/products','POST',{brand:'Prop'+Date.now(),partNumber:'PROP-1',title:'Proposed price part',category:'فرامل',description:'Has proposed price',proposedPrice:12500,proposedStock:7},merchant.token,201);
+    await req('/products','POST',{brand:'Bad'+Date.now(),partNumber:'PROP-2',title:'Half proposal',category:'فرامل',description:'Only price',proposedPrice:100},merchant.token,400);
+    await req('/products','POST',{brand:'Bad'+Date.now(),partNumber:'PROP-3',title:'Zero price',category:'فرامل',description:'Zero price',proposedPrice:0,proposedStock:1},merchant.token,400);
+    await req('/products','POST',{brand:'Bad'+Date.now(),partNumber:'PROP-4',title:'Negative stock',category:'فرامل',description:'Neg stock',proposedPrice:100,proposedStock:-1},merchant.token,400);
+    await req('/products','POST',{brand:'Bad'+Date.now(),partNumber:'PROP-5',title:'Admin proposal',category:'فرامل',description:'Admin cannot',proposedPrice:100,proposedStock:1},admin.token,400);
+    const mdash=await req('/dashboard','GET',undefined,merchant.token);
+    const mine=mdash.proposals.find((x:any)=>x.productId===pp.id);
+    assert.equal(mine.price,12500);assert.equal(mine.stock,7);
+    const odash=await req('/dashboard','GET',undefined,other.token);
+    assert.equal((odash.proposals||[]).some((x:any)=>x.productId===pp.id),false);
+    assert.equal((await req('/products?q=Proposed','GET')).items.some((x:any)=>x.id===pp.id),false);
+    const mshop=mdash.shops[0].id;
+    await req('/shops/'+mshop+'/offers','POST',{productId:pp.id,sku:'PROP-SKU',price:12500,stock:7},merchant.token,409);
+    assert.equal(await db.offer.count({where:{productId:pp.id}}),0);
+    await db.product.update({where:{id:pp.id},data:{approved:true}});
+    const mdash2=await req('/dashboard','GET',undefined,merchant.token);
+    assert.equal(mdash2.proposals.find((x:any)=>x.productId===pp.id).price,12500);
+    await req('/shops/'+mshop+'/offers','POST',{productId:pp.id,sku:'PROP-SKU',price:12500,stock:7},merchant.token,201);
+    assert.equal((await req('/dashboard','GET',undefined,merchant.token)).proposals.some((x:any)=>x.productId===pp.id),false);
+    ok('Proposed price/stock is stored server-side per merchant, validated, hidden from others and public, no offer before approval, consumed when the offer is created');
     const rollbackBefore=await db.offer.findUniqueOrThrow({where:{id:offer.id}});
     await db.offer.update({where:{id:secondOffer.id},data:{stock:0}});
     await req('/checkouts','POST',{...groupData,requestKey:'fail-group-'+Date.now()},customer.token,409);

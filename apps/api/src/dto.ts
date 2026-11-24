@@ -98,6 +98,8 @@ export class ProductDto {
   @IsString() @MinLength(2) @MaxLength(150) title!: string;
   @IsString() @MaxLength(80) category!: string;
   @IsString() @MaxLength(3000) description!: string;
+  @IsOptional() @IsInt() @Min(1) @Max(100000000) proposedPrice?: number;
+  @IsOptional() @IsInt() @Min(0) @Max(1000000) proposedStock?: number;
 }
 export class ImportDto {
   @IsOptional() @IsString() @MaxLength(80) previewId?:string;

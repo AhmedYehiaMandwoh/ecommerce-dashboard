@@ -358,3 +358,12 @@ model DiscountCode {
  expiresAt DateTime?
  createdAt DateTime @default(now())
 }
+
+model ProductProposal {
+ productId String @id
+ ownerId String
+ price Int
+ stock Int
+ createdAt DateTime @default(now())
+ @@index([ownerId])
+}

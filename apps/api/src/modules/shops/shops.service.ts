@@ -35,18 +35,21 @@ export class ShopsService {
   }
   async offer(user: any, shopId: string, data: OfferDto) {
     const shop = await this.shopFor(user, shopId);
-    if (!(await this.db.product.findUnique({ where: { id: data.productId } })))
-      throw new NotFoundException();
+    const prod = await this.db.product.findUnique({ where: { id: data.productId } });
+    if (!prod) throw new NotFoundException();
+    if (!prod.approved) throw new ConflictException("Product is not approved yet");
     const existing = await this.db.offer.findUnique({
       where: { shopId_sku: { shopId: shop.id, sku: data.sku } },
     });
     if (existing && existing.productId !== data.productId)
       throw new ConflictException("SKU belongs to another product");
-    return this.db.offer.upsert({
+    const saved = await this.db.offer.upsert({
       where: { shopId_sku: { shopId: shop.id, sku: data.sku } },
       create: { ...data, shopId: shop.id },
       update: { price: data.price, stock: data.stock },
     });
+    await this.db.productProposal.deleteMany({ where: { productId: data.productId, ownerId: user.id } });
+    return saved;
   }
   async updateOffer(user: any, id: string, data: OfferUpdateDto) {
     const o = await this.db.offer.findUnique({
@@ -61,15 +64,23 @@ export class ShopsService {
   }
   async createProduct(user: any, data: ProductDto) {
     requireRole(user, "ADMIN", "MERCHANT");
-    return this.db.product.create({
+    const { proposedPrice, proposedStock, ...rest } = data;
+    if ((proposedPrice === undefined) !== (proposedStock === undefined))
+      throw new BadRequestException("Send both proposedPrice (piasters) and proposedStock, or neither");
+    if (proposedPrice !== undefined && user.role !== "MERCHANT")
+      throw new BadRequestException("Only a merchant can propose a price and stock");
+    const product = await this.db.product.create({
       data: {
-        ...data,
+        ...rest,
         brand: data.brand.trim().toUpperCase(),
         partNumber: data.partNumber.trim().toUpperCase(),
         approved: false,
         submittedBy: user.id,
       },
     });
+    if (proposedPrice !== undefined && proposedStock !== undefined)
+      await this.db.productProposal.create({ data: { productId: product.id, ownerId: user.id, price: proposedPrice, stock: proposedStock } });
+    return product;
   }
   async applyShop(user:any,d:any){
     requireRole(user,'CUSTOMER');

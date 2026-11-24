@@ -20,19 +20,18 @@ function pick(e: any) { const f = e.target.files?.[0]; if (!f) return; file.valu
 function addRow() { if (!draft.make || !draft.model || !draft.fromYear || !draft.toYear || !draft.engine) return; rows.value.push({ ...draft }); Object.assign(draft, { make: "", model: "", fromYear: "", toYear: "", engine: "" }); }
 async function submit() {
   await run(async () => {
-    const p = await api("/products", "POST", productForm);
+    const p = await api("/products", "POST", { ...productForm, ...(proposed.price !== "" && proposed.stock !== "" ? { proposedPrice: Number(proposed.price), proposedStock: Number(proposed.stock) } : {}) });
     for (const r of rows.value) await api(`/products/${p.id}/fitments`, "POST", { make: r.make, model: r.model, fromYear: Number(r.fromYear), toYear: Number(r.toYear), engine: r.engine });
     if (file.value) {
       const form = new FormData(); form.append("image", file.value);
       const res = await fetch(`${base}/products/${p.id}/image`, { method: "POST", headers: { Authorization: "Bearer " + token.value }, body: form });
       if (!res.ok) throw Error((await res.json()).message || "تعذر رفع الصورة");
     }
-    if (proposed.price && proposed.stock !== "") { const all = JSON.parse(localStorage.getItem("proposedOffers") || "{}"); all[p.id] = { price: proposed.price, stock: proposed.stock }; localStorage.setItem("proposedOffers", JSON.stringify(all)); }
     proposed.price = ""; proposed.stock = "";
     dash.value = await api("/dashboard");
     rows.value = []; file.value = null; preview.value = "";
     Object.assign(productForm, { brand: "", partNumber: "", title: "", category: "", description: "" });
-    message.value = "تم إرسال المنتج لمراجعة الإدارة. السعر والمخزون يظهران جاهزين في نموذج العرض بعد الاعتماد (غير مؤكدة حتى مراجعتها)";
+    message.value = "تم إرسال المنتج لمراجعة الإدارة. السعر والمخزون المقترحان محفوظان ويظهران جاهزين في نموذج العرض بعد الاعتماد";
   });
 }
 </script>
@@ -58,8 +57,8 @@ async function submit() {
               <SelectContent><SelectItem v-for="c in (categories || [])" :key="c" :value="c">{{ c }}</SelectItem></SelectContent></Select></div>
         </div>
         <div class="grid grid-cols-2 gap-2">
-          <div class="space-y-1"><Label for="p-price">السعر (بالقروش)</Label><Input id="p-price" v-model="proposed.price" type="number" min="1" placeholder="أدخل السعر" /></div>
-          <div class="space-y-1"><Label for="p-stock">المخزون</Label><Input id="p-stock" v-model="proposed.stock" type="number" min="0" placeholder="أدخل الكمية" /></div>
+          <div class="space-y-1"><Label for="p-price">السعر (بالقروش)</Label><Input id="p-price" v-model="proposed.price" type="number" min="1" step="1" :required="proposed.stock !== ''" placeholder="أدخل السعر" /></div>
+          <div class="space-y-1"><Label for="p-stock">المخزون</Label><Input id="p-stock" v-model="proposed.stock" type="number" min="0" step="1" :required="proposed.price !== ''" placeholder="أدخل الكمية" /></div>
         </div>
         <div class="space-y-1"><Label for="p-desc">الوصف</Label><Textarea id="p-desc" v-model="productForm.description" required rows="1" class="min-h-10" /></div>
         <div class="space-y-2 rounded-xl bg-secondary p-3">
@@ -84,7 +83,7 @@ async function submit() {
         <p class="mb-3 text-sm text-muted-foreground">بعد اعتماد المنتج من الإدارة، اختره هنا وحدد السعر والمخزون لمتجرك.</p>
         <form class="space-y-3" @submit.prevent="createOffer">
           <div class="space-y-1"><Label>المنتج المعتمد</Label>
-            <Select v-model="offerForm.productId" @update:model-value="(id: any) => { const o = JSON.parse(localStorage.getItem('proposedOffers') || '{}')[id]; if (o) { offerForm.price = o.price; offerForm.stock = o.stock; } }"><SelectTrigger class="w-full" aria-label="المنتج المعتمد"><SelectValue placeholder="اختر منتجًا معتمدًا" /></SelectTrigger>
+            <Select v-model="offerForm.productId" @update:model-value="(id: any) => { const o = (dash.proposals || []).find((x: any) => x.productId === id); if (o) { offerForm.price = o.price; offerForm.stock = o.stock; } }"><SelectTrigger class="w-full" aria-label="المنتج المعتمد"><SelectValue placeholder="اختر منتجًا معتمدًا" /></SelectTrigger>
               <SelectContent><SelectItem v-for="p in approved" :key="p.id" :value="p.id">{{ p.brand }} • {{ p.title }}</SelectItem></SelectContent></Select></div>
           <div class="space-y-1"><Label for="o-sku">كود الصنف SKU</Label><Input id="o-sku" v-model="offerForm.sku" required dir="ltr" /></div>
           <div class="grid grid-cols-2 gap-3">

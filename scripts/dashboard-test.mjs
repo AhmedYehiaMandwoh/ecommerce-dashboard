@@ -46,6 +46,8 @@ await pick(page, 'إلى سنة', '2020');
 await pick(page, 'المحرك', '1.6L');
 await page.getByRole('button', { name: 'إضافة هذا التوافق' }).click();
 if (!(await page.getByText('Toyota Corolla • 2016-2020 • 1.6L').count())) fail('fitment row not added');
+await page.getByLabel('السعر (بالقروش)').first().fill('12500');
+await page.getByLabel('المخزون').first().fill('7');
 await snap(page, 'merchant-20-add-product-filled');
 await page.getByRole('button', { name: 'حفظ المنتج وإرساله للمراجعة' }).click();
 await page.getByText('تم إرسال المنتج لمراجعة الإدارة').waitFor({ timeout: 10000 }).catch(() => fail('product submit message missing'));
@@ -69,6 +71,13 @@ await page.getByText(title, { exact: true }).locator('xpath=ancestor::*[contains
 await page.waitForTimeout(1200);
 await nav(page, 'المزيد');
 await snap(page, 'admin-more');
+await ctx.close();
+// New merchant session: the server-persisted proposed price and stock prefill the offer form after approval.
+({ ctx, page } = await session('merchant', { width: 430, height: 900 }));
+await nav(page, 'إضافة منتج');
+await page.getByRole('combobox', { name: 'المنتج المعتمد' }).click();
+await page.getByRole('option', { name: new RegExp(title.slice(0, 20)) }).click();
+if ((await page.getByLabel('السعر (بالقروش)').nth(1).inputValue()) !== '12500' || (await page.getByLabel('المخزون').nth(1).inputValue()) !== '7') fail('proposed price/stock not prefilled in a new session');
 await ctx.close();
 // Cancellation after delivery started: merchant ships, customer requests cancellation, admin decides in the web UI.
 {

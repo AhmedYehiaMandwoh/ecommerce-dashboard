@@ -94,8 +94,8 @@
     },
     {
       "path": "apps/api/prisma/schema.prisma",
-      "bytes": 8094,
-      "sha256": "2cd0fd6eeefa3b536206cf511183aeb19851957db80a1d1ff8c614b797944476"
+      "bytes": 8237,
+      "sha256": "1e77633c996ad967c917a75dd5c0302cfba320afd406fccdeb2d60f1c277daa8"
     },
     {
       "path": "apps/api/prisma/seed.ts",
@@ -129,8 +129,8 @@
     },
     {
       "path": "apps/api/src/dto.ts",
-      "bytes": 7292,
-      "sha256": "946b6c992d9c8833d6c692eb532b363cbbd8625db9873d25c3ea751bafa8d8d4"
+      "bytes": 7436,
+      "sha256": "b82ad654da89af97f9b473f9328704c43420639d3d4f905d361062156f13a5f0"
     },
     {
       "path": "apps/api/src/errors.ts",
@@ -209,8 +209,8 @@
     },
     {
       "path": "apps/api/src/modules/dashboard/dashboard.service.ts",
-      "bytes": 2188,
-      "sha256": "3ab535520482dc7d26227b49fac4f74d9f548ae2be77639337f5edc8ce7cfa5f"
+      "bytes": 2272,
+      "sha256": "4303091e72db4c0b372b2b6f76960aa53c42ddaae2eea5203dd2e7600e18c635"
     },
     {
       "path": "apps/api/src/modules/health/health.controller.ts",
@@ -249,8 +249,8 @@
     },
     {
       "path": "apps/api/src/modules/shops/shops.service.ts",
-      "bytes": 8482,
-      "sha256": "c6e2c06e1b6b08be06556337384e195e15b74a6ab41f8da94d9ed4f2f2ee64a1"
+      "bytes": 9353,
+      "sha256": "f98a5f31c365bc85f9c6d60d6d7e04256787456865af241083059d3728a9f42b"
     },
     {
       "path": "apps/api/src/security.ts",
@@ -269,8 +269,8 @@
     },
     {
       "path": "apps/api/test/integration.ts",
-      "bytes": 35459,
-      "sha256": "241c19e0c6a597921239783cbff72c08ee3d9401842080b3716bea3ae563cc99"
+      "bytes": 37874,
+      "sha256": "ff261687e5a56847648be67436a51afc25e442722bd56b9c05e06294cec3d667"
     },
     {
       "path": "apps/api/test/phone-verify.test.ts",
@@ -599,8 +599,8 @@
     },
     {
       "path": "apps/web/app/pages/dashboard/add-product.vue",
-      "bytes": 11061,
-      "sha256": "51616a8e6367cf375dce8660164fb0de55426c704816709693e46bc10219ad61"
+      "bytes": 11036,
+      "sha256": "8b18c8f6e0467f6af082bb61131e5d7e53f8de3d4b3affe48f9ae8b296516975"
     },
     {
       "path": "apps/web/app/pages/dashboard/applications.vue",
@@ -974,8 +974,8 @@
     },
     {
       "path": "scripts/dashboard-test.mjs",
-      "bytes": 9989,
-      "sha256": "cbc10d06500f3bcaf4fa31e7227ab96a22baa4de77edbd72f1b5bc1df0ba2b59"
+      "bytes": 10758,
+      "sha256": "5ab2a2ee982d7686b11861db77c0c13d6ab06a4febb22810d7bcd6132ac59d8a"
     },
     {
       "path": "scripts/reference-check.mjs",
