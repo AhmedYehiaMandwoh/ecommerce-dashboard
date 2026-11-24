@@ -14,8 +14,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 4248,
-      "sha256": "f40ef84d82624b0da985e8d16d9478bbb40edfa8c1f3dc67b5fb6959cf3dd23e"
+      "bytes": 5863,
+      "sha256": "f28224d45111344c2de528f37bd2df3e76cc7c56c6fc7ec76f63030314c96bf2"
     },
     {
       "path": "apps/api/.env.example",
@@ -974,8 +974,8 @@
     },
     {
       "path": "scripts/dashboard-test.mjs",
-      "bytes": 6054,
-      "sha256": "57bc1d9fa8e9d4a346baf91ab01567d491dbfdf7f65744dd811ce92219a9a2c8"
+      "bytes": 9989,
+      "sha256": "cbc10d06500f3bcaf4fa31e7227ab96a22baa4de77edbd72f1b5bc1df0ba2b59"
     },
     {
       "path": "scripts/reference-check.mjs",

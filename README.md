@@ -13,6 +13,15 @@ A connected multi-merchant spare-parts foundation using Ahmed's selected stack:
 
 The current connected source lets a customer browse fictional parts, compare shop offers, sign in with test phone OTP (or development email/password), save an address and vehicle, place a **test order**, and follow its status. The shop can see its own orders, move them through allowed states, and maintain price/stock. Admin reviews shop applications, products, shipping/cancellations/returns and support. See docs/HANDOVER.md for exact tested scope and remaining real-launch gates.
 
+## Current status (read this first)
+
+- Customer web storefront, merchant dashboard and admin dashboard use Nuxt 4 + Tailwind v4 + shadcn-vue. The mobile app (React Native + NativeWind) is customer-only and lives in the apps repository. Merchant and admin work happens only in the web dashboard.
+- Implemented and tested against a local MySQL-compatible database: phone static-test OTP login, addresses, vehicle selection from a catalog endpoint, multi-shop cash-on-delivery test checkout with an admin-set per-area fee, percent discount codes (demo code `GHIYAR10`), two-stage cancellation, returns with refund evidence, shipping ledger and settlements, order tracking numbers, merchant product submission with image and unverified fitment (admin approves), support tickets with an image attachment, CSV offer import.
+- **Open business decision:** who funds a discount (shop, platform or split). The code only reduces the shop's order subtotal and credits no one. See docs/HANDOVER.md.
+- The online-card payment row is shown disabled with the label "قريبًا" (owner-approved). Nothing else is disabled or stubbed except what the Safety section lists.
+- Layouts follow the 24-screen reference PDF by eye. The PDF is image-only, so this is not a pixel-exact match. NativeWind was checked on Expo web only, not on a physical device.
+- Tests: `pnpm --filter @ghiyar/api test` (unit), `pnpm --filter @ghiyar/api test:integration` (needs a freshly seeded database), `node scripts/dashboard-test.mjs` (web browser end to end, needs API and web running). The apps repository has `scripts/mobile-test.mjs`.
+
 ## Start here
 
 0. No Docker is needed or supplied. Everything runs directly with Node, pnpm and MySQL.
@@ -30,7 +39,7 @@ No live deployment, external account, paid service or production signing identit
 ```
 apps/api/          NestJS services, DTOs, schema, migrations, tests
 apps/web/          Nuxt website + merchant/admin dashboard
-scripts/           Android build helper, environment check, browser verification
+scripts/           Android build helper, environment check, dashboard-test.mjs browser test
 docs/              Setup, architecture, API, verification, remaining work
 ```
 

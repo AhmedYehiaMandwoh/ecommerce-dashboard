@@ -70,6 +70,46 @@ await page.waitForTimeout(1200);
 await nav(page, 'المزيد');
 await snap(page, 'admin-more');
 await ctx.close();
+// Cancellation after delivery started: merchant ships, customer requests cancellation, admin decides in the web UI.
+{
+  const jlogin = async (email) => (await (await fetch(API + '/auth/login', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email, password: process.env.DEMO_PASSWORD }) })).json()).token;
+  const call = async (path, method, token, body) => { const r = await fetch(API + path, { method, headers: { 'content-type': 'application/json', Authorization: 'Bearer ' + token }, body: body ? JSON.stringify(body) : undefined }); return { status: r.status, body: await r.json().catch(() => ({})) }; };
+  const [mt, ct, at] = [await jlogin('merchant@example.test'), await jlogin('customer@example.test'), await jlogin('admin@example.test')];
+  const adm = (await call('/dashboard', 'GET', at)).body;
+  const area = adm.deliveryAreas.find((a) => a.active);
+  const offer = adm.shops.find((sh) => sh.name.includes('أوتو')).offers[0];
+  const addr = (await call('/addresses', 'POST', ct, { label: 'اختبار', city: area.city, details: 'عنوان اختبار آلي غير حقيقي', phone: '01000000000' })).body;
+  const quote = (await call('/orders/quote', 'POST', ct, { items: [{ offerId: offer.id, quantity: 1 }], addressId: addr.id, deliveryAreaId: area.id })).body;
+  const placed = await call('/checkouts', 'POST', ct, { items: [{ offerId: offer.id, quantity: 1 }], addressId: addr.id, deliveryAreaId: area.id, requestKey: 'dash-cancel-' + Date.now(), expectedTotal: quote.total });
+  const target = (await call('/dashboard', 'GET', at)).body.orders.find((o) => o.status === 'PLACED' && (o.checkoutId === placed.body.id || o.address?.details === 'عنوان اختبار آلي غير حقيقي'));
+  if (!target) fail('could not create a PLACED customer order for the cancellation test');
+  else {
+    for (const st of ['ACCEPTED', 'PREPARING']) { const r = await call('/orders/' + target.id + '/status', 'PATCH', mt, { status: st }); if (r.status >= 300) fail('status ' + st + ' failed ' + r.status); }
+    const shipped = await call('/orders/' + target.id + '/status', 'PATCH', mt, { status: 'SHIPPED', trackingNumber: 'TRK-' + sku });
+    if (shipped.status >= 300) fail('ship failed ' + shipped.status);
+    const direct = await call('/orders/' + target.id + '/status', 'PATCH', ct, { status: 'CANCELLED' });
+    if (direct.status < 400) fail('customer could cancel directly after delivery started (status ' + direct.status + ')');
+    const req = await call('/orders/' + target.id + '/cancellation-requests', 'POST', ct, { reason: 'العميل لا يستطيع الاستلام اليوم' });
+    if (req.status !== 201) fail('cancellation request failed ' + req.status);
+    ({ ctx, page } = await session('admin', { width: 1280, height: 900 }));
+    await nav(page, 'المزيد');
+    await page.locator('a[href="/dashboard/legacy-orders"]').first().click();
+    await page.waitForTimeout(1200);
+    if (!(await page.getByText('طلب إلغاء للمراجعة').count())) fail('admin UI shows no pending cancellation review');
+    else {
+      await page.locator('textarea').last().fill('تم التحقق من تكلفة الشحن الفعلية');
+      await page.locator('input[type=number]').last().fill('0');
+      await snap(page, 'admin-cancellation-review');
+      await page.getByRole('button', { name: 'الموافقة على الإلغاء' }).first().click();
+      await page.waitForTimeout(1800);
+      const after = (await call('/dashboard', 'GET', at)).body.orders.find((o) => o.id === target.id);
+      if (after.status !== 'CANCELLED') fail('order not cancelled after admin approval: ' + after.status);
+      else console.log('cancellation after shipping approved in UI; order status CANCELLED; direct cancel attempt status', direct.status);
+      await snap(page, 'admin-cancellation-approved');
+    }
+    await ctx.close();
+  }
+}
 // mobile widths
 for (const role of ['merchant', 'admin']) {
   const s = await session(role, { width: 430, height: 900 });
