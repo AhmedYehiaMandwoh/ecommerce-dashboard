@@ -125,6 +125,8 @@ model Offer {
 }
 model Checkout {
  id String @id @default(uuid())
+ discount Int @default(0)
+ discountCode String?
  customerId String
  customer User @relation(fields:[customerId],references:[id])
  requestKey String
@@ -179,6 +181,7 @@ model CancellationReview {
  @@index([state,createdAt])
 }
 model Order {
+ discount Int @default(0)
  returns ReturnRequest[]
  id String @id @default(uuid())
  checkoutId String?
@@ -336,8 +339,20 @@ model SupportTicket {
  message String @db.Text
  state String @default("OPEN")
  reply String @db.Text
+ attachment String? @db.MediumText
  repliedBy String?
  repliedAt DateTime?
  createdAt DateTime @default(now())
  @@index([userId,createdAt])
+}
+
+model DiscountCode {
+ id String @id @default(uuid())
+ code String @unique
+ percent Int
+ active Boolean @default(true)
+ maxUses Int?
+ used Int @default(0)
+ expiresAt DateTime?
+ createdAt DateTime @default(now())
 }

@@ -54,6 +54,7 @@ export class QuoteDto {
  @IsArray() @ArrayMinSize(1) @ArrayMaxSize(50) @ValidateNested({each:true}) @Type(()=>ItemDto) items!: ItemDto[];
  @IsString() addressId!: string;
  @IsString() deliveryAreaId!: string;
+ @IsOptional() @IsString() @MaxLength(32) discountCode?: string;
 }
 export class CheckoutDto {
   @IsOptional() @IsString() deliveryAreaId?: string;
@@ -194,6 +195,7 @@ export class ProfileDto {
 export class TicketDto {
  @IsString() @MinLength(5) @MaxLength(120) subject!:string;
  @IsString() @MinLength(10) @MaxLength(2000) message!:string;
+ @IsOptional() @IsString() @MaxLength(1600000) attachment?:string;
 }
 export class TicketReplyDto {
  @IsString() @MinLength(5) @MaxLength(2000) reply!:string;

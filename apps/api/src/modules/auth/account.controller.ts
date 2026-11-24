@@ -45,7 +45,8 @@ export class AccountController {
   @Post('favorites/:id') async favorite(@Req() r:any,@Param('id') id:string){const product=await this.db.product.findFirst({where:{id,approved:true}});if(!product)throw new BadRequestException('Product unavailable');return this.db.favorite.upsert({where:{userId_productId:{userId:r.user.id,productId:id}},create:{userId:r.user.id,productId:id},update:{}});}
   @Delete('favorites/:id') unfavorite(@Req() r:any,@Param('id') id:string){return this.db.favorite.deleteMany({where:{userId:r.user.id,productId:id}});}
   @Get('support-tickets') tickets(@Req() r:any){return this.db.supportTicket.findMany({where:r.user.role==='ADMIN'?{}:{userId:r.user.id},orderBy:{createdAt:'desc'},take:100});}
-  @Post('support-tickets') ticket(@Req() r:any,@Body() d:D.TicketDto){return this.db.supportTicket.create({data:{...d,userId:r.user.id,reply:''}});}
+  @Post('support-tickets') ticket(@Req() r:any,@Body() d:D.TicketDto){if(d.attachment&&!/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+\/=]+$/.test(d.attachment))throw new BadRequestException('Attachment must be a PNG, JPEG or WebP image');return this.db.supportTicket.create({data:{...d,userId:r.user.id,reply:''}});}
+  @Get('vehicle-catalog') async vehicleCatalog(){const rows=await this.db.fitment.findMany({select:{make:true,model:true,fromYear:true,toYear:true,engine:true}});const t:Record<string,Record<string,{from:number;to:number;engines:string[]}>>={};for(const f of rows){const m=(t[f.make]??={});const e=(m[f.model]??={from:f.fromYear,to:f.toYear,engines:[]});e.from=Math.min(e.from,f.fromYear);e.to=Math.max(e.to,f.toYear);if(f.engine&&!e.engines.includes(f.engine))e.engines.push(f.engine);}return {makes:Object.entries(t).map(([make,models])=>({make,models:Object.entries(models).map(([model,v])=>({model,...v}))}))};}
   @Get("me") me(@Req() r: any) {
     return r.user;
   }

@@ -37,6 +37,7 @@ async function main() {
       },
       update: {},
     });
+    await db.discountCode.upsert({ where: { code: "GHIYAR10" }, create: { code: "GHIYAR10", percent: 10 }, update: {} });
     const examples = [
       [
         "BOSCH",

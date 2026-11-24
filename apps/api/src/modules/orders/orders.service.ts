@@ -12,6 +12,7 @@ import { Db } from "../../db";
 import { hashPassword, verifyPassword, digest, requireRole } from "../../security";
 import { CheckoutDto, OfferDto, OfferUpdateDto, ProductDto } from "../../dto";
 import { allocateShipping } from "../../shipping";
+import { applyPercent, normalizeCode } from "../../discount";
 import { Prisma } from "../../generated/prisma/client";
 import { transitions, normalizeItems } from "./orders.rules";
 
@@ -30,13 +31,16 @@ export class OrdersService {
     let subtotal=0;
     for(const item of items){const offer=offers.find(o=>o.id===item.offerId)!;if(offer.stock<item.quantity)throw new ConflictException('Insufficient stock');subtotal+=offer.price*item.quantity;}
     const groups=[...new Set(offers.map(o=>o.shopId))].map(shopId=>({shopId,subtotal:items.reduce((sum,item)=>{const o=offers.find(o=>o.id===item.offerId)!;return sum+(o.shopId===shopId?o.price*item.quantity:0)},0)}));
-    return {groups:allocateShipping(area.fee,groups),subtotal,delivery:area.fee,total:subtotal+area.fee,currency:'EGP',payment:'CASH_ON_DELIVERY',deliveryArea:{id:area.id,city:area.city,area:area.area},testOnly:true,checkoutSupported:true,shippingAllocationRequired:false};
+    let discount=0,discountCode:string|null=null,shopGroups=groups;
+    const code=normalizeCode(d.discountCode);
+    if(code){const dc=await this.db.discountCode.findUnique({where:{code}});if(!dc||!dc.active||(dc.expiresAt&&dc.expiresAt<new Date())||(dc.maxUses!==null&&dc.used>=dc.maxUses))throw new BadRequestException('Discount code invalid or expired');const applied=applyPercent(groups,dc.percent);discount=applied.reduce((n,g)=>n+g.discount,0);shopGroups=applied.map(g=>({shopId:g.shopId,subtotal:g.subtotal}));discountCode=dc.code;}
+    return {groups:allocateShipping(area.fee,shopGroups),subtotalBeforeDiscount:subtotal,discount,discountCode,subtotal:subtotal-discount,delivery:area.fee,total:subtotal-discount+area.fee,currency:'EGP',payment:'CASH_ON_DELIVERY',deliveryArea:{id:area.id,city:area.city,area:area.area},testOnly:true,checkoutSupported:true,shippingAllocationRequired:false};
   }
   async groupedCheckout(user:any,d:any){
     requireRole(user,'CUSTOMER');
     if(process.env.TEST_CHECKOUT!=='true')throw new ForbiddenException('Test checkout disabled');
     const items=normalizeItems(d.items);
-    const fingerprint=digest(JSON.stringify({items,addressId:d.addressId,deliveryAreaId:d.deliveryAreaId,note:d.note||'',expectedTotal:d.expectedTotal}));
+    const fingerprint=digest(JSON.stringify({items,addressId:d.addressId,deliveryAreaId:d.deliveryAreaId,note:d.note||'',expectedTotal:d.expectedTotal,discountCode:normalizeCode(d.discountCode)}));
     const include={orders:{include:{shop:true,items:true,events:true}}};
     const replay=async()=>{const c=await this.db.checkout.findUnique({where:{customerId_requestKey:{customerId:user.id,requestKey:d.requestKey}},include});if(c&&c.fingerprint!==fingerprint)throw new ConflictException('Request key belongs to a different basket');return c;};
     const old=await replay();if(old)return old;
@@ -50,13 +54,18 @@ export class OrdersService {
       const offers=await tx.offer.findMany({where:{id:{in:items.map(i=>i.offerId)},active:true,product:{approved:true},shop:{approved:true}},include:{product:true}});
       if(offers.length!==items.length)throw new BadRequestException('Some offers are unavailable');
       const groupValues=[...new Set(offers.map(o=>o.shopId))].map(shopId=>({shopId,subtotal:items.reduce((sum,item)=>{const o=offers.find(o=>o.id===item.offerId)!;return sum+(o.shopId===shopId?o.price*item.quantity:0)},0)}));
-      const groups=allocateShipping(area.fee,groupValues);const subtotal=groups.reduce((sum,g)=>sum+g.subtotal,0);
+      let discount=0,discountCode:string|null=null,discountByShop:Record<string,number>={},valued=groupValues;
+      const code=normalizeCode(d.discountCode);
+      if(code){const dc=await tx.discountCode.findUnique({where:{code}});if(!dc||!dc.active||(dc.expiresAt&&dc.expiresAt<new Date()))throw new BadRequestException('Discount code invalid or expired');
+        const used=await tx.discountCode.updateMany({where:dc.maxUses===null?{id:dc.id,active:true}:{id:dc.id,active:true,used:{lt:dc.maxUses}},data:{used:{increment:1}}});if(used.count!==1)throw new BadRequestException('Discount code invalid or expired');
+        const applied=applyPercent(groupValues,dc.percent);discount=applied.reduce((n,g)=>n+g.discount,0);for(const g of applied)discountByShop[g.shopId]=g.discount;valued=applied.map(g=>({shopId:g.shopId,subtotal:g.subtotal}));discountCode=dc.code;}
+      const groups=allocateShipping(area.fee,valued);const subtotal=groups.reduce((sum,g)=>sum+g.subtotal,0);
       if(subtotal+area.fee!==d.expectedTotal)throw new ConflictException('Basket total changed, review a fresh quote');
       for(const item of items){const o=offers.find(o=>o.id===item.offerId)!;const changed=await tx.offer.updateMany({where:{id:o.id,active:true,price:o.price,stock:{gte:item.quantity}},data:{stock:{decrement:item.quantity}}});if(changed.count!==1)throw new ConflictException('Price or stock changed, review basket');}
       const snapshot={label:address.label,city:address.city,details:address.details,phone:address.phone,deliveryArea:{id:area.id,city:area.city,area:area.area}};
-      const c=await tx.checkout.create({data:{customerId:user.id,requestKey:d.requestKey,fingerprint,subtotal,originalDelivery:area.fee,delivery:area.fee,total:subtotal+area.fee,area:{id:area.id,city:area.city,area:area.area,fee:area.fee},address:snapshot}});
-      for(const group of groups){const lines=items.filter(i=>offers.find(o=>o.id===i.offerId)!.shopId===group.shopId).map(i=>{const o=offers.find(o=>o.id===i.offerId)!;return {offerId:o.id,title:o.product.title,partNumber:o.product.partNumber,quantity:i.quantity,unitPrice:o.price};});await tx.order.create({data:{checkoutId:c.id,customerId:user.id,shopId:group.shopId,subtotal:group.subtotal,delivery:group.delivery,total:group.total,address:snapshot,note:d.note||'',requestKey:c.id+':'+group.shopId,payment:'TEST_COD',items:{create:lines},events:{create:{status:'PLACED'}}}});}
-      await tx.financialAudit.create({data:{checkoutId:c.id,actorId:user.id,action:'CHECKOUT_CREATED',before:{},after:{groups,delivery:area.fee,total:c.total},reason:'Reviewed basket committed'}});
+      const c=await tx.checkout.create({data:{customerId:user.id,requestKey:d.requestKey,fingerprint,subtotal,discount,discountCode,originalDelivery:area.fee,delivery:area.fee,total:subtotal+area.fee,area:{id:area.id,city:area.city,area:area.area,fee:area.fee},address:snapshot}});
+      for(const group of groups){const lines=items.filter(i=>offers.find(o=>o.id===i.offerId)!.shopId===group.shopId).map(i=>{const o=offers.find(o=>o.id===i.offerId)!;return {offerId:o.id,title:o.product.title,partNumber:o.product.partNumber,quantity:i.quantity,unitPrice:o.price};});await tx.order.create({data:{checkoutId:c.id,customerId:user.id,shopId:group.shopId,subtotal:group.subtotal,discount:discountByShop[group.shopId]||0,delivery:group.delivery,total:group.total,address:snapshot,note:d.note||'',requestKey:c.id+':'+group.shopId,payment:'TEST_COD',items:{create:lines},events:{create:{status:'PLACED'}}}});}
+      await tx.financialAudit.create({data:{checkoutId:c.id,actorId:user.id,action:'CHECKOUT_CREATED',before:{},after:{groups,discount,discountCode,delivery:area.fee,total:c.total},reason:'Reviewed basket committed'}});
       return tx.checkout.findUniqueOrThrow({where:{id:c.id},include});
     },{isolationLevel:Prisma.TransactionIsolationLevel.Serializable,timeout:15000});}catch(e:any){if(['P2002','P2034'].includes(e.code)){const existing=await replay();if(existing)return existing;throw new ConflictException('Concurrent change, retry same request key');}throw e;}
   }
