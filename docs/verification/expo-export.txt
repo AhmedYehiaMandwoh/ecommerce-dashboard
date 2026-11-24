@@ -1,0 +1,21 @@
+Expo Autolinking module resolution enabled
+Starting Metro Bundler
+
+Web Bundled 3411ms apps/mobile/index.ts (207 modules)
+Android Bundled 6932ms apps/mobile/index.ts (605 modules)
+iOS Bundled 10145ms apps/mobile/index.ts (579 modules)
+
+› web bundles (1):
+_expo/static/js/web/index-94c41a755142db5710fe63d01a10696e.js (442KB)
+
+› android bundles (1):
+_expo/static/js/android/index-7b85e4b6a4593e541c27b3fb3496898f.hbc (1.6MB)
+
+› ios bundles (1):
+_expo/static/js/ios/index-573f4db3f3e1820930597b8e1731b642.hbc (1.5MB)
+
+› Files (2):
+index.html (1.2KB)
+metadata.json (244B)
+
+Exported: dist

@@ -1,0 +1,343 @@
+generator client {
+ provider = "prisma-client"
+ output = "../src/generated/prisma"
+ moduleFormat = "cjs"
+}
+datasource db {
+ provider = "mysql"
+}
+enum Role {
+ CUSTOMER
+ MERCHANT
+ ADMIN
+}
+enum Status {
+ PLACED
+ ACCEPTED
+ PREPARING
+ SHIPPED
+ DELIVERED
+ CANCELLED
+}
+model User {
+ id String @id @default(uuid())
+ email String? @unique
+ name String
+ phone String? @unique
+ phoneVerifiedAt DateTime?
+ devices DeviceSession[]
+ passwordHash String?
+ role Role @default(CUSTOMER)
+ createdAt DateTime @default(now())
+ sessions Session[]
+ shops Shop[]
+ orders Order[]
+ checkouts Checkout[]
+ addresses Address[]
+ vehicles Vehicle[]
+}
+model Session {
+ id String @id
+ userId String
+ user User @relation(fields:[userId],references:[id],onDelete:Cascade)
+ expiresAt DateTime
+ passkeyId String?
+ deviceId String?
+ @@index([userId])
+}
+model Address {
+ id String @id @default(uuid())
+ userId String
+ user User @relation(fields:[userId],references:[id],onDelete:Cascade)
+ label String
+ city String
+ details String @db.Text
+ phone String
+}
+model Vehicle {
+ id String @id @default(uuid())
+ userId String
+ user User @relation(fields:[userId],references:[id],onDelete:Cascade)
+ make String
+ model String
+ year Int
+ engine String
+}
+model Shop {
+ id String @id @default(uuid())
+ ownerId String
+ owner User @relation(fields:[ownerId],references:[id])
+ name String
+ city String
+ approved Boolean @default(false)
+ offers Offer[]
+ orders Order[]
+}
+model DeliveryArea {
+ id String @id @default(uuid())
+ city String
+ area String
+ fee Int
+ active Boolean @default(true)
+ updatedAt DateTime @updatedAt
+ @@unique([city,area])
+}
+model Product {
+ id String @id @default(uuid())
+ brand String
+ partNumber String
+ title String
+ category String
+ description String @db.Text
+ image String @default("/parts.png")
+ approved Boolean @default(false)
+ fitments Fitment[]
+ offers Offer[]
+ @@unique([brand,partNumber])
+ @@index([category,approved])
+}
+model Fitment {
+ id String @id @default(uuid())
+ productId String
+ product Product @relation(fields:[productId],references:[id],onDelete:Cascade)
+ make String
+ model String
+ fromYear Int
+ toYear Int
+ engine String
+ verified Boolean @default(false)
+ @@index([make,model])
+}
+model Offer {
+ id String @id @default(uuid())
+ shopId String
+ shop Shop @relation(fields:[shopId],references:[id])
+ productId String
+ product Product @relation(fields:[productId],references:[id])
+ sku String
+ price Int
+ stock Int @default(0)
+ active Boolean @default(true)
+ updatedAt DateTime @updatedAt
+ items OrderItem[]
+ @@unique([shopId,sku])
+ @@unique([shopId,productId])
+}
+model Checkout {
+ id String @id @default(uuid())
+ customerId String
+ customer User @relation(fields:[customerId],references:[id])
+ requestKey String
+ fingerprint String
+ subtotal Int
+ originalDelivery Int
+ delivery Int
+ total Int
+ area Json
+ address Json
+ version Int @default(1)
+ createdAt DateTime @default(now())
+ orders Order[]
+ audit FinancialAudit[]
+ @@unique([customerId,requestKey])
+}
+model FinancialAudit {
+ id String @id @default(uuid())
+ checkoutId String
+ checkout Checkout @relation(fields:[checkoutId],references:[id])
+ actorId String
+ action String
+ before Json
+ after Json
+ reason String
+ createdAt DateTime @default(now())
+}
+model ShippingEntry {
+ id String @id @default(uuid())
+ orderId String
+ order Order @relation(fields:[orderId],references:[id])
+ amount Int
+ kind String
+ reference String @unique
+ actorId String
+ note String
+ createdAt DateTime @default(now())
+}
+model CancellationReview {
+ id String @id @default(uuid())
+ orderId String
+ order Order @relation(fields:[orderId],references:[id])
+ reason String
+ requestedBy String
+ state String @default("PENDING")
+ decisionReason String @default("")
+ decidedBy String?
+ decidedAt DateTime?
+ shippingRetained Int?
+ refundDue Int @default(0)
+ createdAt DateTime @default(now())
+ @@index([state,createdAt])
+}
+model Order {
+ returns ReturnRequest[]
+ id String @id @default(uuid())
+ checkoutId String?
+ checkout Checkout? @relation(fields:[checkoutId],references:[id])
+ deliveryStartedAt DateTime?
+ deliveryStartedBy String?
+ settlementFrozen Boolean @default(false)
+ shippingEntries ShippingEntry[]
+ cancellationReviews CancellationReview[]
+ customerId String
+ customer User @relation(fields:[customerId],references:[id])
+ shopId String
+ shop Shop @relation(fields:[shopId],references:[id])
+ status Status @default(PLACED)
+ subtotal Int
+ delivery Int
+ total Int
+ address Json
+ note String @default("")
+ payment String @default("TEST_COD")
+ requestKey String
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ items OrderItem[]
+ events OrderEvent[]
+ @@unique([customerId,requestKey])
+ @@index([shopId,status,createdAt])
+}
+model OrderItem {
+ id String @id @default(uuid())
+ orderId String
+ order Order @relation(fields:[orderId],references:[id])
+ offerId String
+ offer Offer @relation(fields:[offerId],references:[id])
+ title String
+ partNumber String
+ quantity Int
+ unitPrice Int
+}
+model OrderEvent {
+ id String @id @default(uuid())
+ orderId String
+ order Order @relation(fields:[orderId],references:[id])
+ status Status
+ createdAt DateTime @default(now())
+}
+
+model ShopApplication {
+ id String @id @default(uuid())
+ userId String @unique
+ name String
+ city String
+ address String
+ phone String
+ details String
+ state String @default("PENDING")
+ reviewReason String @default("")
+ reviewedBy String?
+ reviewedAt DateTime?
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ @@index([state,createdAt])
+}
+
+model OtpChallenge {
+ id String @id @default(uuid())
+ phone String
+ deviceLabel String
+ state String @default("STARTING")
+ providerSid String?
+ attempts Int @default(0)
+ expiresAt DateTime
+ createdAt DateTime @default(now())
+ @@index([phone,createdAt])
+}
+model DeviceSession {
+ id String @id @default(uuid())
+ userId String
+ user User @relation(fields:[userId],references:[id],onDelete:Cascade)
+ tokenHash String @unique
+ label String
+ expiresAt DateTime
+ revokedAt DateTime?
+ lastUsedAt DateTime @default(now())
+ createdAt DateTime @default(now())
+ @@index([userId,revokedAt])
+}
+
+model Passkey {
+ id String @id @default(uuid())
+ userId String
+ credentialId String @db.Text
+ credentialHash String @unique
+ publicKey String @db.Text
+ counter BigInt @default(0)
+ label String
+ createdAt DateTime @default(now())
+ revokedAt DateTime?
+ @@index([userId])
+}
+model PasskeyChallenge {
+ id String @id @default(uuid())
+ userId String?
+ challenge String
+ kind String
+ expiresAt DateTime
+ consumed Boolean @default(false)
+}
+model ReturnRequest {
+ id String @id @default(uuid())
+ orderId String
+ order Order @relation(fields:[orderId],references:[id])
+ items Json
+ reason String
+ state String @default("PENDING")
+ requestedBy String
+ decisionReason String @default("")
+ decidedBy String?
+ decidedAt DateTime?
+ goodsReceived Boolean @default(false)
+ restocked Boolean @default(false)
+ refundAmount Int @default(0)
+ refundReference String? @unique
+ refundNote String?
+ refundedBy String?
+ refundedAt DateTime?
+ createdAt DateTime @default(now())
+ @@index([orderId,state])
+}
+model InventoryImport {
+ id String @id @default(uuid())
+ shopId String
+ actorId String
+ fileHash String
+ state String @default("PREVIEW")
+ total Int
+ invalid Int
+ snapshot Json
+ createdAt DateTime @default(now())
+ expiresAt DateTime
+ committedAt DateTime?
+ @@index([shopId,createdAt])
+}
+model Favorite {
+ id String @id @default(uuid())
+ userId String
+ productId String
+ createdAt DateTime @default(now())
+ @@unique([userId,productId])
+}
+model SupportTicket {
+ id String @id @default(uuid())
+ userId String
+ subject String
+ message String @db.Text
+ state String @default("OPEN")
+ reply String @db.Text
+ repliedBy String?
+ repliedAt DateTime?
+ createdAt DateTime @default(now())
+ @@index([userId,createdAt])
+}

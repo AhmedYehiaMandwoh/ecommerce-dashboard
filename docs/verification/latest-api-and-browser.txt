@@ -1,0 +1,92 @@
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+Datasource "db": MySQL database "ghiyar" at "127.0.0.1:3307"
+
+4 migrations found in prisma/migrations
+
+Applying migration `20261124110000_initial`
+Applying migration `20261124142500_platform_delivery`
+Applying migration `20261124144000_grouped_checkout`
+Applying migration `20261124150000_shop_applications`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 20261124110000_initial/
+    └─ migration.sql
+  └─ 20261124142500_platform_delivery/
+    └─ migration.sql
+  └─ 20261124144000_grouped_checkout/
+    └─ migration.sql
+  └─ 20261124150000_shop_applications/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+> @ghiyar/api@0.1.0 db:seed
+> tsx prisma/seed.ts
+
+Seeded fictional catalog and example.test accounts. Password is the DEMO_PASSWORD you supplied.
+
+> @ghiyar/api@0.1.0 test:integration
+> tsx test/integration.ts
+
+PASS All three roles sign in
+PASS Password change checks current password and revokes every session
+PASS Anonymous and customer cannot access merchant dashboard
+PASS Registration role injection rejected
+PASS Incorrect password rejected
+PASS Public catalog exposes approved shop offers
+PASS Only platform admin sets published area shipping fees
+PASS Invalid cart quantity rejected
+PASS Stale or altered total rejected and transaction rolls back
+PASS Server quote includes one admin-set area fee and rejects unavailable area
+PASS Checkout and idempotent retry decrement stock exactly once
+PASS Merchant cannot place customer orders
+PASS Cross-merchant order and stock writes forbidden
+PASS Cross-merchant order data isolated
+PASS Order cannot skip status steps
+PASS Cancellation restores stock once only
+PASS CSV preview does not mutate inventory
+PASS Invalid import cannot commit
+PASS Moderation approval restricted to admin
+PASS Concurrent checkout cannot oversell last unit
+PASS Grouped basket atomically splits orders, charges shipping once, isolates shops and rejects changed idempotent replay
+PASS Grouped checkout rolls back all stock on a failed shop item
+PASS Grouped cancellation reallocates before delivery, freezes review, audits decisions and clears shipping when all shops cancel
+PASS Delivered shipping ledger records platform receivable; admin-only settlement prevents overpayment and duplicate receipts
+PASS Shop join request cannot sell until admin approval; approval creates one shop and grants merchant role once
+PASS Logout revokes session
+{
+  "passed": 26,
+  "checks": [
+    "All three roles sign in",
+    "Password change checks current password and revokes every session",
+    "Anonymous and customer cannot access merchant dashboard",
+    "Registration role injection rejected",
+    "Incorrect password rejected",
+    "Public catalog exposes approved shop offers",
+    "Only platform admin sets published area shipping fees",
+    "Invalid cart quantity rejected",
+    "Stale or altered total rejected and transaction rolls back",
+    "Server quote includes one admin-set area fee and rejects unavailable area",
+    "Checkout and idempotent retry decrement stock exactly once",
+    "Merchant cannot place customer orders",
+    "Cross-merchant order and stock writes forbidden",
+    "Cross-merchant order data isolated",
+    "Order cannot skip status steps",
+    "Cancellation restores stock once only",
+    "CSV preview does not mutate inventory",
+    "Invalid import cannot commit",
+    "Moderation approval restricted to admin",
+    "Concurrent checkout cannot oversell last unit",
+    "Grouped basket atomically splits orders, charges shipping once, isolates shops and rejects changed idempotent replay",
+    "Grouped checkout rolls back all stock on a failed shop item",
+    "Grouped cancellation reallocates before delivery, freezes review, audits decisions and clears shipping when all shops cancel",
+    "Delivered shipping ledger records platform receivable; admin-only settlement prevents overpayment and duplicate receipts",
+    "Shop join request cannot sell until admin approval; approval creates one shop and grants merchant role once",
+    "Logout revokes session"
+  ]
+}
+PASS web customer checkout, merchant/admin views, responsive rendering, React Native web customer checkout. No uncaught page errors.

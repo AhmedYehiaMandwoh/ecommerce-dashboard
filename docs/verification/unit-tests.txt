@@ -1,0 +1,42 @@
+
+> ghiyar-marketplace@0.1.0 test
+> npm run test -w apps/api
+
+
+> @ghiyar/api@0.1.0 test
+> tsx --test test/*.test.ts
+
+TAP version 13
+# Subtest: password hashing salts each password and rejects incorrect values
+ok 1 - password hashing salts each password and rejects incorrect values
+  ---
+  duration_ms: 190.013466
+  type: 'test'
+  ...
+# Subtest: session token digest deterministic and not plaintext
+ok 2 - session token digest deterministic and not plaintext
+  ---
+  duration_ms: 0.370946
+  type: 'test'
+  ...
+# Subtest: duplicate cart lines aggregate and reject over-limit quantities
+ok 3 - duplicate cart lines aggregate and reject over-limit quantities
+  ---
+  duration_ms: 1.127596
+  type: 'test'
+  ...
+# Subtest: terminal statuses cannot transition, shipped cannot cancel
+ok 4 - terminal statuses cannot transition, shipped cannot cancel
+  ---
+  duration_ms: 0.136526
+  type: 'test'
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 4
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 945.471555

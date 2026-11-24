@@ -1,0 +1,26 @@
+
+> ghiyar-marketplace@0.1.0 build:web
+> npm run build -w apps/web
+
+
+> @ghiyar/web@0.1.0 build
+> nuxt build
+
+Building Nuxt for production...
+● Loading Nuxt config
+● Nuxt 4.7.0 (with Nitro 2.14.0, Vite 8.3.8 and Vue 3.5.46)
+● Setting up modules
+● Preparing app
+● Deploy target: node-server
+● Generating types
+● Building
+● Bundling client
+● Bundling server
+● Bundling nitro
+● Bundling nitro (7.72s · total 8.93s)
+◆ Client (vite) built in 1.06s · 199.30 kB (73.03 kB gzip)
+  Server (vite) built in 691ms · 101.17 kB
+  Nitro (rollup) built in 5.49s · 1.11 MB
+◆ Build complete in 8.95s
+  config 375ms · modules 42ms · app 488ms · types 304ms · build 7.74s
+◆ You can preview this build using npx nuxt preview

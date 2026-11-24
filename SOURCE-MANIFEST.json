@@ -1,0 +1,521 @@
+{
+  "audience": "owner-selected public source repository",
+  "nonLive": true,
+  "files": [
+    {
+      "path": ".dockerignore",
+      "bytes": 134,
+      "sha256": "d8fd5c30af22f43c96ef6f13c4b3d81f5103a3e222a9ebb70157a49c14d4b7ba"
+    },
+    {
+      "path": ".env.example",
+      "bytes": 252,
+      "sha256": "d471b69d836b1bb901661250ac2d9d785302d6ff5b861e8d50a725d155c27037"
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 275,
+      "sha256": "ec68b3591a955436a1c1b8d4a8aeeacc3494df2ba03fc7ecc5642fbd14b67afe"
+    },
+    {
+      "path": "Dockerfile.api",
+      "bytes": 752,
+      "sha256": "97a1c052253929529586999677f75a85d3a5a7a6eb07435ff0496ca434f232ee"
+    },
+    {
+      "path": "Dockerfile.web",
+      "bytes": 449,
+      "sha256": "29b4b87144c3260d6fd3f34c0164e1d63ab44437472227b3a6ceac8de6197100"
+    },
+    {
+      "path": "README-REPOSITORY.md",
+      "bytes": 388,
+      "sha256": "4bb2df60b61e46ba1686f635d99d1e6da9284c817e26dbd70af3c9841fae6291"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4319,
+      "sha256": "87400d75ce0ae8d1487e61f312072281723db398eb2aa8e37f816437291c624a"
+    },
+    {
+      "path": "apps/api/.env.example",
+      "bytes": 1021,
+      "sha256": "0ae02701a6ffc506cb37d5f165cd30cd9994d9db7e6d321924008868bc80ef38"
+    },
+    {
+      "path": "apps/api/package.json",
+      "bytes": 1228,
+      "sha256": "72373af821d4acab79551bdd832f9829ae1a7f7ed30673d9209df2708e11c427"
+    },
+    {
+      "path": "apps/api/prisma/migrations/20261124110000_initial/migration.sql",
+      "bytes": 6861,
+      "sha256": "0a9c8969b9ae69ca176893419ffdaddd0438f7738b41e7d4f9104a8e2a6db5d3"
+    },
+    {
+      "path": "apps/api/prisma/migrations/20261124142500_platform_delivery/migration.sql",
+      "bytes": 361,
+      "sha256": "17b5f5c43f6aa9397fc5a40bb0ed8966d6d4dc9b6399a2af5cdbc7dabe3f16fc"
+    },
+    {
+      "path": "apps/api/prisma/migrations/20261124144000_grouped_checkout/migration.sql",
+      "bytes": 2855,
+      "sha256": "c9f123036cbefb524ef4c731a74ca94cc04e3ec94c5f1c4a795c9e0ea79a0f7a"
+    },
+    {
+      "path": "apps/api/prisma/migrations/20261124150000_shop_applications/migration.sql",
+      "bytes": 688,
+      "sha256": "84818addc1a910b19e5963943b58b929b79722dd2fb65f5a1374bea4faa26211"
+    },
+    {
+      "path": "apps/api/prisma/migrations/20261124151000_phone_devices/migration.sql",
+      "bytes": 1419,
+      "sha256": "cd4cf22100d76c4b91658fcf4d7e8c0be65aa93325eb6df99aa1a2c5ee321539"
+    },
+    {
+      "path": "apps/api/prisma/migrations/20261124152500_passkeys/migration.sql",
+      "bytes": 813,
+      "sha256": "28a0ebbb0e91329b8ab568e4752d9884b932eb156addbd0c2a44998a31ee36f6"
+    },
+    {
+      "path": "apps/api/prisma/migrations/20261124153000_returns/migration.sql",
+      "bytes": 926,
+      "sha256": "cfcc2f670fcc4da490780caaefcbdcd7fc781786fbcb66d20b46ffb6b559e644"
+    },
+    {
+      "path": "apps/api/prisma/migrations/20261124154000_inventory_import/migration.sql",
+      "bytes": 514,
+      "sha256": "7c2ed8b45861ca39774181880cd43fdb5b262ab0e3e60d4dd4a1886f4f6aa016"
+    },
+    {
+      "path": "apps/api/prisma/migrations/20261124155000_favorites_support/migration.sql",
+      "bytes": 741,
+      "sha256": "c9d8a1130f182b1860bb9735c012f9a6f112380dde60362a30ca2ad9ff664a1b"
+    },
+    {
+      "path": "apps/api/prisma/migrations/migration_lock.toml",
+      "bytes": 19,
+      "sha256": "00969ee045a3c3f087a3460235a1a744c1e35bde4441e0c55e163225eb077608"
+    },
+    {
+      "path": "apps/api/prisma/schema.prisma",
+      "bytes": 7726,
+      "sha256": "af8e1752dbed9bd687ca25dbf2bbedb148793d387943b8997a7d7ae9ac22e470"
+    },
+    {
+      "path": "apps/api/prisma/seed.ts",
+      "bytes": 3245,
+      "sha256": "7a5775b84ed46a3c5ad4f21a39d85f8e4948161b7256051a6a942f84d7c049d3"
+    },
+    {
+      "path": "apps/api/prisma.config.ts",
+      "bytes": 232,
+      "sha256": "25006e6c4dce2aed71873774222e17a2b123ea507ac94a18563e77bcc2d6e182"
+    },
+    {
+      "path": "apps/api/scripts/create-admin.ts",
+      "bytes": 745,
+      "sha256": "9252cb0060f9559b391ee318b8e066dd9ea4fbc3545155f7dfb1ce831cc168f6"
+    },
+    {
+      "path": "apps/api/src/app.ts",
+      "bytes": 11910,
+      "sha256": "557313f803fee17a126cac8907c28fe3dc48c304c2e0e19b1a4521b0b1142ae6"
+    },
+    {
+      "path": "apps/api/src/db.ts",
+      "bytes": 844,
+      "sha256": "90970e38d75721f39861e1b5324a5234281cbe27f6539303b6d0793097a6e8a7"
+    },
+    {
+      "path": "apps/api/src/dto.ts",
+      "bytes": 6763,
+      "sha256": "8069659bebcf3d5445884a3fe6868d8d117c53979a767bc53188ba5bce40e24c"
+    },
+    {
+      "path": "apps/api/src/errors.ts",
+      "bytes": 924,
+      "sha256": "db973d7e1835d8cfee08e3609825a916f350224f6eee74f365a17a6f3538cb29"
+    },
+    {
+      "path": "apps/api/src/main.ts",
+      "bytes": 1379,
+      "sha256": "6d9fea4463b65478f23ff0b335afbcd268c4b9b7dc81c793f950b4bff68d945f"
+    },
+    {
+      "path": "apps/api/src/market.service.ts",
+      "bytes": 39835,
+      "sha256": "f94dd297bd1952d711483e33ced0175b741323b150ce4ccce5182d2c414663b0"
+    },
+    {
+      "path": "apps/api/src/passkey.service.ts",
+      "bytes": 4751,
+      "sha256": "e1c29cf635eb6d2cee35a6265319ed27df74a00a9eb786e4f6f3508732998008"
+    },
+    {
+      "path": "apps/api/src/phone-auth.service.ts",
+      "bytes": 5867,
+      "sha256": "3628ff36af40626731100f35a1171f1a72f2d004023f281c855907bbe0b29eb8"
+    },
+    {
+      "path": "apps/api/src/phone-verify.ts",
+      "bytes": 2676,
+      "sha256": "d671c1297e11a3315b952046d36a63a2fc9fc974da1884fb68c50ded9b868375"
+    },
+    {
+      "path": "apps/api/src/security.ts",
+      "bytes": 1947,
+      "sha256": "c670e012a123fde3d4f4aec081dba1ebd3b53bd52e8e8f9ca38204581ad431ce"
+    },
+    {
+      "path": "apps/api/src/shipping.ts",
+      "bytes": 1848,
+      "sha256": "684b5bae3a1ac3dab78206ea6ff4139dd36de3b1f9a2e46156e9732c87f47ee0"
+    },
+    {
+      "path": "apps/api/test/core.test.ts",
+      "bytes": 1331,
+      "sha256": "cc4e911411ebd590ab1b7870187ea330c9ad677348779c5840b4032b8da4bcd4"
+    },
+    {
+      "path": "apps/api/test/integration.ts",
+      "bytes": 28420,
+      "sha256": "c25b900501bf673fdca1feb1004fb9aff6ab84bda2abfc91bd0d18ebfe336082"
+    },
+    {
+      "path": "apps/api/test/phone-verify.test.ts",
+      "bytes": 2031,
+      "sha256": "9c97338e8cc57db8fcefc3c9ed360e37c125b9b78845e1ac86614221bfc58a7d"
+    },
+    {
+      "path": "apps/api/test/scale-local.ts",
+      "bytes": 3283,
+      "sha256": "44a16f2c505e6112c678c36a379ea3fad3517cf5a7be9f97c6b56c541b208b25"
+    },
+    {
+      "path": "apps/api/test/shipping.test.ts",
+      "bytes": 2293,
+      "sha256": "4bbf6a17f56d014aa378323ecd8271e4056deaf9adc4b215bb5451ee2f211bdb"
+    },
+    {
+      "path": "apps/api/tsconfig.json",
+      "bytes": 260,
+      "sha256": "d84363cfe48c3e4df0961cf7a243cce8e574eb1c8decbfd6a7dd330591d35618"
+    },
+    {
+      "path": "apps/web/.env.example",
+      "bytes": 47,
+      "sha256": "6d7b07f5087b3d6b32c687e893b9321b45942e298235dfd709c0ec2e306a3089"
+    },
+    {
+      "path": "apps/web/app/app.vue",
+      "bytes": 79739,
+      "sha256": "468d93db75ca146a16b64681204a10e5094b6b5385440caf7440353362ec4675"
+    },
+    {
+      "path": "apps/web/app/assets/main.css",
+      "bytes": 29378,
+      "sha256": "fc95a1739a2fe1ac26f67ba81e431f730d25abb39e7fca778b1174cf4da3dc93"
+    },
+    {
+      "path": "apps/web/app/components/ReferenceHome.vue",
+      "bytes": 13139,
+      "sha256": "959370639b8fef6f7493c35604a77aff0e539f15fa3713163470c1639b240427"
+    },
+    {
+      "path": "apps/web/nuxt.config.ts",
+      "bytes": 575,
+      "sha256": "11357c44ae9027e0c13a8c976a5cc5abb3b5082ccf58aa492ed868d68e3168be"
+    },
+    {
+      "path": "apps/web/package.json",
+      "bytes": 412,
+      "sha256": "5fe1bd7a9d3599e6d0adf566acf7ede734bb7325d37c74db66e80c212a5c73c1"
+    },
+    {
+      "path": "apps/web/public/assets/belt.png",
+      "bytes": 78133,
+      "sha256": "2f5a5851ae334158ae66c8a1a78657a8316408230c574c8072d7e5d92dc16213"
+    },
+    {
+      "path": "apps/web/public/assets/brakes.png",
+      "bytes": 148041,
+      "sha256": "861962924a2dfe791fd8f5650e989fd458d9a720aeac4764a9a0f10a3b887aca"
+    },
+    {
+      "path": "apps/web/public/assets/braking-parts.png",
+      "bytes": 101154,
+      "sha256": "e07201355a1f161def052ebd5f5baf21d601f1061d410471ecf46ba6c652619e"
+    },
+    {
+      "path": "apps/web/public/assets/car-icon.png",
+      "bytes": 578,
+      "sha256": "91282063a42370856bee024b0f0070d2a12eaeaab1f1494e7e770bfc5fe55667"
+    },
+    {
+      "path": "apps/web/public/assets/category-accessory.png",
+      "bytes": 44452,
+      "sha256": "75ddbe72d5bcc27b02ff76fce684d8a8a1a16d9d9efca26533f4213cc03e8d8e"
+    },
+    {
+      "path": "apps/web/public/assets/category-brakes.png",
+      "bytes": 46198,
+      "sha256": "2535986d2e7a89b0c6fc40363981883f9cb50831525374ed335bd2a42e0fad21"
+    },
+    {
+      "path": "apps/web/public/assets/category-filter.png",
+      "bytes": 41934,
+      "sha256": "0c10573859d00f53c47eff0a564ccafaf49348259aa1e7fbca9ddd4310014cf5"
+    },
+    {
+      "path": "apps/web/public/assets/category-oil.png",
+      "bytes": 45103,
+      "sha256": "e9292b01a7594f267dd50bef3b301867eecdae01df1fc5c97aede19cf33eb935"
+    },
+    {
+      "path": "apps/web/public/assets/category-suspension.png",
+      "bytes": 44791,
+      "sha256": "7d2b16f56fd332623cda9b4600fa7d060799c79a3aa9ff8e912b38449ac01f4e"
+    },
+    {
+      "path": "apps/web/public/assets/filter.png",
+      "bytes": 138078,
+      "sha256": "485905809a06eae42c63b8bc58f5268d95527ac19ae61c913064c4206b02d312"
+    },
+    {
+      "path": "apps/web/public/assets/hero-cutout.png",
+      "bytes": 425414,
+      "sha256": "ff0646843fe3d23c5650833ab11dc742913bbef22e390ff259db681313b4aa3b"
+    },
+    {
+      "path": "apps/web/public/assets/hero-parts.png",
+      "bytes": 212513,
+      "sha256": "c1a3c407177b21078ad84ea66e6268c31d788355189593db89356578ebcefe91"
+    },
+    {
+      "path": "apps/web/public/assets/hero.png",
+      "bytes": 589082,
+      "sha256": "3d0c1d6b752a01636f21c05c1b844167653a08d769095a08e3da8a8dd61557fb"
+    },
+    {
+      "path": "apps/web/public/assets/light.png",
+      "bytes": 92771,
+      "sha256": "238285d379db4ea057ad6095f686462d0cb2e83a080168f3ba36f1f286285b59"
+    },
+    {
+      "path": "apps/web/public/assets/maintenance-parts.png",
+      "bytes": 85884,
+      "sha256": "0587d562fa76e515fb9938e2446b2256ac826d58c29131dc21f9075a16c0d2e7"
+    },
+    {
+      "path": "apps/web/public/assets/oil.png",
+      "bytes": 77139,
+      "sha256": "6fa9cd6dd7cdfa5c9a11693e0d2065430d47991d97f4025632ea777bb27e94cf"
+    },
+    {
+      "path": "apps/web/public/assets/plug.png",
+      "bytes": 92771,
+      "sha256": "238285d379db4ea057ad6095f686462d0cb2e83a080168f3ba36f1f286285b59"
+    },
+    {
+      "path": "apps/web/public/assets/reference-braking.png",
+      "bytes": 174902,
+      "sha256": "7d7d50a357d9aa003bd7b38332eecd00acaa27342ef21be7f22afc771b70dc8f"
+    },
+    {
+      "path": "apps/web/public/assets/reference-hero.png",
+      "bytes": 398892,
+      "sha256": "bff92c1d2d6684156594c2ba7d5f6b7f0b4ba56fa7b496ee2645a84681074644"
+    },
+    {
+      "path": "apps/web/public/assets/reference-logo.png",
+      "bytes": 24104,
+      "sha256": "cae8b88c86cc69d57fa7c5051ebf5f4da10d86d412df5d3fe9a8782210b1af52"
+    },
+    {
+      "path": "apps/web/public/assets/reference-maintenance.png",
+      "bytes": 163806,
+      "sha256": "97d52d0139e2b1ef533eeee79f334ca5fa4173351c81b9792cf0000c4be356a9"
+    },
+    {
+      "path": "apps/web/public/assets/shop-demo-1.png",
+      "bytes": 158938,
+      "sha256": "8a25b269f8f268f48d8b036e24cb8a01dcadc4b6f8e08287fa01ce4e102a15d1"
+    },
+    {
+      "path": "apps/web/public/assets/shop-demo-2.png",
+      "bytes": 159110,
+      "sha256": "8ef44b0b72c21da9948b2601846704f5690eb13d53ddf193211d2bd2f237c882"
+    },
+    {
+      "path": "apps/web/public/assets/shop-icon.png",
+      "bytes": 423,
+      "sha256": "46ce011cfb201f5f8505b3137f60aab0f7112d372fa0251069e842e50fa16445"
+    },
+    {
+      "path": "apps/web/public/parts.png",
+      "bytes": 1886,
+      "sha256": "e2209aefd4b265ddea1155b11693bbe7d3c8f5535da920c1fc9b1995c838a0f4"
+    },
+    {
+      "path": "apps/web/public/parts.svg",
+      "bytes": 207,
+      "sha256": "7be6b422e5c9d093fa6e9255546a8fd3b8c53869d508afeb9c7d7ecf803642fc"
+    },
+    {
+      "path": "apps/web/tsconfig.json",
+      "bytes": 36,
+      "sha256": "e02fab3fb7003c84c771b43a9dd8ea5f3dea615eb88c94734ddf13a7ec22988e"
+    },
+    {
+      "path": "compose.yaml",
+      "bytes": 1494,
+      "sha256": "0e61b1635bfcfd28c861720a27d592ec130eb7ae172e72832e0ca2a5d916833a"
+    },
+    {
+      "path": "docs/ANDROID.md",
+      "bytes": 5933,
+      "sha256": "c6b898b85fa52b14b600f9e3a945204e106131a878865c7c0d40a2ea2fa10785"
+    },
+    {
+      "path": "docs/API.md",
+      "bytes": 6359,
+      "sha256": "bbb29cc180e7dd1c8da8579b61f8b7c8048a6b8ad2915e259524349eab03591a"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "bytes": 4193,
+      "sha256": "c344f8c9726484649f82642441212e5e12252313c99e85994b76334be8eae036"
+    },
+    {
+      "path": "docs/DEPLOYMENT.md",
+      "bytes": 2796,
+      "sha256": "d227d9e4953293b3a640b00628d97a4e21c0b9b84e0db97f7aaad3b90b46363b"
+    },
+    {
+      "path": "docs/ENVIRONMENT.md",
+      "bytes": 4991,
+      "sha256": "fdb1b14316d099954726e52550fd47b5dc51ed377bf1e10e3e5cfa5fa8d53d80"
+    },
+    {
+      "path": "docs/HANDOVER.md",
+      "bytes": 2475,
+      "sha256": "aded590da71f2b4bc0cef2f27acaf202fa63439e9635cdd230eb4202fd33c1bc"
+    },
+    {
+      "path": "docs/README-AR.md",
+      "bytes": 3239,
+      "sha256": "50694773690607a2baee29be74b331c9f10dbf6ed4efc36e91c2849a8d5831ca"
+    },
+    {
+      "path": "docs/ROADMAP.md",
+      "bytes": 3463,
+      "sha256": "27e0ffb6925ab6d2428695588c0804e771c31faff442e31fae6b608d7f7cc92d"
+    },
+    {
+      "path": "docs/SETUP.md",
+      "bytes": 5447,
+      "sha256": "f5b2a6787e8a57547f9ddacaac567445dc1295fe514eab422d2eed108914a51a"
+    },
+    {
+      "path": "docs/VERIFICATION.md",
+      "bytes": 16844,
+      "sha256": "c7843559fe9af6d02a34ae47916f1790ff66bbbdaf98a0f1b8dcc7ad51b570c4"
+    },
+    {
+      "path": "docs/templates/verify-workflow.yml",
+      "bytes": 1500,
+      "sha256": "a2636edead406559e251a61324b5c9571f767e395ac2df62cf41d23d4b0d0bc6"
+    },
+    {
+      "path": "docs/verification/api-build.txt",
+      "bytes": 287,
+      "sha256": "e5081ba70234ffc9e45370c24ed53e6af2212484bb85970380a9797f31b46c5a"
+    },
+    {
+      "path": "docs/verification/audit-summary.json",
+      "bytes": 88,
+      "sha256": "2ba273b5b6ebe4c8cb29f9a8b69dcf48f0e9ea2237db764ab1b9d6448620dfa0"
+    },
+    {
+      "path": "docs/verification/expo-dependencies.txt",
+      "bytes": 28,
+      "sha256": "8152e1dfe2839254529bd71a5c9d6f299c93bc1132025c5930dcc5dc042489db"
+    },
+    {
+      "path": "docs/verification/expo-export.txt",
+      "bytes": 592,
+      "sha256": "73cd9905847adad14450aba20d9fbcc1ad4b3edb336e0cffc86d3e53224eb3ed"
+    },
+    {
+      "path": "docs/verification/integration-and-browser.txt",
+      "bytes": 1794,
+      "sha256": "f1a03333f197b75cba17ff831e5978ca57c10af989c23c6851ed0a73b9919345"
+    },
+    {
+      "path": "docs/verification/latest-api-and-browser.txt",
+      "bytes": 4322,
+      "sha256": "67510c64200a5a95cafff63026de83b62246d6b31542f9bcb642a68df5d1b63c"
+    },
+    {
+      "path": "docs/verification/latest-unit.txt",
+      "bytes": 2912,
+      "sha256": "70853a6b1ce2bedf00bc4cecf169abb3683fd62aa5b53d8609e780b6c713da29"
+    },
+    {
+      "path": "docs/verification/mysql-8.4.6.txt",
+      "bytes": 1661,
+      "sha256": "b719902ed54b0c035895aaa14b9d0346be7917be83ea823c6dba9571a0f8465e"
+    },
+    {
+      "path": "docs/verification/unit-tests.txt",
+      "bytes": 997,
+      "sha256": "ad66a48d641c4ce1351542f40a5aca99f7b90f2e3afea4bc37cb5a483b6fdced"
+    },
+    {
+      "path": "docs/verification/web-build.txt",
+      "bytes": 738,
+      "sha256": "4c8dd31b72126f7c52343f9b13fe38cfe457ff7135605ff51d18e98fdb4608f6"
+    },
+    {
+      "path": "package-lock.json",
+      "bytes": 409038,
+      "sha256": "3b09442834d390c344fe5669ce3e9833a572ef362907ba2f1810ec7492936156"
+    },
+    {
+      "path": "package.json",
+      "bytes": 616,
+      "sha256": "6b1df2f595922b3b4af421de5261c76c959bad75307899e707315efe6f694b48"
+    },
+    {
+      "path": "scripts/build-android.sh",
+      "bytes": 1641,
+      "sha256": "84128516756f3691ae16f23ef80fe357e1b020bba9b642fce673bd4fec008776"
+    },
+    {
+      "path": "scripts/check-env.mjs",
+      "bytes": 524,
+      "sha256": "651c846b094e178024d30456e7861d75840940052457b2f7e743fedca725f1e0"
+    },
+    {
+      "path": "scripts/package-repositories.py",
+      "bytes": 3746,
+      "sha256": "473c9b6cf4d3c6409da85c0ee85f3384e0aaa92c045ee1a2a4940c20959e488e"
+    },
+    {
+      "path": "scripts/reference-check.mjs",
+      "bytes": 740,
+      "sha256": "73d1e04768143a6e9291a2ef3a9009929380a81e4d333b61a4595663e467a6e6"
+    },
+    {
+      "path": "scripts/verify-local.mjs",
+      "bytes": 2216,
+      "sha256": "ead3d51787073c7cde4f9fd8f877ab9ee6d0f09e196e6f1d4f1a6553c5a766d7"
+    },
+    {
+      "path": "scripts/visual-test.mjs",
+      "bytes": 30582,
+      "sha256": "49d6312f2cfd6f453cf035bc4af1574b132cd4af4307168004c3e56bfdd0ef1a"
+    }
+  ]
+}

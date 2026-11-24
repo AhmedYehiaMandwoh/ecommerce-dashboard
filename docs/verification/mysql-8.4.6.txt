@@ -1,0 +1,41 @@
+PASS All three roles sign in
+PASS Anonymous and customer cannot access merchant dashboard
+PASS Registration role injection rejected
+PASS Incorrect password rejected
+PASS Public catalog exposes approved shop offers
+PASS Invalid cart quantity rejected
+PASS Stale or altered total rejected and transaction rolls back
+PASS Checkout and idempotent retry decrement stock exactly once
+PASS Merchant cannot place customer orders
+PASS Cross-merchant order and stock writes forbidden
+PASS Cross-merchant order data isolated
+PASS Order cannot skip status steps
+PASS Cancellation restores stock once only
+PASS CSV preview does not mutate inventory
+PASS Invalid import cannot commit
+PASS Moderation approval restricted to admin
+PASS Concurrent checkout cannot oversell last unit
+PASS Logout revokes session
+{
+  "passed": 18,
+  "checks": [
+    "All three roles sign in",
+    "Anonymous and customer cannot access merchant dashboard",
+    "Registration role injection rejected",
+    "Incorrect password rejected",
+    "Public catalog exposes approved shop offers",
+    "Invalid cart quantity rejected",
+    "Stale or altered total rejected and transaction rolls back",
+    "Checkout and idempotent retry decrement stock exactly once",
+    "Merchant cannot place customer orders",
+    "Cross-merchant order and stock writes forbidden",
+    "Cross-merchant order data isolated",
+    "Order cannot skip status steps",
+    "Cancellation restores stock once only",
+    "CSV preview does not mutate inventory",
+    "Invalid import cannot commit",
+    "Moderation approval restricted to admin",
+    "Concurrent checkout cannot oversell last unit",
+    "Logout revokes session"
+  ]
+}

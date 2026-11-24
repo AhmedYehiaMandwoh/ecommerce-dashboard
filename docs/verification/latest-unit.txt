@@ -1,0 +1,102 @@
+
+> ghiyar-marketplace@0.1.0 test
+> npm run test -w apps/api
+
+
+> @ghiyar/api@0.1.0 test
+> tsx --test test/*.test.ts
+
+TAP version 13
+# Subtest: password hashing salts each password and rejects incorrect values
+ok 1 - password hashing salts each password and rejects incorrect values
+  ---
+  duration_ms: 212.882744
+  type: 'test'
+  ...
+# Subtest: session token digest deterministic and not plaintext
+ok 2 - session token digest deterministic and not plaintext
+  ---
+  duration_ms: 0.41268
+  type: 'test'
+  ...
+# Subtest: duplicate cart lines aggregate and reject over-limit quantities
+ok 3 - duplicate cart lines aggregate and reject over-limit quantities
+  ---
+  duration_ms: 1.201039
+  type: 'test'
+  ...
+# Subtest: terminal statuses cannot transition, shipped cannot cancel
+ok 4 - terminal statuses cannot transition, shipped cannot cancel
+  ---
+  duration_ms: 0.281401
+  type: 'test'
+  ...
+# Subtest: phone format requires explicit international country code
+ok 5 - phone format requires explicit international country code
+  ---
+  duration_ms: 1.3353
+  type: 'test'
+  ...
+# Subtest: sends are disabled before transport regardless of supplied credentials
+ok 6 - sends are disabled before transport regardless of supplied credentials
+  ---
+  duration_ms: 0.415216
+  type: 'test'
+  ...
+# Subtest: Twilio start/check use expected fields with mocked transport only
+ok 7 - Twilio start/check use expected fields with mocked transport only
+  ---
+  duration_ms: 26.202585
+  type: 'test'
+  ...
+# Subtest: unapproved code never authenticates and provider bodies are not leaked
+ok 8 - unapproved code never authenticates and provider bodies are not leaked
+  ---
+  duration_ms: 1.029688
+  type: 'test'
+  ...
+# Subtest: owner example: one EGP90 fee split70/30
+ok 9 - owner example: one EGP90 fee split70/30
+  ---
+  duration_ms: 1.434112
+  type: 'test'
+  ...
+# Subtest: stable order, final shop remainder and no floating point drift
+ok 10 - stable order, final shop remainder and no floating point drift
+  ---
+  duration_ms: 0.290947
+  type: 'test'
+  ...
+# Subtest: small fees never cause negative share and always sum exactly
+ok 11 - small fees never cause negative share and always sum exactly
+  ---
+  duration_ms: 57.516997
+  type: 'test'
+  ...
+# Subtest: reject duplicate shops and invalid money
+ok 12 - reject duplicate shops and invalid money
+  ---
+  duration_ms: 2.123177
+  type: 'test'
+  ...
+# Subtest: cancel before delivery retains fixed fee across active shops
+ok 13 - cancel before delivery retains fixed fee across active shops
+  ---
+  duration_ms: 11.001675
+  type: 'test'
+  ...
+# Subtest: all canceled removes fee; delivery started requires audited manual handling
+ok 14 - all canceled removes fee; delivery started requires audited manual handling
+  ---
+  duration_ms: 1.022514
+  type: 'test'
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 14
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2403.566606
