@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ShoppingCart, Package, FileText, Store, Clock, ChevronLeft } from "lucide-vue-next";
-const { dash, money, user, statusLabels } = useMarket();
+const { dash, money, user, statusLabels, imageUrl } = useMarket();
 const admin = computed(() => user.value?.role === "ADMIN");
 const todayCount = computed(() => dash.value.orders.filter((o: any) => new Date(o.createdAt).toDateString() === new Date().toDateString()).length);
 const pendingProducts = computed(() => (dash.value.products || []).filter((p: any) => !p.approved).length);
@@ -59,6 +59,7 @@ const badgeVariant = (s: string) => (s === "PLACED" ? "default" : s === "CANCELL
       <div class="mb-3 flex items-center justify-between"><h3 class="flex items-center gap-2 font-extrabold"><Clock class="size-5" /> أحدث الطلبات</h3><NuxtLink to="/dashboard/orders" class="text-sm font-bold text-primary">عرض الكل</NuxtLink></div>
       <p v-if="!dash.orders.length" class="text-muted-foreground">مفيش طلبات لسه.</p>
       <NuxtLink v-for="o in dash.orders.slice(0, 3)" :key="o.id" :to="'/dashboard/orders?id=' + o.id" class="flex items-center gap-3 border-t py-3">
+        <img :src="imageUrl(o.items[0]?.offer?.product?.image || '/assets/shop-icon.png')" alt="" class="size-16 rounded-xl border bg-secondary object-cover" />
         <div class="flex-1"><div class="font-bold">#{{ o.id.slice(0, 8) }} • {{ o.shop.name }}</div><div class="text-xs text-muted-foreground">{{ o.items[0]?.title }} • {{ new Date(o.createdAt).toLocaleDateString("ar-EG") }}</div></div>
         <Badge :variant="badgeVariant(o.status)">{{ statusLabels[o.status] }}</Badge>
       </NuxtLink>

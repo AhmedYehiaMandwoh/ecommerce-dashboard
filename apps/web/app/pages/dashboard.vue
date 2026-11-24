@@ -27,23 +27,23 @@ const title = computed(() => ({ "/dashboard/orders": "الطلبات", "/dashboa
 
 <template>
   <div class="mx-auto flex min-h-screen w-full max-w-6xl flex-col">
-    <header class="flex items-center justify-between bg-primary px-6 py-4 text-primary-foreground md:rounded-b-3xl">
+    <header class="flex items-center justify-between bg-primary px-4 py-3 md:px-6 md:py-4 text-primary-foreground md:rounded-b-3xl">
       <div class="flex items-center gap-3">
         <img src="/assets/reference-logo.png" alt="غيار" class="h-10 brightness-0 invert" />
         <h1 class="text-xl font-extrabold">{{ title }}</h1>
       </div>
       <div class="flex items-center gap-2">
-        <Button variant="secondary" size="sm" :disabled="busy" @click="dashboard"><RefreshCw class="size-4" /> تحديث</Button>
+        <Button variant="secondary" size="icon" aria-label="تحديث" :disabled="busy" @click="dashboard"><RefreshCw class="size-4" /></Button>
         <Button variant="secondary" size="icon" aria-label="تنبيهات"><Bell class="size-4" /></Button>
-        <Button variant="secondary" size="sm" @click="logout"><LogOut class="size-4" /> خروج</Button>
+        <Button variant="secondary" size="icon" aria-label="خروج" @click="logout"><LogOut class="size-4" /></Button>
       </div>
     </header>
-    <nav class="sticky top-0 z-10 mt-3 flex gap-1 overflow-x-auto bg-background/90 px-4 py-2 backdrop-blur" aria-label="التنقل">
+    <nav class="sticky top-0 z-10 mt-3 hidden gap-1 md:flex overflow-x-auto bg-background/90 px-4 py-2 backdrop-blur" aria-label="التنقل">
       <NuxtLink v-for="n in nav" :key="n.to" :to="n.to" class="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold transition" :class="active(n.to) ? 'bg-accent text-accent-foreground' : 'bg-secondary text-secondary-foreground hover:bg-secondary/70'">
         <component :is="n.icon" class="size-4" /> {{ n.label }}
       </NuxtLink>
     </nav>
-    <div role="main" class="w-full flex-1 px-4 pb-10 pt-3">
+    <div role="main" class="w-full flex-1 px-4 pb-24 pt-3 md:pb-10">
       <div v-if="error" class="mb-3 rounded-xl border border-destructive/30 bg-destructive/10 p-3 text-sm font-bold text-destructive" role="alert">{{ error }}</div>
       <div v-if="message" class="mb-3 rounded-xl border border-primary/30 bg-primary/10 p-3 text-sm font-bold text-primary" role="status">{{ message }}</div>
       <NuxtPage v-if="dash" />
@@ -54,5 +54,10 @@ const title = computed(() => ({ "/dashboard/orders": "الطلبات", "/dashboa
       </div>
     </div>
     <footer class="py-4 text-center text-xs text-muted-foreground">غيار • نسخة تطوير • بيانات تجريبية • الدفع كاش فقط</footer>
+    <nav class="z-20 flex justify-around border-t bg-background px-1 py-2 shadow-lg md:hidden" style="position: fixed; left: 0; right: 0; top: auto; bottom: 0; height: auto; max-height: 80px" aria-label="التنقل السفلي">
+      <NuxtLink v-for="n in nav" :key="'b' + n.to" :to="n.to" class="flex min-w-14 flex-1 flex-col items-center gap-1 py-1 text-[11px] font-bold" :class="active(n.to) ? 'text-accent' : 'text-muted-foreground'">
+        <component :is="n.icon" class="size-6" /> {{ n.label }}
+      </NuxtLink>
+    </nav>
   </div>
 </template>

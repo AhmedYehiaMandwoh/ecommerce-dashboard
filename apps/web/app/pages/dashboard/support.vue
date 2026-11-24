@@ -7,7 +7,7 @@ onMounted(() => { if (user.value?.role === "ADMIN") loadAccountTools(); });
   <div v-if="user.role === 'ADMIN'" class="space-y-4">
     <div class="flex items-center justify-between"><h2 class="text-lg font-extrabold">دعم العملاء</h2><Button variant="outline" size="sm" @click="loadAccountTools">تحديث الرسائل</Button></div>
     <p v-if="!tickets.length" class="text-muted-foreground">لا توجد رسائل دعم.</p>
-    <div class="grid gap-4 lg:grid-cols-2">
+    <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 [&>*]:min-w-0">
       <Card v-for="t in tickets" :key="t.id" class="space-y-2 p-5">
         <h3 class="font-extrabold">{{ t.subject }}</h3><p class="text-sm">{{ t.message }}</p>
         <img v-if="t.attachment" :src="t.attachment" alt="مرفق" class="max-h-48 rounded-lg border" />

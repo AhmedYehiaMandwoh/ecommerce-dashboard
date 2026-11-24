@@ -3,7 +3,7 @@ const { busy, dash, deliveryArea, money, saveDeliveryArea, user } = useMarket();
 </script>
 
 <template>
-  <div v-if="user.role === 'ADMIN'" class="grid gap-4 lg:grid-cols-2">
+  <div v-if="user.role === 'ADMIN'" class="grid grid-cols-1 gap-4 lg:grid-cols-2 [&>*]:min-w-0">
     <Card class="space-y-3 p-5">
       <h2 class="text-lg font-extrabold">مناطق ورسوم التوصيل</h2>
       <p class="text-sm text-muted-foreground">رسوم المنطقة مرة واحدة للسلة. كل محل مسؤول عن التوصيل. تفعيل الطلبات الحقيقية لسه متوقف.</p>

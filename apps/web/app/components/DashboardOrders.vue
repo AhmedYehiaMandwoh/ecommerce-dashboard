@@ -5,11 +5,11 @@ const { busy, dash, decideCancellation, decisionForm, expandedOrder, imageUrl, m
 <template>
   <div class="space-y-4">
     <p v-if="!dash.orders.length" class="text-muted-foreground">مفيش طلبات لسه.</p>
-    <div class="grid gap-4 lg:grid-cols-2">
+    <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 [&>*]:min-w-0">
       <Card v-for="o in dash.orders" :key="o.id" class="space-y-3 p-5">
         <div class="flex items-center justify-between gap-2"><strong>#{{ o.id.slice(0, 8) }} • {{ o.shop.name }}</strong><Badge>{{ statusLabels[o.status] }}</Badge><b>{{ money(o.total) }}</b></div>
         <div class="flex gap-3">
-          <img :src="imageUrl(o.items[0]?.offer?.product?.image || '/assets/shop-icon.png')" alt="" class="size-16 rounded-lg border object-cover" />
+          <img :src="imageUrl(o.items[0]?.offer?.product?.image || '/assets/shop-icon.png')" alt="" class="size-24 rounded-xl border bg-secondary object-cover" />
           <div class="flex-1 text-sm"><p v-for="i in o.items" :key="i.id">{{ i.title }} <b>× {{ i.quantity }}</b></p>
             <Button size="sm" variant="outline" class="mt-2" @click="expandedOrder = expandedOrder === o.id ? '' : o.id">{{ expandedOrder === o.id ? "إخفاء التفاصيل" : "تفاصيل الطلب" }}</Button></div>
         </div>

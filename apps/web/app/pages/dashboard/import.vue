@@ -3,7 +3,7 @@ const { busy, createOffer, createProduct, createShop, csv, dash, doImport, impor
 </script>
 
 <template>
-  <div class="grid gap-4 lg:grid-cols-2">
+  <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 [&>*]:min-w-0">
     <Card class="space-y-3 p-5">
       <h2 class="text-lg font-extrabold">استيراد عروض CSV</h2>
       <p class="text-sm text-muted-foreground">حتى ١٠٠٠ صف للدفعة. الكمية لقطة مطلقة وليست زيادة. المعاينة لا تحفظ. الأعمدة: sku,brand,part_number,price_minor,stock. السعر بالقرش.</p>

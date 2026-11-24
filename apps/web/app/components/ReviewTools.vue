@@ -25,7 +25,7 @@ const makeMerchant = (u: any) => run(async () => { await api("/admin/users/" + u
       <h2 class="text-lg font-extrabold">تحرير المنتج</h2>
       <p class="font-bold">{{ catalogEditor.brand }} • {{ catalogEditor.partNumber }}</p>
       <p class="text-sm text-muted-foreground">الهوية ثابتة. تغير العبوة أو رقم القطعة يحتاج منتجًا جديدًا. تعديل البيانات أو الصورة يوقف الاعتماد لحين المراجعة.</p>
-      <div class="grid gap-6 lg:grid-cols-2">
+      <div class="grid grid-cols-1 gap-6 lg:grid-cols-2 [&>*]:min-w-0">
         <div class="space-y-2">
           <img :src="imageUrl(catalogEditor.image)" alt="صورة المنتج" class="h-32 w-40 rounded-lg border object-contain" />
           <Label>صورة المنتج</Label><Input type="file" accept="image/png,image/jpeg,image/webp" @change="uploadCatalogImage" />

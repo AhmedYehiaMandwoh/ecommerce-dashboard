@@ -9,7 +9,7 @@ const kind = (k: string) => (k === "COLLECTED_FOR_PLATFORM" ? "تحصيل نيا
     <h2 class="text-lg font-extrabold">تسويات شحن المنصة</h2>
     <p class="rounded-lg bg-secondary p-3 text-sm">السجل يثبت تحصيل المتجر لحصة الشحن نيابة عن المنصة وتوريدها أو مقاصتها. تسجيل تسوية لا ينفّذ تحويلًا ماليًا. احتفظ بإثبات خارجي لكل مبلغ.</p>
     <p v-if="!rows.length" class="text-muted-foreground">لا توجد حصص شحن محصلة لسه.</p>
-    <div class="grid gap-4 lg:grid-cols-2">
+    <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 [&>*]:min-w-0">
       <Card v-for="o in rows" :key="o.id" class="space-y-3 p-5">
         <div class="flex items-center justify-between"><h3 class="font-extrabold">{{ o.shop.name }} • #{{ o.id.slice(0, 8) }}</h3><Badge>{{ money(shippingBalance(o)) }}</Badge></div>
         <p class="text-sm text-muted-foreground">رصيد مستحق للمنصة</p>
