@@ -10,7 +10,7 @@ const edit = (p: any) => { editCatalog(p); router.push("/dashboard/catalog"); };
 </script>
 
 <template>
-  <div v-if="user.role === 'ADMIN'" class="space-y-4">
+  <div v-if="user.role === 'ADMIN'" class="space-y-2">
     <Tabs v-model="tab">
       <TabsList class="w-full">
         <TabsTrigger value="products">المنتجات <Badge class="mr-2 bg-accent text-accent-foreground">{{ pending.length }}</Badge></TabsTrigger>
@@ -19,11 +19,12 @@ const edit = (p: any) => { editCatalog(p); router.push("/dashboard/catalog"); };
     </Tabs>
     <template v-if="tab === 'products'">
       <p v-if="!pending.length" class="text-muted-foreground">لا توجد منتجات بانتظار المراجعة.</p>
-      <Card v-for="p in pending" :key="p.id" class="flex-row gap-4 p-4">
-        <img :src="imageUrl(p.image || '/assets/shop-icon.png')" alt="" class="size-28 rounded-xl bg-secondary object-contain" />
-        <div class="flex-1 space-y-2"><h3 class="text-lg font-extrabold">{{ p.title }}</h3><p class="text-sm text-muted-foreground">{{ p.brand }} • {{ p.partNumber }}</p><Badge variant="outline" class="border-accent text-accent">بانتظار المراجعة</Badge>
+      <Card v-for="p in pending" :key="p.id" class="flex-row gap-3 p-3">
+        <img :src="imageUrl(p.image || '/assets/shop-icon.png')" alt="" class="size-24 rounded-xl bg-secondary object-contain" />
+        <div class="flex-1 space-y-1"><h3 class="text-lg font-extrabold">{{ p.title }}</h3><p class="text-sm text-muted-foreground">{{ p.brand }} • {{ p.partNumber }}</p><Badge variant="outline" class="border-accent text-accent">بانتظار المراجعة</Badge>
           <div class="grid grid-cols-3 gap-2"><Button class="bg-accent text-accent-foreground" :disabled="busy" @click="approve('products', p.id, true)">قبول</Button><Button variant="outline" class="border-accent text-accent" @click="edit(p)">طلب تعديل</Button><Button variant="outline" @click="edit(p)">عرض</Button></div></div>
       </Card>
+      <NuxtLink v-if="open[0]" to="/dashboard/support"><Card class="flex-row items-center gap-3 bg-orange-50 p-3"><MessageSquare class="size-7 text-primary" /><div class="flex-1"><div class="font-bold">{{ open[0].subject }}</div><div class="text-xs text-muted-foreground">{{ open[0].message.slice(0, 60) }}</div></div></Card></NuxtLink>
     </template>
     <template v-else>
       <p v-if="!open.length" class="text-muted-foreground">لا توجد شكاوى مفتوحة.</p>

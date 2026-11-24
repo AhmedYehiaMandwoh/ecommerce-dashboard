@@ -24,21 +24,21 @@ const badgeVariant = (s: string) => (s === "PLACED" ? "default" : s === "CANCELL
 </script>
 
 <template>
-  <div class="space-y-5">
-    <Card v-if="!admin" class="flex-row items-center gap-4 p-5">
-      <div class="flex size-16 items-center justify-center rounded-full bg-secondary"><Store class="size-8 text-accent" /></div>
-      <div><h2 class="text-2xl font-extrabold">لوحة التاجر</h2><p class="text-muted-foreground">{{ shopName }}</p></div>
+  <div class="space-y-3">
+    <Card v-if="!admin" class="flex-row items-center gap-3 p-3">
+      <div class="flex size-12 items-center justify-center rounded-full bg-secondary"><Store class="size-6 text-accent" /></div>
+      <div><h2 class="text-xl font-extrabold">لوحة التاجر</h2><p class="text-muted-foreground">{{ shopName }}</p></div>
     </Card>
     <div class="grid grid-cols-3 gap-3">
       <template v-if="!admin">
-        <Card class="gap-1 border-0 bg-accent p-4 text-accent-foreground"><ShoppingCart class="size-6" /><div class="text-sm font-bold">طلبات اليوم</div><div class="text-4xl font-extrabold">{{ todayCount }}</div></Card>
-        <Card class="gap-1 border-0 bg-accent p-4 text-accent-foreground"><Package class="size-6" /><div class="text-sm font-bold">منتجات</div><div class="text-4xl font-extrabold">{{ dash.summary.offers }}</div></Card>
-        <Card class="gap-1 border-0 bg-accent p-4 text-accent-foreground"><FileText class="size-6" /><div class="text-sm font-bold">تحتاج مراجعة</div><div class="text-4xl font-extrabold">{{ newOrders }}</div></Card>
+        <Card class="gap-0.5 border-0 bg-accent p-3 text-accent-foreground"><ShoppingCart class="size-6" /><div class="text-sm font-bold">طلبات اليوم</div><div class="text-3xl font-extrabold">{{ todayCount }}</div></Card>
+        <Card class="gap-0.5 border-0 bg-accent p-3 text-accent-foreground"><Package class="size-6" /><div class="text-sm font-bold">منتجات</div><div class="text-3xl font-extrabold">{{ dash.summary.offers }}</div></Card>
+        <Card class="gap-0.5 border-0 bg-accent p-3 text-accent-foreground"><FileText class="size-6" /><div class="text-sm font-bold">تحتاج مراجعة</div><div class="text-3xl font-extrabold">{{ newOrders }}</div></Card>
       </template>
       <template v-else>
-        <Card class="gap-1 border-0 bg-orange-50 p-4"><Store class="size-6 text-accent" /><div class="text-sm font-bold">المحلات</div><div class="text-4xl font-extrabold text-accent">{{ dash.shops.length }}</div></Card>
-        <Card class="gap-1 border-0 bg-blue-50 p-4"><FileText class="size-6 text-primary" /><div class="text-sm font-bold">الطلبات</div><div class="text-4xl font-extrabold text-primary">{{ dash.summary.orders }}</div></Card>
-        <Card class="gap-1 border-0 bg-orange-50 p-4"><Package class="size-6 text-accent" /><div class="text-sm font-bold">منتجات للمراجعة</div><div class="text-4xl font-extrabold text-accent">{{ pendingProducts }}</div></Card>
+        <Card class="gap-0.5 border-0 bg-orange-50 p-3"><Store class="size-6 text-accent" /><div class="text-sm font-bold">المحلات</div><div class="text-3xl font-extrabold text-accent">{{ dash.shops.length }}</div></Card>
+        <Card class="gap-0.5 border-0 bg-blue-50 p-3"><FileText class="size-6 text-primary" /><div class="text-sm font-bold">الطلبات</div><div class="text-3xl font-extrabold text-primary">{{ dash.summary.orders }}</div></Card>
+        <Card class="gap-0.5 border-0 bg-orange-50 p-3"><Package class="size-6 text-accent" /><div class="text-sm font-bold">منتجات للمراجعة</div><div class="text-3xl font-extrabold text-accent">{{ pendingProducts }}</div></Card>
       </template>
     </div>
     <p class="text-center text-xs text-muted-foreground">أرقام تجريبية من قاعدة بيانات الاختبار • إجمالي المسلّم {{ money(dash.summary.revenue) }}</p>
@@ -46,10 +46,10 @@ const badgeVariant = (s: string) => (s === "PLACED" ? "default" : s === "CANCELL
     <Card v-if="admin" class="p-4">
       <div class="mb-2 flex items-center justify-between"><h3 class="font-extrabold">الطلبات الأسبوعية (آخر ٧ أيام)</h3><span class="flex items-center gap-1 text-[10px] text-muted-foreground"><Info class="size-3" /> بيانات اختبار</span></div>
       <div class="flex gap-2">
-        <div class="flex h-32 flex-col justify-between pb-0 text-[10px] text-muted-foreground" dir="ltr"><span v-for="t in yTicks" :key="t" class="leading-none">{{ t }}</span></div>
+        <div class="flex h-24 flex-col justify-between pb-0 text-[10px] text-muted-foreground" dir="ltr"><span v-for="t in yTicks" :key="t" class="leading-none">{{ t }}</span></div>
         <div class="relative flex-1">
-          <div class="pointer-events-none absolute inset-x-0 top-0 flex h-32 flex-col justify-between"><i v-for="t in yTicks" :key="t" class="block border-t border-dashed border-border" /></div>
-          <div class="relative flex h-32 items-end gap-2">
+          <div class="pointer-events-none absolute inset-x-0 top-0 flex h-24 flex-col justify-between"><i v-for="t in yTicks" :key="t" class="block border-t border-dashed border-border" /></div>
+          <div class="relative flex h-24 items-end gap-2">
             <div v-for="w in week" :key="w.d" class="flex h-full flex-1 items-end"><div class="w-full rounded-t-md bg-accent" :style="{ height: w.n ? w.h + '%' : '2px' }" :title="w.n + ' طلب'" /></div>
           </div>
           <div class="mt-1 flex gap-2"><span v-for="w in week" :key="w.d" class="flex-1 text-center text-[10px] text-muted-foreground">{{ w.d }}</span></div>

@@ -19,7 +19,6 @@ async function update() {
 <template>
   <div class="space-y-2">
     <template v-if="selected">
-      <Button variant="ghost" @click="router.push('/dashboard/orders')">← كل الطلبات</Button>
       <div class="grid grid-cols-1 gap-2 lg:grid-cols-2 [&>*]:min-w-0">
       <Card class="p-3">
         <div class="flex items-start justify-between">
