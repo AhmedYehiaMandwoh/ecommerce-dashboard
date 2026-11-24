@@ -48,3 +48,9 @@ Merchant and admin screens live in the web dashboard only. Routes: `/dashboard` 
 
 ### Known gaps
 Native iOS/Android rendering of the NativeWind app is not verified (Expo web only). Tracking art in the app is static artwork, not live GPS. See the repository issues list in this file for remaining PDF fidelity items.
+
+### Demo seed (updated)
+Three fictional shops (same demo merchant account) and an accessories product (`DEMO-ACC-07`) so the shops list and multi-shop cart can be tried. All catalog data is fictional test data. Vehicle fitments in the seed are unverified.
+
+### Mobile app notes
+The customer app vehicle screen uses dropdown rows fed by `GET /api/vehicle-catalog`. The order tracking illustration is static artwork and is labelled as such on screen. NativeWind output was checked on Expo web only.

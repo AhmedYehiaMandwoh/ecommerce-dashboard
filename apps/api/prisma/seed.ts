@@ -52,6 +52,7 @@ async function main() {
       ["DEMO", "DEMO-OIL-04", "زيت محرك 5W-30 • ٤ لتر", "زيوت", 165000, "oil"],
       ["DEMO", "DEMO-SHOCK-05", "مساعد تعليق", "تعليق", 145000, "belt"],
       ["DEMO", "DEMO-PLUG-06", "بوجيه مفرد", "كهرباء", 18000, "plug"],
+      ["DEMO", "DEMO-ACC-07", "غطاء مقعد توضيحي", "إكسسوارات", 32000, "belt"],
     ];
     for (const [brand, partNumber, title, category, price, asset] of examples) {
       const p = await db.product.upsert({
@@ -89,6 +90,23 @@ async function main() {
         },
         update: {},
       });
+    }
+    // Two more fictional shops (same demo merchant) so the shops list and multi-shop cart can be tried.
+    const extraShops: [string, string, string, string[], number][] = [
+      ["demo-shop-2", "قطع الصفوة • متجر تجريبي", "الجيزة", ["DEMO-BRAKE-01", "DEMO-FILTER-02", "DEMO-OIL-04", "DEMO-ACC-07"], 96],
+      ["demo-shop-3", "الأمل لقطع الغيار • متجر تجريبي", "القاهرة", ["DEMO-PLUG-03", "DEMO-SHOCK-05", "DEMO-PLUG-06", "DEMO-ACC-07"], 104],
+    ];
+    for (const [id, name, city, skus, pct] of extraShops) {
+      const sh = await db.shop.upsert({ where: { id }, create: { id, name, city, ownerId: owner.id, approved: true }, update: {} });
+      for (const sku of skus) {
+        const prod = await db.product.findFirstOrThrow({ where: { partNumber: sku } });
+        const base = await db.offer.findUniqueOrThrow({ where: { shopId_sku: { shopId: shop.id, sku } } });
+        await db.offer.upsert({
+          where: { shopId_sku: { shopId: sh.id, sku } },
+          create: { shopId: sh.id, productId: prod.id, sku, price: Math.round((base.price * pct) / 100 / 100) * 100, stock: 20 },
+          update: {},
+        });
+      }
     }
     console.log(
       "Seeded fictional catalog and example.test accounts. Password is the DEMO_PASSWORD you supplied.",
