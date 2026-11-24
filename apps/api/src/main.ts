@@ -5,7 +5,7 @@ import { ValidationPipe, Logger } from "@nestjs/common";
 import express from "express";
 import {resolve} from "node:path";
 import helmet from "helmet";
-import { AppModule } from "./app";
+import { AppModule } from "./app.module";
 import { Errors } from "./errors";
 async function main() {
   if(process.env.OTP_MODE==='static-test'&&process.env.NODE_ENV==='production')throw Error('Static OTP is forbidden in production');

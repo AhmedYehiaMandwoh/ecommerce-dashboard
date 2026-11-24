@@ -1,6 +1,6 @@
 import {Injectable,ServiceUnavailableException,UnauthorizedException} from '@nestjs/common';
 import {generateRegistrationOptions,verifyRegistrationResponse,generateAuthenticationOptions,verifyAuthenticationResponse} from '@simplewebauthn/server';
-import {randomBytes} from 'node:crypto';import {Db} from './db';import {digest} from './security';import {Prisma} from './generated/prisma/client';
+import {randomBytes} from 'node:crypto';import {Db} from '../../db';import {digest} from '../../security';import {Prisma} from '../../generated/prisma/client';
 @Injectable()
 export class PasskeyService {
  constructor(private db:Db){}

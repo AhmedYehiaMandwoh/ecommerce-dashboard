@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { hashPassword, verifyPassword, digest } from "../src/security";
-import { normalizeItems, transitions } from "../src/market.service";
+import { normalizeItems, transitions } from "../src/modules/orders/orders.rules";
 test("password hashing salts each password and rejects incorrect values", async () => {
   const a = await hashPassword("Temporary.Test.123");
   const b = await hashPassword("Temporary.Test.123");

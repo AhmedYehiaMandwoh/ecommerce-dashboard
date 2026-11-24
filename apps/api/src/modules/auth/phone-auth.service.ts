@@ -1,9 +1,9 @@
 import {Injectable,ServiceUnavailableException,UnauthorizedException,ConflictException,HttpException} from '@nestjs/common';
 import {randomBytes} from 'node:crypto';
-import {Db} from './db';import {digest} from './security';import {MarketService} from './market.service';import {normalizePhone,TwilioPhoneVerify} from './phone-verify';import {Prisma} from './generated/prisma/client';
+import {Db} from '../../db';import {digest} from '../../security';import {AuthService} from './auth.service';import {normalizePhone,TwilioPhoneVerify} from './phone-verify';import {Prisma} from '../../generated/prisma/client';
 @Injectable()
 export class PhoneAuthService {
- constructor(private db:Db,private market:MarketService){}
+ constructor(private db:Db,private market:AuthService){}
  private testMode(){return process.env.OTP_MODE==='static-test'&&process.env.NODE_ENV!=='production';}
  private enabled(){if(!this.testMode()&&process.env.SMS_SEND_ENABLED!=='true')throw new ServiceUnavailableException('Phone verification is not enabled');}
  private adapter(){return new TwilioPhoneVerify({accountSid:process.env.TWILIO_ACCOUNT_SID||'',authToken:process.env.TWILIO_AUTH_TOKEN||'',serviceSid:process.env.TWILIO_VERIFY_SERVICE_SID||'',sendsEnabled:process.env.SMS_SEND_ENABLED==='true'});}

@@ -1,4 +1,4 @@
-import {test} from 'node:test';import assert from 'node:assert/strict';import {TwilioPhoneVerify,normalizePhone} from '../src/phone-verify';
+import {test} from 'node:test';import assert from 'node:assert/strict';import {TwilioPhoneVerify,normalizePhone} from '../src/modules/auth/phone-verify';
 const config={accountSid:'AC'+'a'.repeat(32),authToken:'test-only-not-a-live-token',serviceSid:'VA'+'b'.repeat(32),sendsEnabled:true};
 test('phone format requires explicit international country code',()=>{assert.equal(normalizePhone('+20 100-000-0000'),'+201000000000');assert.throws(()=>normalizePhone('01000000000'));});
 test('sends are disabled before transport regardless of supplied credentials',async()=>{let calls=0;const adapter=new TwilioPhoneVerify({...config,sendsEnabled:false},(async()=>{calls++;throw Error('no call');}) as typeof fetch);await assert.rejects(adapter.start('+201000000000'));assert.equal(calls,0);});
