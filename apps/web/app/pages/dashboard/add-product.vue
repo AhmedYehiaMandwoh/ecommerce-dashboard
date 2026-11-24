@@ -39,16 +39,16 @@ async function submit() {
     <Card class="p-5">
       <h2 class="mb-3 text-lg font-extrabold">بيانات المنتج</h2>
       <form class="space-y-3" @submit.prevent="submit">
-        <div class="flex gap-3">
-          <label class="flex h-28 w-36 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed text-sm text-muted-foreground">
+        <div class="space-y-3">
+          <label class="flex h-36 w-full cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed text-sm text-muted-foreground">
             <img v-if="preview" :src="preview" alt="معاينة الصورة" class="h-full w-full rounded-xl object-contain" />
             <template v-else><Camera class="size-6" /> إضافة صورة المنتج</template>
             <input type="file" accept="image/png,image/jpeg,image/webp" class="sr-only" aria-label="صورة المنتج" @change="pick" />
           </label>
-          <div class="flex-1 space-y-1"><Label for="p-title">اسم المنتج</Label><Input id="p-title" v-model="productForm.title" required placeholder="فحمات فرامل أمامية" />
+          <div class="space-y-1"><Label for="p-title">اسم المنتج</Label><Input id="p-title" v-model="productForm.title" required placeholder="فحمات فرامل أمامية" />
             <Label for="p-part">رقم القطعة</Label><Input id="p-part" v-model="productForm.partNumber" required dir="ltr" placeholder="BP-001" /></div>
         </div>
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 gap-3">
           <div class="space-y-1"><Label for="p-brand">الماركة (العلامة التجارية)</Label><Input id="p-brand" v-model="productForm.brand" required placeholder="BOSCH" /></div>
           <div class="space-y-1"><Label>القسم</Label>
             <Select v-model="productForm.category"><SelectTrigger class="w-full" aria-label="القسم"><SelectValue placeholder="اختر القسم">{{ productForm.category || undefined }}</SelectValue></SelectTrigger>
@@ -66,7 +66,7 @@ async function submit() {
           </div>
           <Button type="button" variant="outline" size="sm" :disabled="!draft.engine || !draft.toYear || !draft.fromYear || Number(draft.fromYear) > Number(draft.toYear)" @click="addRow"><Plus class="size-4" /> إضافة هذا التوافق</Button>
           <ul class="space-y-1 text-sm"><li v-for="(r, i) in rows" :key="i" class="flex items-center justify-between rounded-lg bg-white px-3 py-2"><span>{{ r.make }} {{ r.model }} • {{ r.fromYear }}-{{ r.toYear }} • {{ r.engine }}</span><button type="button" :aria-label="'حذف توافق ' + (i + 1)" @click="rows.splice(i, 1)"><X class="size-4" /></button></li></ul>
-          <p class="flex items-start gap-2 text-xs text-muted-foreground"><Info class="mt-0.5 size-4 shrink-0 text-primary" /> التوافق يُحفظ كغير مؤكد، وتراجعه الإدارة قبل ظهوره كمؤكد للعملاء.</p>
+          <div class="flex items-start gap-2 rounded-xl bg-blue-50 p-3 text-xs text-muted-foreground"><Info class="mt-0.5 size-5 shrink-0 text-primary" /><div><b class="block text-sm text-primary">تحقق من بيانات التوافق</b>التوافق يُحفظ كغير مؤكد، وتراجعه الإدارة قبل ظهوره كمؤكد للعملاء.</div></div>
         </div>
         <Button type="submit" class="w-full bg-accent text-accent-foreground" size="lg" :disabled="busy || !productForm.category">حفظ المنتج وإرساله للمراجعة</Button>
       </form>

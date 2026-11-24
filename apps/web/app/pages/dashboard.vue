@@ -27,15 +27,17 @@ const title = computed(() => ({ "/dashboard/orders": "الطلبات", "/dashboa
 
 <template>
   <div class="mx-auto flex min-h-screen w-full max-w-6xl flex-col">
-    <header class="flex items-center justify-between bg-primary px-4 py-3 md:px-6 md:py-4 text-primary-foreground md:rounded-b-3xl">
-      <div class="flex items-center gap-3">
-        <img src="/assets/reference-logo.png" alt="غيار" class="h-10 brightness-0 invert" />
-        <h1 class="text-xl font-extrabold">{{ title }}</h1>
+    <header class="relative bg-primary px-4 pb-4 pt-3 text-primary-foreground md:flex md:items-center md:justify-between md:rounded-b-3xl md:px-6 md:py-4">
+      <div class="flex w-full flex-col items-center gap-1 md:w-auto md:flex-row md:gap-3">
+        <img src="/assets/reference-logo.png" alt="غيار" class="h-12 brightness-0 invert md:h-10" />
+        <h1 class="text-2xl font-extrabold md:text-xl">{{ title }}</h1>
       </div>
-      <div class="flex items-center gap-2">
+      <div class="absolute inset-x-3 top-3 flex items-center justify-between md:static md:inset-auto md:justify-end md:gap-2">
+        <div class="flex items-center gap-2">
+          <Button variant="secondary" size="icon" aria-label="خروج" @click="logout"><LogOut class="size-4" /></Button>
+          <Button variant="secondary" size="icon" aria-label="تنبيهات"><Bell class="size-4" /></Button>
+        </div>
         <Button variant="secondary" size="icon" aria-label="تحديث" :disabled="busy" @click="dashboard"><RefreshCw class="size-4" /></Button>
-        <Button variant="secondary" size="icon" aria-label="تنبيهات"><Bell class="size-4" /></Button>
-        <Button variant="secondary" size="icon" aria-label="خروج" @click="logout"><LogOut class="size-4" /></Button>
       </div>
     </header>
     <nav class="sticky top-0 z-10 mt-3 hidden gap-1 md:flex overflow-x-auto bg-background/90 px-4 py-2 backdrop-blur" aria-label="التنقل">

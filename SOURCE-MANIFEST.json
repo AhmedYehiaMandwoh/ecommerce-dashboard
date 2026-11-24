@@ -594,13 +594,13 @@
     },
     {
       "path": "apps/web/app/pages/dashboard.vue",
-      "bytes": 4806,
-      "sha256": "3e16866c158231e8c5bd7f4cf78d603e45466dda8f0a2678499a14f78c5b7dd0"
+      "bytes": 5044,
+      "sha256": "bad8880a5728c4c0663e2786f5fa3e24c281c777b69a55983ec2bf4f39064b3c"
     },
     {
       "path": "apps/web/app/pages/dashboard/add-product.vue",
-      "bytes": 9712,
-      "sha256": "fc2a2b52c8c4b8bf42480b954ef1404cd75a51974c6ad965f48727a78d5c2d22"
+      "bytes": 9829,
+      "sha256": "9714ebcadf8e6c75973f33616e7ecafee6f6886abac8dd2cdbbb319e8f12cd09"
     },
     {
       "path": "apps/web/app/pages/dashboard/applications.vue",
@@ -645,7 +645,7 @@
     {
       "path": "apps/web/app/pages/dashboard/orders.vue",
       "bytes": 5303,
-      "sha256": "cbddc1b250a1c704660a03d86a3a21acb8bf2c3ff7cce649acc24163fcb49210"
+      "sha256": "159f9b1a985a60bb43af7aa29eb2051e407b24b370669689742c862ebce63a6b"
     },
     {
       "path": "apps/web/app/pages/dashboard/returns.vue",

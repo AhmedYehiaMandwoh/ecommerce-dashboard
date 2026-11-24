@@ -27,7 +27,7 @@ async function update() {
           <div class="text-right"><h2 class="text-xl font-extrabold">طلب #{{ selected.id.slice(0, 8) }}</h2><p class="text-sm text-muted-foreground">{{ selected.shop.name }}</p></div>
         </div>
         <div v-for="i in selected.items" :key="i.id" class="mt-3 flex items-center gap-3 rounded-xl bg-secondary p-3">
-          <img :src="imageUrl(i.offer?.product?.image || '/assets/shop-icon.png')" alt="" class="size-16 rounded-lg bg-white object-contain" />
+          <img :src="imageUrl(i.offer?.product?.image || '/assets/shop-icon.png')" alt="" class="size-24 rounded-lg bg-white object-contain" />
           <div class="flex-1 text-right"><div class="font-bold">{{ i.title }}</div><div class="text-xs text-muted-foreground">{{ i.partNumber }}</div></div>
           <b>×{{ i.quantity }}</b>
         </div>
