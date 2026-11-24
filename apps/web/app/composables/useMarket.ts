@@ -413,7 +413,7 @@ onMounted(async () => {
     await dashboard();
 });
 watch(view, async (v) => {
-  if (["orders", "profile", "checkout"].includes(v) && user.value) {
+  if (["orders", "profile", "checkout"].includes(String(v)) && user.value) {
     try {
       await personal();
     } catch (e: any) {

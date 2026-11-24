@@ -16,7 +16,7 @@ const { view, cart, user, error, message, busy, go, dashboard, logout } = useMar
       <button v-if="user" @click="go('profile')">أهلًا {{ user.name }}</button
       ><button v-else @click="go('login')">دخول / حساب جديد</button
       ><button @click="go('cart')">
-        السلة ({{ cart.reduce((s, i) => s + i.quantity, 0) }})
+        السلة ({{ cart.reduce((s: number, i: any) => s + i.quantity, 0) }})
       </button>
     </header>
     <nav v-if="view !== 'home'">

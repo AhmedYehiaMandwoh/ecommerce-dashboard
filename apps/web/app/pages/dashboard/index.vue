@@ -10,9 +10,9 @@ const days = ["الأحد", "الاثنين", "الثلاثاء", "الأربع�
 const week = computed(() => {
   const counts = days.map(() => 0);
   const since = Date.now() - 7 * 864e5;
-  for (const o of dash.value.orders) if (new Date(o.createdAt).getTime() >= since) counts[new Date(o.createdAt).getDay()]++;
+  for (const o of dash.value.orders) if (new Date(o.createdAt).getTime() >= since) counts[new Date(o.createdAt).getDay()]! += 1;
   const max = Math.max(1, ...counts);
-  return days.map((d, i) => ({ d, n: counts[i], h: Math.round((counts[i] / max) * 100) }));
+  return days.map((d, i) => ({ d, n: counts[i] ?? 0, h: Math.round(((counts[i] ?? 0) / max) * 100) }));
 });
 const shopName = computed(() => dash.value.shops?.[0]?.name || "متجرك");
 const badgeVariant = (s: string) => (s === "PLACED" ? "default" : s === "CANCELLED" ? "destructive" : "secondary");

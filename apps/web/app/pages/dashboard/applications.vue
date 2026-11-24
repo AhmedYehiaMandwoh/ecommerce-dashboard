@@ -10,7 +10,7 @@ const list = computed(() => (dash.value.shopApplications || []).filter((a: any) 
 <template>
   <div v-if="user.role === 'ADMIN'" class="space-y-4">
     <Tabs v-model="tab">
-      <TabsList class="w-full"><TabsTrigger v-for="[s, l] in states" :key="s" :value="s">{{ l }} <Badge variant="secondary" class="mr-2">{{ count(s) }}</Badge></TabsTrigger></TabsList>
+      <TabsList class="w-full"><TabsTrigger v-for="[s, l] in (states as [string, string][])" :key="s" :value="s as string">{{ l }} <Badge variant="secondary" class="mr-2">{{ count(s) }}</Badge></TabsTrigger></TabsList>
     </Tabs>
     <p class="text-sm text-muted-foreground">راجع بيانات النشاط وتواصل مع مقدم الطلب قبل الموافقة. لا يوجد تحقق آلي من المستندات.</p>
     <p v-if="!list.length" class="text-muted-foreground">لا توجد طلبات في هذه القائمة.</p>

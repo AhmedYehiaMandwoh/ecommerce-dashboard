@@ -11,7 +11,7 @@ const { addresses, busy, cart, deliveryAreas, deliveryQuote, go, imageUrl, login
         </div>
         <div v-else class="two">
           <div class="card cart-lines">
-            <button class="cart-shop" @click="go('shops')"><img src="/assets/shop-icon.png" alt=""/><span>{{ new Set(cart.map(i=>i.shopId)).size>1 ? 'سلة من '+new Set(cart.map(i=>i.shopId)).size+' محلات' : (cart[0]?.shopName || 'منتجات المحل') }}<small>راجع رقم القطعة والتوافق مع البائع</small></span><b>‹</b></button>
+            <button class="cart-shop" @click="go('shops')"><img src="/assets/shop-icon.png" alt=""/><span>{{ new Set(cart.map((i: any)=>i.shopId)).size>1 ? 'سلة من '+new Set(cart.map((i: any)=>i.shopId)).size+' محلات' : (cart[0]?.shopName || 'منتجات المحل') }}<small>راجع رقم القطعة والتوافق مع البائع</small></span><b>‹</b></button>
             <div v-for="(i, n) in cart" :key="i.offerId" class="cart-item line">
               <img :src="imageUrl(i.image)" :alt="i.title" />
               <div style="flex: 1">
@@ -61,7 +61,7 @@ const { addresses, busy, cart, deliveryAreas, deliveryQuote, go, imageUrl, login
               <span>الإجمالي التقديري</span
               ><b class="price">{{ money(deliveryQuote?.total ?? total + 5000) }}</b>
             </p>
-            <div v-if="deliveryQuote" class="quote-breakdown"><p v-for="g in deliveryQuote.groups" :key="g.shopId">{{ shops.find(s=>s.id===g.shopId)?.name || 'محل' }}: منتجات {{ money(g.subtotal) }} + حصة الشحن {{ money(g.delivery) }} = {{ money(g.total) }}</p></div><p class="muted">كل محل يوصّل منتجاته ويحصّل حصته الموضحة فقط. مجموع حصص الشحن يساوي رسوم المنطقة مرة واحدة. الخادم يراجع السعر والمخزون عند التأكيد.</p>
+            <div v-if="deliveryQuote" class="quote-breakdown"><p v-for="g in deliveryQuote.groups" :key="g.shopId">{{ shops.find((s: any)=>s.id===g.shopId)?.name || 'محل' }}: منتجات {{ money(g.subtotal) }} + حصة الشحن {{ money(g.delivery) }} = {{ money(g.total) }}</p></div><p class="muted">كل محل يوصّل منتجاته ويحصّل حصته الموضحة فقط. مجموع حصص الشحن يساوي رسوم المنطقة مرة واحدة. الخادم يراجع السعر والمخزون عند التأكيد.</p>
             <button
               v-if="view === 'cart'"
               class="orange"

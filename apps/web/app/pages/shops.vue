@@ -41,7 +41,7 @@ const { busy, categories, category, fitmentVehicle, go, imageUrl, load, login, m
           </select>
         </div>
         <div v-if="view === 'shops'" class="store-discovery section-gap">
-          <div v-for="(s, n) in shops" :key="s.id" class="card store-discovery-card"><img class="store-cover" :src="'/assets/shop-demo-'+((n%2)+1)+'.png'" alt="تصور لمحل تجريبي، ليست صورة المحل الفعلي" />
+          <div v-for="(s, n) in shops" :key="s.id" class="card store-discovery-card"><img class="store-cover" :src="'/assets/shop-demo-'+((Number(n)%2)+1)+'.png'" alt="تصور لمحل تجريبي، ليست صورة المحل الفعلي" />
             <span class="badge">متجر تجريبي</span>
             <h2>{{ s.name }}</h2>
             <p>{{ s.city }}</p>
@@ -120,7 +120,7 @@ const { busy, categories, category, fitmentVehicle, go, imageUrl, load, login, m
               "
             >
               <img
-                :src="'/assets/shop-demo-' + ((n % 2) + 1) + '.png'"
+                :src="'/assets/shop-demo-' + ((Number(n) % 2) + 1) + '.png'"
                 alt="تصور لمحل قطع غيار، ليس صورة المحل الفعلي"
               />
               <div>
