@@ -301,9 +301,9 @@ async function submitOrder() {
     message.value = "تم تسجيل طلب تجريبي. لا يوجد تحصيل أو توصيل حقيقي.";
   });
 }
-async function status(id: string, s: string) {
+async function status(id: string, s: string, trackingNumber?: string) {
   await run(async () => {
-    await api(`/orders/${id}/status`, "PATCH", { status: s });
+    await api(`/orders/${id}/status`, "PATCH", { status: s, ...(trackingNumber ? { trackingNumber } : {}) });
     if (user.value.role === "CUSTOMER") await personal();
     else dash.value = await api("/dashboard");
   });

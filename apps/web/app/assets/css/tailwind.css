@@ -56,3 +56,16 @@
 @layer base {
   * { @apply border-border; }
 }
+
+/* shadcn buttons must not inherit the legacy global button look (legacy layer sits below components) */
+@layer components {
+  button[data-slot], button[data-slot]:hover {
+    background-color: transparent;
+    color: inherit;
+    padding: 0;
+    border-radius: 0;
+    font-weight: inherit;
+    filter: none;
+  }
+  button[data-slot]:disabled { cursor: not-allowed; }
+}

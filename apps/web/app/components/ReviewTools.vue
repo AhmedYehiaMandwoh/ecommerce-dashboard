@@ -4,7 +4,7 @@ const { api, approve, busy, catalogEditor, dash, dashboard, dashboardTab, delete
 
 <template>
   <div>
-<template v-if="user.role === 'ADMIN' && dashboardTab === 'review'"
+<template v-if="user.role === 'ADMIN' && dashboardTab === 'catalog'"
           ><h2>مراجعة الكتالوج</h2>
           <div class="card scroll">
             <table>

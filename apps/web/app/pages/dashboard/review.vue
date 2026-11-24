@@ -5,7 +5,8 @@ const tab = ref("products");
 const pending = computed(() => (dash.value.products || []).filter((p: any) => !p.approved));
 const open = computed(() => (tickets.value || []).filter((t: any) => t.state === "OPEN"));
 onMounted(async () => { try { tickets.value = await api("/support-tickets"); } catch {} });
-const edit = (p: any) => { editCatalog(p); nextTick(() => document.getElementById("review-tools")?.scrollIntoView({ behavior: "smooth" })); };
+const router = useRouter();
+const edit = (p: any) => { editCatalog(p); router.push("/dashboard/catalog"); };
 </script>
 
 <template>
@@ -29,7 +30,7 @@ const edit = (p: any) => { editCatalog(p); nextTick(() => document.getElementByI
       <NuxtLink v-for="t in open" :key="t.id" to="/dashboard/support"><Card class="mb-2 flex-row items-center gap-3 bg-orange-50 p-4"><MessageSquare class="size-8 text-primary" /><div class="flex-1"><div class="font-bold">{{ t.subject }}</div><div class="text-xs text-muted-foreground">{{ t.message.slice(0, 80) }}</div></div><Badge class="bg-accent text-accent-foreground">مفتوح</Badge></Card></NuxtLink>
     </template>
     <p class="flex items-center gap-2 text-xs text-muted-foreground"><Info class="size-4" /> بيانات تجريبية للاختبار.</p>
-    <div id="review-tools"><h2 class="mb-2 mt-6 text-lg font-extrabold">أدوات المراجعة التفصيلية</h2><ReviewTools /></div>
+    <NuxtLink to="/dashboard/catalog" class="inline-block text-sm font-bold text-primary">أدوات الكتالوج والحسابات التفصيلية ←</NuxtLink>
   </div>
   <p v-else class="text-muted-foreground">هذه الصفحة للإدارة فقط.</p>
 </template>

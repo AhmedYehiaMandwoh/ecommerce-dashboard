@@ -3,6 +3,7 @@ import { ChevronLeft, Truck, Undo2, Headset, Boxes, Upload, Wallet, Banknote } f
 const { user } = useMarket();
 const admin = computed(() => user.value?.role === "ADMIN");
 const items = computed(() => [
+  { to: "/dashboard/catalog", label: "الكتالوج والحسابات (تفصيلي)", icon: Boxes, show: admin.value },
   { to: "/dashboard/legacy-orders", label: "التحصيل وطلبات الإلغاء", icon: Banknote, show: true },
   { to: "/dashboard/inventory", label: "المنتجات والمخزون", icon: Boxes, show: true },
   { to: "/dashboard/import", label: "استيراد وإضافة (CSV)", icon: Upload, show: true },

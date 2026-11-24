@@ -20,12 +20,13 @@ const nav = computed(() =>
         { to: "/dashboard/more", label: "المزيد", icon: MoreHorizontal },
       ],
 );
+watch(() => route.path, () => { message.value = ""; error.value = ""; });
 const active = (to: string) => (to === "/dashboard" ? route.path.replace(/\/$/, "") === "/dashboard" : route.path.startsWith(to));
 const title = computed(() => ({ "/dashboard/orders": "الطلبات", "/dashboard/add-product": "إضافة منتج", "/dashboard/applications": "مراجعة المحلات", "/dashboard/review": "مركز المراجعة", "/dashboard/inventory": "المنتجات والمخزون", "/dashboard/more": "المزيد" } as Record<string, string>)[route.path.replace(/\/$/, "")] || (admin.value ? "إدارة المنصة" : "لوحة التاجر"));
 </script>
 
 <template>
-  <div class="mx-auto flex min-h-screen max-w-6xl flex-col">
+  <div class="mx-auto flex min-h-screen w-full max-w-6xl flex-col">
     <header class="flex items-center justify-between bg-primary px-6 py-4 text-primary-foreground md:rounded-b-3xl">
       <div class="flex items-center gap-3">
         <img src="/assets/reference-logo.png" alt="غيار" class="h-10 brightness-0 invert" />
@@ -42,12 +43,12 @@ const title = computed(() => ({ "/dashboard/orders": "الطلبات", "/dashboa
         <component :is="n.icon" class="size-4" /> {{ n.label }}
       </NuxtLink>
     </nav>
-    <main class="flex-1 px-4 pb-10 pt-3">
+    <div role="main" class="w-full flex-1 px-4 pb-10 pt-3">
       <div v-if="error" class="mb-3 rounded-xl border border-destructive/30 bg-destructive/10 p-3 text-sm font-bold text-destructive" role="alert">{{ error }}</div>
       <div v-if="message" class="mb-3 rounded-xl border border-primary/30 bg-primary/10 p-3 text-sm font-bold text-primary" role="status">{{ message }}</div>
       <NuxtPage v-if="dash" />
       <p v-else class="text-muted-foreground">جارٍ التحميل...</p>
-    </main>
+    </div>
     <footer class="py-4 text-center text-xs text-muted-foreground">غيار • نسخة تطوير • بيانات تجريبية • الدفع كاش فقط</footer>
   </div>
 </template>
