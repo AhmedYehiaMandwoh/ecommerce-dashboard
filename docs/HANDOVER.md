@@ -25,7 +25,7 @@ Scope is unchanged: non-live test source, cash only, static test OTP 123456, Twi
 
 ### Discount codes (test behavior, business rule OPEN)
 - Table `DiscountCode` (code, percent 1-50, active, maxUses, used, expiresAt). Demo code `GHIYAR10` (10%) is seeded. There is no admin screen to create codes yet.
-- A code reduces product value per shop (round half up, each shop keeps at least 1 minor unit) BEFORE shipping is allocated, so shipping shares stay proportional to post-discount values. The zone fee itself is never discounted. `Order.subtotal` stores the post-discount value and `Order.discount` stores the amount taken off. Pre-delivery cancellation reallocates the fixed zone fee over the remaining orders' post-discount subtotals (covered by an integration test).
+- A code reduces product value per shop BEFORE shipping is allocated, so shipping shares stay proportional to post-discount values. The zone fee itself is never discounted. `Order.subtotal` stores the post-discount value and `Order.discount` stores the amount taken off (see `applyPercent` for rounding). Pre-delivery cancellation reallocates the fixed zone fee over the remaining orders' post-discount subtotals (covered by an integration test).
 - UNRESOLVED business decision: who funds the discount. In this source the shop's order subtotal is the discounted value, so the shop collects less and nothing credits the shop or debits the platform. This is test behavior only. Decide the funding rule (shop-funded, platform-funded, or split) and the settlement entries before any real use. Nothing here asserts platform funding.
 - Max uses is consumed atomically inside the checkout transaction; replaying the same request key does not consume another use.
 
@@ -36,7 +36,7 @@ Scope is unchanged: non-live test source, cash only, static test OTP 123456, Twi
 Merchants submit a product (`POST /api/products`), then its image (`POST /api/products/:id/image`) and fitment rows (`POST|DELETE /api/products/:id/fitments`). Only the submitting merchant can do this and only while the product is unapproved. Fitments are always saved unverified. The admin reviews and approves in the dashboard review center. `GET /api/vehicle-catalog` (public) feeds the make/model/year/engine selectors from fitment data.
 
 ### Support image
-`POST /api/support-tickets` accepts an optional `attachment` data URL (PNG, JPEG or WebP, about 1.2 MB of image after base64). It is stored with the ticket.
+`POST /api/support-tickets` accepts an optional `attachment` data URL (PNG, JPEG or WebP, data URL up to 1.6M characters). It is stored with the ticket.
 
 ### Web dashboard (Nuxt 4 + Tailwind v4 + shadcn-vue)
 Merchant and admin screens live in the web dashboard only. Routes: `/dashboard` (merchant home / admin overview), `/orders`, `/add-product`, `/applications`, `/review`, `/catalog`, `/more`, plus older pages (inventory, import, settlements, returns, delivery, support, legacy-orders) that still use the older styling and are not yet converted to shadcn. The legacy stylesheet is wrapped in a lower CSS layer so shadcn utilities win.
