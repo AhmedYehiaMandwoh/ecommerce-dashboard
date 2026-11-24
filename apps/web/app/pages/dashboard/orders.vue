@@ -32,11 +32,6 @@ async function update() {
           <b>×{{ i.quantity }}</b>
         </div>
       </Card>
-      <Card class="p-5"><h3 class="mb-2 flex items-center gap-2 font-extrabold"><MapPin class="size-5" /> عنوان الشحن</h3>
-        <div class="rounded-xl bg-secondary p-3 text-sm">{{ selected.address.city }} • {{ selected.address.details }}<br /><span dir="ltr">{{ selected.address.phone }}</span></div></Card>
-      <Card class="p-5"><h3 class="mb-2 flex items-center gap-2 font-extrabold"><Banknote class="size-5" /> التحصيل عند التسليم</h3>
-        <p class="text-sm">منتجات: {{ money(selected.subtotal) }}<span v-if="selected.discount"> (بعد خصم {{ money(selected.discount) }})</span> • حصة شحن للمنصة: {{ money(selected.delivery) }}</p>
-        <p class="font-extrabold">الإجمالي: {{ money(selected.total) }}</p><p v-if="selected.trackingNumber" class="mt-1 text-sm">رقم الشحنة: <b dir="ltr">{{ selected.trackingNumber }}</b></p></Card>
       <Card class="p-5">
         <h3 class="mb-2 flex items-center gap-2 font-extrabold"><ClipboardList class="size-5" /> حالة الطلب</h3>
         <Select v-model="target" :disabled="busy || selected.settlementFrozen || !options.length">
@@ -47,6 +42,11 @@ async function update() {
         <Input v-model="tracking" placeholder="أدخل رقم الشحنة (٣ إلى ٤٠ حرفًا أو رقمًا)" dir="ltr" maxlength="40" />
         <Button class="mt-4 w-full bg-accent text-accent-foreground" size="lg" :disabled="busy || !target || target === selected.status || (tracking.trim().length > 0 && !/^[A-Za-z0-9\-_.\/ ]{3,40}$/.test(tracking.trim()))" @click="update">تحديث الحالة</Button>
       </Card>
+      <Card class="p-5"><h3 class="mb-2 flex items-center gap-2 font-extrabold"><MapPin class="size-5" /> عنوان الشحن</h3>
+        <div class="rounded-xl bg-secondary p-3 text-sm">{{ selected.address.city }} • {{ selected.address.details }}<br /><span dir="ltr">{{ selected.address.phone }}</span></div></Card>
+      <Card class="p-5"><h3 class="mb-2 flex items-center gap-2 font-extrabold"><Banknote class="size-5" /> التحصيل عند التسليم</h3>
+        <p class="text-sm">منتجات: {{ money(selected.subtotal) }}<span v-if="selected.discount"> (بعد خصم {{ money(selected.discount) }})</span> • حصة شحن للمنصة: {{ money(selected.delivery) }}</p>
+        <p class="font-extrabold">الإجمالي: {{ money(selected.total) }}</p><p v-if="selected.trackingNumber" class="mt-1 text-sm">رقم الشحنة: <b dir="ltr">{{ selected.trackingNumber }}</b></p></Card>
       </div>
     </template>
     <template v-else>
