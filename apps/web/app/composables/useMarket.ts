@@ -198,17 +198,19 @@ async function load() {
     const r = await api("/products?" + q);
     products.value = r.items;
     pages.value = r.pages;
-    categories.value = await api("/categories");
-    shops.value = await api("/shops");
-    deliveryAreas.value=await api('/delivery-areas');
+    const [c, sh, da] = await Promise.all([api("/categories"), api("/shops"), api('/delivery-areas')]);
+    categories.value = c;
+    shops.value = sh;
+    deliveryAreas.value = da;
   });
 }
 async function personal() {
   if (!user.value) return;
-  addresses.value = await api("/addresses");
-  shopApplication.value=await api('/shop-application');
-  vehicles.value = await api("/vehicles");
-  orders.value = await api("/orders");
+  const [a, sa, v, o] = await Promise.all([api("/addresses"), api("/shop-application"), api("/vehicles"), api("/orders")]);
+  addresses.value = a;
+  shopApplication.value = sa;
+  vehicles.value = v;
+  orders.value = o;
   if (!selectedAddress.value)
     selectedAddress.value = addresses.value[0]?.id || "";
 }
@@ -394,6 +396,7 @@ onMounted(async () => {
   if (token.value) {
     try {
       user.value = await api("/me");
+      if (view.value === "dashboard" && user.value?.role !== "CUSTOMER") void dashboard();
       await personal();
     } catch {
       user.value=null;

@@ -47,7 +47,11 @@ const title = computed(() => ({ "/dashboard/orders": "الطلبات", "/dashboa
       <div v-if="error" class="mb-3 rounded-xl border border-destructive/30 bg-destructive/10 p-3 text-sm font-bold text-destructive" role="alert">{{ error }}</div>
       <div v-if="message" class="mb-3 rounded-xl border border-primary/30 bg-primary/10 p-3 text-sm font-bold text-primary" role="status">{{ message }}</div>
       <NuxtPage v-if="dash" />
-      <p v-else class="text-muted-foreground">جارٍ التحميل...</p>
+      <div v-else class="space-y-3" role="status" aria-live="polite" aria-busy="true">
+        <p class="font-bold text-muted-foreground">جارٍ تحميل بيانات اللوحة، ثواني...</p>
+        <div class="grid grid-cols-3 gap-3"><div v-for="i in 3" :key="i" class="h-24 animate-pulse rounded-2xl bg-muted" /></div>
+        <div class="h-48 animate-pulse rounded-2xl bg-muted" />
+      </div>
     </div>
     <footer class="py-4 text-center text-xs text-muted-foreground">غيار • نسخة تطوير • بيانات تجريبية • الدفع كاش فقط</footer>
   </div>

@@ -574,8 +574,8 @@
     },
     {
       "path": "apps/web/app/composables/useMarket.ts",
-      "bytes": 24459,
-      "sha256": "69fa2cfc02b916387d1e335c013e673cecac4ea208a53dd06d9144d358f4c820"
+      "bytes": 24626,
+      "sha256": "bde11f1444e1acf169e4fc7c1250f842f2dbf3791e8eb58b8cb983b862b1cefa"
     },
     {
       "path": "apps/web/app/lib/utils.ts",
@@ -594,8 +594,8 @@
     },
     {
       "path": "apps/web/app/pages/dashboard.vue",
-      "bytes": 3871,
-      "sha256": "5195e2113769d77060f60813b66a8e08e8ccba4459d43cce031c191fdb4db7e1"
+      "bytes": 4205,
+      "sha256": "22f4ef428e7ddacc52fa12f500f02423a278640377585e87c1d54b6b32053748"
     },
     {
       "path": "apps/web/app/pages/dashboard/add-product.vue",
