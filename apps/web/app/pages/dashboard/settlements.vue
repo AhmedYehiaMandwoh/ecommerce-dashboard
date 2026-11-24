@@ -1,0 +1,9 @@
+<script setup lang="ts">
+const { busy, dash, dashboardTab, money, settleShipping, settlementForm, shippingBalance, user } = useMarket();
+</script>
+
+<template>
+  <div>
+        <section v-if="dashboardTab==='settlements'"><h2>تسويات شحن المنصة</h2><p class="alert">السجل يثبت تحصيل المتجر لحصة الشحن نيابة عن المنصة وتوريدها أو مقاصتها. تسجيل تسوية لا ينفّذ تحويلًا ماليًا. احتفظ بإثبات خارجي لكل مبلغ.</p><div v-for="o in dash.orders.filter((o:any)=>o.shippingEntries?.length)" :key="o.id" class="card section-gap"><h3>{{ o.shop.name }} • #{{ o.id.slice(0,8) }}</h3><p class="price">رصيد مستحق للمنصة: {{ money(shippingBalance(o)) }}</p><p v-if="o.settlementFrozen" class="alert">التسوية مجمدة أثناء مراجعة الإلغاء</p><div v-for="e in o.shippingEntries" :key="e.id" class="line"><strong>{{ e.kind==='COLLECTED_FOR_PLATFORM'?'تحصيل نيابة عن المنصة':e.kind==='REMITTANCE'?'توريد':'مقاصة' }} • {{ money(e.amount) }}</strong><small class="muted">{{ new Date(e.createdAt).toLocaleString('ar-EG') }} • {{ e.reference }} • {{ e.note }}</small></div><form v-if="user.role==='ADMIN' && !o.settlementFrozen && shippingBalance(o)>0" class="form section-gap" @submit.prevent="settleShipping(o)"><label>المبلغ بالقرش<input v-model.number="settlementForm(o).amount" type="number" min="1" :max="shippingBalance(o)" required/></label><label>طريقة التسوية<select v-model="settlementForm(o).method"><option value="REMITTANCE">توريد مثبت</option><option value="OFFSET">مقاصة مثبتة</option></select></label><label>رقم إثبات فريد<input v-model="settlementForm(o).reference" required minlength="8" maxlength="120"/></label><label>تفاصيل الإثبات<textarea v-model="settlementForm(o).note" required minlength="5" maxlength="180"/></label><button :disabled="busy">تسجيل تسوية مثبتة</button></form></div><p v-if="!dash.orders.some((o:any)=>o.shippingEntries?.length)" class="empty">لا توجد حصص شحن محصلة لسه.</p></section>
+  </div>
+</template>

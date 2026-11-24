@@ -33,11 +33,7 @@ const addresses = ref<any[]>([]);
 const vehicles = ref<any[]>([]);
 const orders = ref<any[]>([]);
 const dash = ref<any>(null);
-const dashboardTab = ref(String(route.query.tab || "overview"));
-watch(dashboardTab, (tab) => {
-  if (String(route.query.tab || "overview") !== tab) router.replace({ query: { ...route.query, tab } });
-});
-watch(() => route.query.tab, (tab) => { dashboardTab.value = String(tab || "overview"); });
+const dashboardTab = computed(() => (route.path.startsWith("/dashboard") ? route.path.replace(/\/+$/, "").split("/")[2] || "overview" : "overview"));
 const expandedOrder = ref("");
 const lastPlacedOrder = ref<any>(null);
 const catalogEditor=ref<any>(null);
