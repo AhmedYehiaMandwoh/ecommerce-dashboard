@@ -44,7 +44,7 @@ Merchant and admin screens live in the web dashboard only. Routes: `/dashboard` 
 ### Tests
 - `pnpm test` (API unit), `pnpm test:integration` against a freshly seeded database (it is not repeatable on a used database).
 - `node scripts/dashboard-test.mjs` (Playwright, needs API :4000 and web :3000, `CHROME_PATH` and `DEMO_PASSWORD`).
-- `scripts/visual-test.mjs` still contains obsolete mobile sections and should not be treated as current.
+- The old `scripts/visual-test.mjs` was removed; use `scripts/dashboard-test.mjs` (web) and the mobile app repo `scripts/mobile-test.mjs`.
 
 ### Known gaps
 Native iOS/Android rendering of the NativeWind app is not verified (Expo web only). Tracking art in the app is static artwork, not live GPS. See the repository issues list in this file for remaining PDF fidelity items.

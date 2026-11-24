@@ -40,7 +40,7 @@ actual server deployment; reverse proxy/TLS; real payments/OTP/email/courier; 50
 
 ## Reproduction
 
-See setup instructions and tests in `apps/api/test`. `scripts/visual-test.mjs` expects seeded disposable data and running API/web/mobile-web endpoints on 4000/3000/8081 and an externally supplied `DEMO_PASSWORD`. It uses local Chrome for inspection. It creates test orders and is not safe for production data.
+See setup instructions and tests in `apps/api/test`. `scripts/dashboard-test.mjs` (web dashboard) and the mobile repo `scripts/mobile-test.mjs` expect seeded disposable data and running API/web/mobile-web endpoints on 4000/3000/8081 and an externally supplied `DEMO_PASSWORD`. It uses local Chrome for inspection. It creates test orders and is not safe for production data.
 
 Screenshots in the separate verification attachment contain only fictional seeded data and test orders. They are evidence of the implemented milestone, not substitutes for the remaining original design screens.
 
