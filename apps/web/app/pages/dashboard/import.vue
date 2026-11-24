@@ -1,115 +1,54 @@
 <script setup lang="ts">
-const { busy, createOffer, createProduct, createShop, csv, dash, dashboardTab, doImport, importFile, importHistory, importResult, importShop, loadImportHistory, newShop, offerForm, productForm } = useMarket();
+const { busy, createOffer, createProduct, createShop, csv, dash, doImport, importFile, importHistory, importResult, importShop, loadImportHistory, newShop, offerForm, productForm } = useMarket();
 </script>
 
 <template>
-  <div>
-<template v-if="dashboardTab === 'import'">
-        <div class="two section-gap">
-          <div class="card">
-            <h2>استيراد عروض CSV</h2>
-            <p class="muted">
-              حتى ١٠٠٠ صف للدفعة. الكمية لقطة مطلقة وليست زيادة. المعاينة مرتبطة بنفس الملف والمتجر لمدة ٣٠ دقيقة، وتغيّر المخزون يطلب معاينة جديدة. الكتالوج المعتمد لازم يكون موجود. الأعمدة:
-              sku,brand,part_number,price_minor,stock. السعر بالقرش. المعاينة لا
-              تحفظ.
-            </p>
-            <select v-model="importShop">
-              <option v-for="s in dash.shops" :key="s.id" :value="s.id">
-                {{ s.name }}
-              </option></select
-            ><input
-              class="section-gap"
-              type="file"
-              accept=".csv,text/csv"
-              @change="importFile"
-            /><textarea
-              v-model="csv"
-              rows="5"
-              dir="ltr"
-              placeholder="sku,brand,part_number,price_minor,stock"
-              @input="importResult = null"
-            />
-            <div class="row section-gap">
-              <button
-                :disabled="busy || !csv || !importShop"
-                @click="doImport(false)"
-              >
-                معاينة</button
-              ><button
-                class="orange"
-                :disabled="busy || !importResult || importResult.invalid > 0"
-                @click="doImport(true)"
-              >
-                تأكيد الاستيراد
-              </button>
-            </div>
-            <button class="alt" :disabled="!importShop || busy" @click="loadImportHistory">سجل الاستيراد</button><div v-for="job in importHistory" :key="job.id" class="line"><small dir="ltr">{{job.fileHash.slice(0,16)}} • {{job.state}} • {{job.total}} rows</small></div>
-            <pre v-if="importResult" style="overflow: auto; font-size: 12px">{{
-              JSON.stringify(importResult, null, 2)
-            }}</pre>
-          </div>
-          <div class="card">
-            <h2>إضافة عرض لصنف موجود</h2>
-            <form class="form" @submit.prevent="createOffer">
-              <label
-                >المتجر<select v-model="importShop">
-                  <option v-for="s in dash.shops" :key="s.id" :value="s.id">
-                    {{ s.name }}
-                  </option>
-                </select></label
-              ><label
-                >معرف المنتج<input
-                  v-model="offerForm.productId"
-                  required /></label
-              ><label
-                >كود التاجر SKU<input v-model="offerForm.sku" required /></label
-              ><label
-                >السعر بالقرش<input
-                  v-model.number="offerForm.price"
-                  type="number"
-                  min="1"
-                  required /></label
-              ><label
-                >الكمية<input
-                  v-model.number="offerForm.stock"
-                  type="number"
-                  min="0"
-                  required /></label
-              ><button :disabled="busy">إضافة العرض</button>
-            </form>
-          </div>
-        </div>
-        <div class="two section-gap">
-          <div class="card">
-            <h2>طلب إضافة منتج للكتالوج</h2>
-            <form class="form" @submit.prevent="createProduct">
-              <label
-                >الماركة<input v-model="productForm.brand" required /></label
-              ><label
-                >رقم القطعة<input
-                  v-model="productForm.partNumber"
-                  required /></label
-              ><label
-                >اسم المنتج<input v-model="productForm.title" required /></label
-              ><label
-                >القسم<input v-model="productForm.category" required /></label
-              ><label
-                >الوصف<textarea
-                  v-model="productForm.description"
-                  required
-                /></label
-              ><button :disabled="busy">إرسال للمراجعة</button>
-            </form>
-          </div>
-          <div class="card">
-            <h2>إضافة متجر</h2>
-            <form class="form" @submit.prevent="createShop">
-              <label>اسم المتجر<input v-model="newShop.name" required /></label
-              ><label>المدينة<input v-model="newShop.city" required /></label
-              ><button :disabled="busy">إضافة للمراجعة</button>
-            </form>
-          </div>
-        </div>
-        </template>
+  <div class="grid gap-4 lg:grid-cols-2">
+    <Card class="space-y-3 p-5">
+      <h2 class="text-lg font-extrabold">استيراد عروض CSV</h2>
+      <p class="text-sm text-muted-foreground">حتى ١٠٠٠ صف للدفعة. الكمية لقطة مطلقة وليست زيادة. المعاينة لا تحفظ. الأعمدة: sku,brand,part_number,price_minor,stock. السعر بالقرش.</p>
+      <Label>المتجر</Label>
+      <Select v-model="importShop"><SelectTrigger class="w-full"><SelectValue placeholder="اختر المتجر" /></SelectTrigger><SelectContent><SelectItem v-for="s in dash.shops" :key="s.id" :value="s.id">{{ s.name }}</SelectItem></SelectContent></Select>
+      <Input type="file" accept=".csv,text/csv" @change="importFile" />
+      <Textarea v-model="csv" rows="5" dir="ltr" placeholder="sku,brand,part_number,price_minor,stock" @input="importResult = null" />
+      <div class="grid grid-cols-2 gap-3">
+        <Button variant="outline" :disabled="busy || !csv || !importShop" @click="doImport(false)">معاينة</Button>
+        <Button :disabled="busy || !importResult || importResult.invalid > 0" @click="doImport(true)">تأكيد الاستيراد</Button>
+      </div>
+      <Button variant="outline" size="sm" :disabled="!importShop || busy" @click="loadImportHistory">سجل الاستيراد</Button>
+      <div v-for="job in importHistory" :key="job.id" class="border-t pt-2 text-sm"><small dir="ltr">{{job.fileHash.slice(0,16)}} • {{job.state}} • {{job.total}} rows</small></div>
+      <pre v-if="importResult" dir="ltr" class="max-h-64 overflow-auto rounded-lg bg-secondary p-3 text-xs">{{ JSON.stringify(importResult, null, 2) }}</pre>
+    </Card>
+    <Card class="space-y-2 p-5">
+      <h2 class="text-lg font-extrabold">إضافة عرض لصنف موجود</h2>
+      <form class="space-y-2" @submit.prevent="createOffer">
+        <Label>المتجر</Label>
+        <Select v-model="importShop"><SelectTrigger class="w-full"><SelectValue placeholder="اختر المتجر" /></SelectTrigger><SelectContent><SelectItem v-for="s in dash.shops" :key="s.id" :value="s.id">{{ s.name }}</SelectItem></SelectContent></Select>
+        <Label>معرف المنتج</Label><Input v-model="offerForm.productId" required />
+        <Label>كود التاجر SKU</Label><Input v-model="offerForm.sku" required />
+        <Label>السعر بالقرش</Label><Input v-model.number="offerForm.price" type="number" min="1" required />
+        <Label>الكمية</Label><Input v-model.number="offerForm.stock" type="number" min="0" required />
+        <Button type="submit" class="w-full" :disabled="busy">إضافة العرض</Button>
+      </form>
+    </Card>
+    <Card class="space-y-2 p-5">
+      <h2 class="text-lg font-extrabold">طلب إضافة منتج للكتالوج</h2>
+      <form class="space-y-2" @submit.prevent="createProduct">
+        <Label>الماركة</Label><Input v-model="productForm.brand" required />
+        <Label>رقم القطعة</Label><Input v-model="productForm.partNumber" required />
+        <Label>اسم المنتج</Label><Input v-model="productForm.title" required />
+        <Label>القسم</Label><Input v-model="productForm.category" required />
+        <Label>الوصف</Label><Textarea v-model="productForm.description" required />
+        <Button type="submit" class="w-full" :disabled="busy">إرسال للمراجعة</Button>
+      </form>
+    </Card>
+    <Card class="space-y-2 p-5">
+      <h2 class="text-lg font-extrabold">إضافة متجر</h2>
+      <form class="space-y-2" @submit.prevent="createShop">
+        <Label>اسم المتجر</Label><Input v-model="newShop.name" required />
+        <Label>المدينة</Label><Input v-model="newShop.city" required />
+        <Button type="submit" class="w-full" :disabled="busy">إضافة للمراجعة</Button>
+      </form>
+    </Card>
   </div>
 </template>
