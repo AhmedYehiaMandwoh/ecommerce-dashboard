@@ -984,8 +984,8 @@
     },
     {
       "path": "scripts/verify-local.mjs",
-      "bytes": 2227,
-      "sha256": "fb38887c667725bfada3548424108f3ee757cb4310be9d8c0d7b539db5c30932"
+      "bytes": 2279,
+      "sha256": "ce602575856cceacd3d34a86b66df3621faa09e36163c27fa40bd857e17f913c"
     }
   ]
 }
