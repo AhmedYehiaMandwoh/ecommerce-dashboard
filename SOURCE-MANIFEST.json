@@ -644,8 +644,8 @@
     },
     {
       "path": "apps/web/app/pages/dashboard/orders.vue",
-      "bytes": 5303,
-      "sha256": "4b5ef9aaf8a9b6ceb970eb48c2129f1ae31dfb64e3162ab919e6edeffe315652"
+      "bytes": 5245,
+      "sha256": "4be70666f957b40d6d6bf1ee840b8e0d964deec213813cb960d62f59479a9627"
     },
     {
       "path": "apps/web/app/pages/dashboard/returns.vue",
