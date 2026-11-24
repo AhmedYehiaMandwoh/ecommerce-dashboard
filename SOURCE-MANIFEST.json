@@ -88,6 +88,11 @@
       "sha256": "514943fa964ffd0d0ed72b8ed5a5bb42d686a55b57724d55827ad84029744340"
     },
     {
+      "path": "apps/api/prisma/migrations/20261124194000_product_proposal/migration.sql",
+      "bytes": 346,
+      "sha256": "1baa55d4468c9f167c9226670c6d14f4cceb798c2b94b5e445e8d09d1eb39177"
+    },
+    {
       "path": "apps/api/prisma/migrations/migration_lock.toml",
       "bytes": 19,
       "sha256": "00969ee045a3c3f087a3460235a1a744c1e35bde4441e0c55e163225eb077608"
@@ -624,8 +629,8 @@
     },
     {
       "path": "apps/web/app/pages/dashboard/index.vue",
-      "bytes": 6549,
-      "sha256": "f742efb8efde3f2ae45a71db4f43a56a7c97b68f861e3feb81fd15c9bc01f65c"
+      "bytes": 7757,
+      "sha256": "0d4942fed18f272dfdef0761c81f5ace1016d715b5a232126cba03cceed1157a"
     },
     {
       "path": "apps/web/app/pages/dashboard/inventory.vue",

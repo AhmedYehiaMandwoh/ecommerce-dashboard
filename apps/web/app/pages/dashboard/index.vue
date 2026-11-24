@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ShoppingCart, Package, FileText, Store, Clock, ChevronLeft } from "lucide-vue-next";
+import { ShoppingCart, Package, FileText, Store, Clock, ChevronLeft, Info } from "lucide-vue-next";
 const { dash, money, user, statusLabels, imageUrl } = useMarket();
 const admin = computed(() => user.value?.role === "ADMIN");
 const todayCount = computed(() => dash.value.orders.filter((o: any) => new Date(o.createdAt).toDateString() === new Date().toDateString()).length);
@@ -11,9 +11,14 @@ const week = computed(() => {
   const counts = days.map(() => 0);
   const since = Date.now() - 7 * 864e5;
   for (const o of dash.value.orders) if (new Date(o.createdAt).getTime() >= since) counts[new Date(o.createdAt).getDay()]! += 1;
-  const max = Math.max(1, ...counts);
-  return days.map((d, i) => ({ d, n: counts[i] ?? 0, h: Math.round(((counts[i] ?? 0) / max) * 100) }));
+  return days.map((d, i) => ({ d, n: counts[i] ?? 0, h: Math.round(((counts[i] ?? 0) / yMax.value) * 100) }));
 });
+const yMax = computed(() => {
+  const m = Math.max(1, ...(() => { const c = days.map(() => 0); const since = Date.now() - 7 * 864e5; for (const o of dash.value.orders) if (new Date(o.createdAt).getTime() >= since) c[new Date(o.createdAt).getDay()]! += 1; return c; })());
+  const step = m <= 4 ? 1 : m <= 12 ? 4 : m <= 40 ? 10 : m <= 80 ? 20 : Math.pow(10, String(m).length - 1) * 2;
+  return Math.ceil(m / step) * step;
+});
+const yTicks = computed(() => { const n = yMax.value <= 4 ? yMax.value : 4; return Array.from({ length: n + 1 }, (_, i) => Math.round((yMax.value / n) * (n - i))); });
 const shopName = computed(() => dash.value.shops?.[0]?.name || "متجرك");
 const badgeVariant = (s: string) => (s === "PLACED" ? "default" : s === "CANCELLED" ? "destructive" : "secondary");
 </script>
@@ -38,13 +43,16 @@ const badgeVariant = (s: string) => (s === "PLACED" ? "default" : s === "CANCELL
     </div>
     <p class="text-center text-xs text-muted-foreground">أرقام تجريبية من قاعدة بيانات الاختبار • إجمالي المسلّم {{ money(dash.summary.revenue) }}</p>
 
-    <Card v-if="admin" class="p-5">
-      <h3 class="mb-3 font-extrabold">الطلبات الأسبوعية (آخر ٧ أيام)</h3>
-      <div class="flex h-44 items-end gap-3">
-        <div v-for="w in week" :key="w.d" class="flex h-full flex-1 flex-col items-center gap-1">
-          <span class="text-xs font-bold">{{ w.n }}</span>
-          <div class="flex w-full flex-1 items-end"><div class="w-full rounded-t-md bg-accent" :style="{ height: Math.max(4, w.h) + '%' }" /></div>
-          <span class="text-[10px] text-muted-foreground">{{ w.d }}</span>
+    <Card v-if="admin" class="p-4">
+      <div class="mb-2 flex items-center justify-between"><h3 class="font-extrabold">الطلبات الأسبوعية (آخر ٧ أيام)</h3><span class="flex items-center gap-1 text-[10px] text-muted-foreground"><Info class="size-3" /> بيانات اختبار</span></div>
+      <div class="flex gap-2">
+        <div class="flex h-32 flex-col justify-between pb-0 text-[10px] text-muted-foreground" dir="ltr"><span v-for="t in yTicks" :key="t" class="leading-none">{{ t }}</span></div>
+        <div class="relative flex-1">
+          <div class="pointer-events-none absolute inset-x-0 top-0 flex h-32 flex-col justify-between"><i v-for="t in yTicks" :key="t" class="block border-t border-dashed border-border" /></div>
+          <div class="relative flex h-32 items-end gap-2">
+            <div v-for="w in week" :key="w.d" class="flex h-full flex-1 items-end"><div class="w-full rounded-t-md bg-accent" :style="{ height: w.n ? w.h + '%' : '2px' }" :title="w.n + ' طلب'" /></div>
+          </div>
+          <div class="mt-1 flex gap-2"><span v-for="w in week" :key="w.d" class="flex-1 text-center text-[10px] text-muted-foreground">{{ w.d }}</span></div>
         </div>
       </div>
     </Card>
