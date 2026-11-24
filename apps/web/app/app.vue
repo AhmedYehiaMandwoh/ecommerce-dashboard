@@ -3,7 +3,8 @@ const { view, cart, user, error, message, busy, go, dashboard, logout } = useMar
 </script>
 
 <template>
-  <div :class="{ 'recovered-home': view === 'home', 'marketplace-shell': view !== 'home' }">
+  <div v-if="view === 'dashboard'" class="min-h-screen bg-background text-foreground" dir="rtl"><NuxtPage /></div>
+  <div v-else :class="{ 'recovered-home': view === 'home', 'marketplace-shell': view !== 'home' }">
     <NuxtPage v-if="view === 'home'" />
     <div v-if="view !== 'home'" class="notice">
       نسخة تطوير • كل المنتجات والأسعار والطلبات للتجربة فقط • الدفع والتوصيل

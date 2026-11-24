@@ -4,7 +4,7 @@ const { busy, dash, dashboardTab, decideCancellation, decisionForm, expandedOrde
 
 <template>
   <div>
-        <template v-if="dashboardTab === 'overview' || dashboardTab === 'orders'">
+        <template v-if="dashboardTab === 'overview' || dashboardTab === 'orders' || dashboardTab === 'legacy-orders'">
         <div class="row between"><h2>{{ dashboardTab === 'overview' ? 'أحدث الطلبات' : 'متابعة الطلبات' }}</h2><button v-if="dashboardTab === 'overview'" class="alt" @click="dashboardTab='orders'">عرض الكل</button></div>
         <div v-if="!dash.orders.length" class="empty">مفيش طلبات لسه.</div>
         <div v-for="o in (dashboardTab === 'overview' ? dash.orders.slice(0,3) : dash.orders)" :key="o.id" class="card section-gap">

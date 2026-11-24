@@ -1,75 +1,35 @@
 <script setup lang="ts">
-const { api, approve, busy, catalogEditor, dash, dashboard, dashboardTab, deleteFitment, editCatalog, fitmentForm, imageUrl, products, run, saveCatalog, saveFitment, uploadCatalogImage, user } = useMarket();
+import { Info, MessageSquare } from "lucide-vue-next";
+const { api, approve, busy, dash, editCatalog, imageUrl, tickets, user } = useMarket();
+const tab = ref("products");
+const pending = computed(() => (dash.value.products || []).filter((p: any) => !p.approved));
+const open = computed(() => (tickets.value || []).filter((t: any) => t.state === "OPEN"));
+onMounted(async () => { try { tickets.value = await api("/support-tickets"); } catch {} });
+const edit = (p: any) => { editCatalog(p); nextTick(() => document.getElementById("review-tools")?.scrollIntoView({ behavior: "smooth" })); };
 </script>
 
 <template>
-  <div>
-<template v-if="user.role === 'ADMIN' && dashboardTab === 'review'"
-          ><h2>مراجعة الكتالوج</h2>
-          <div class="card scroll">
-            <table>
-              <thead>
-                <tr>
-                  <th>المنتج</th>
-                  <th>المعرف</th>
-                  <th>الحالة</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="p in dash.products" :key="p.id">
-                  <td>{{ p.brand }} • {{ p.partNumber }}<br />{{ p.title }}<button class="alt" @click="editCatalog(p)">تحرير المنتج</button></td>
-                  <td>
-                    <small>{{ p.id }}</small>
-                  </td>
-                  <td>
-                    <button
-                      :class="p.approved ? 'alt' : 'orange'"
-                      @click="approve('products', p.id, !p.approved)"
-                    >
-                      {{ p.approved ? "إيقاف" : "اعتماد" }}
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <section v-if="catalogEditor" class="card section-gap catalog-editor"><h2>تحرير المنتج</h2><p>{{catalogEditor.brand}} • {{catalogEditor.partNumber}}</p><p class="muted">الهوية ثابتة. تغير العبوة أو رقم القطعة يحتاج منتجًا جديدًا. تعديل البيانات أو الصورة يوقف الاعتماد لحين المراجعة.</p><img :src="imageUrl(catalogEditor.image)" alt="صورة المنتج" style="width:160px;height:130px;object-fit:contain"/><label>صورة المنتج<input type="file" accept="image/png,image/jpeg,image/webp" @change="uploadCatalogImage"/></label><p class="muted">JPEG أو PNG أو WebP حتى ٥ ميجابايت. ارفع صورًا تملك حق استخدامها فقط.</p><form class="form" @submit.prevent="saveCatalog"><label>عنوان المنتج<input v-model="catalogEditor.title" required/></label><label>قسم المنتج<input v-model="catalogEditor.category" required/></label><label>وصف المنتج<textarea v-model="catalogEditor.description"/></label><button :disabled="busy">حفظ تفاصيل المنتج</button></form><h3>توافق المركبات</h3><p class="muted">لا تعتمد توافقًا من التخمين. التوافق المعتمد فقط يظهر للعملاء وفي البحث.</p><div v-for="f in catalogEditor.fitments" :key="f.id">{{f.make}} {{f.model}} {{f.fromYear}}-{{f.toYear}} {{f.engine}} • {{f.verified?'معتمد':'غير معتمد'}}<button class="danger" @click="deleteFitment(f.id)">حذف التوافق</button></div><form class="form" @submit.prevent="saveFitment"><label>ماركة التوافق<input v-model="fitmentForm.make" required/></label><label>موديل التوافق<input v-model="fitmentForm.model" required/></label><label>من سنة<input type="number" v-model.number="fitmentForm.fromYear" min="1950" max="2100"/></label><label>إلى سنة<input type="number" v-model.number="fitmentForm.toYear" min="1950" max="2100"/></label><label>محرك التوافق<input v-model="fitmentForm.engine" required/></label><label><input type="checkbox" v-model="fitmentForm.verified"/> تمت مراجعة مصدر التوافق</label><button :disabled="busy">حفظ التوافق</button></form></section>
-          <h2>الحسابات</h2>
-          <div class="card scroll">
-            <table>
-              <thead>
-                <tr>
-                  <th>الاسم</th>
-                  <th>البريد</th>
-                  <th>الدور</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="u in dash.users" :key="u.id">
-                  <td>{{ u.name }}</td>
-                  <td>{{ u.email }}</td>
-                  <td>{{ u.role }}</td>
-                  <td>
-                    <button
-                      v-if="u.role === 'CUSTOMER'"
-                      @click="
-                        run(async () => {
-                          await api(
-                            '/admin/users/' + u.id + '/merchant',
-                            'PATCH',
-                          );
-                          dash = await api('/dashboard');
-                        })
-                      "
-                    >
-                      تحويل لتاجر
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div></template
-        >
+  <div v-if="user.role === 'ADMIN'" class="space-y-4">
+    <Tabs v-model="tab">
+      <TabsList class="w-full">
+        <TabsTrigger value="products">المنتجات <Badge class="mr-2 bg-accent text-accent-foreground">{{ pending.length }}</Badge></TabsTrigger>
+        <TabsTrigger value="complaints">الشكاوى <Badge variant="secondary" class="mr-2">{{ open.length }}</Badge></TabsTrigger>
+      </TabsList>
+    </Tabs>
+    <template v-if="tab === 'products'">
+      <p v-if="!pending.length" class="text-muted-foreground">لا توجد منتجات بانتظار المراجعة.</p>
+      <Card v-for="p in pending" :key="p.id" class="flex-row gap-4 p-4">
+        <img :src="imageUrl(p.image || '/assets/shop-icon.png')" alt="" class="size-28 rounded-xl bg-secondary object-contain" />
+        <div class="flex-1 space-y-2"><h3 class="text-lg font-extrabold">{{ p.title }}</h3><p class="text-sm text-muted-foreground">{{ p.brand }} • {{ p.partNumber }}</p><Badge variant="outline" class="border-accent text-accent">بانتظار المراجعة</Badge>
+          <div class="grid grid-cols-3 gap-2"><Button class="bg-accent text-accent-foreground" :disabled="busy" @click="approve('products', p.id, true)">قبول</Button><Button variant="outline" class="border-accent text-accent" @click="edit(p)">طلب تعديل</Button><Button variant="outline" @click="edit(p)">عرض</Button></div></div>
+      </Card>
+    </template>
+    <template v-else>
+      <p v-if="!open.length" class="text-muted-foreground">لا توجد شكاوى مفتوحة.</p>
+      <NuxtLink v-for="t in open" :key="t.id" to="/dashboard/support"><Card class="mb-2 flex-row items-center gap-3 bg-orange-50 p-4"><MessageSquare class="size-8 text-primary" /><div class="flex-1"><div class="font-bold">{{ t.subject }}</div><div class="text-xs text-muted-foreground">{{ t.message.slice(0, 80) }}</div></div><Badge class="bg-accent text-accent-foreground">مفتوح</Badge></Card></NuxtLink>
+    </template>
+    <p class="flex items-center gap-2 text-xs text-muted-foreground"><Info class="size-4" /> بيانات تجريبية للاختبار.</p>
+    <div id="review-tools"><h2 class="mb-2 mt-6 text-lg font-extrabold">أدوات المراجعة التفصيلية</h2><ReviewTools /></div>
   </div>
+  <p v-else class="text-muted-foreground">هذه الصفحة للإدارة فقط.</p>
 </template>

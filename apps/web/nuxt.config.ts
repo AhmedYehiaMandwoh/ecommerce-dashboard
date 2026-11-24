@@ -1,4 +1,8 @@
+import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
+  modules: ["shadcn-nuxt"],
+  shadcn: { prefix: "", componentDir: "./app/components/ui" },
+  vite: { plugins: [tailwindcss() as any] },
   compatibilityDate: "2026-11-24",
   devtools: { enabled: false },
   runtimeConfig: {
@@ -18,5 +22,5 @@ export default defineNuxtConfig({
       ],
     },
   },
-  css: ["~/assets/main.css"],
+  css: ["~/assets/css/tailwind.css"],
 });
