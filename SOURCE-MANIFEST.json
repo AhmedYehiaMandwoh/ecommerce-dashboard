@@ -344,8 +344,8 @@
     },
     {
       "path": "apps/web/app/components/ReferenceHome.vue",
-      "bytes": 19269,
-      "sha256": "17badcc2e7911127a685e45af9b4d96765beb5a0f0e9d6bb123fb3a33d93df23"
+      "bytes": 19285,
+      "sha256": "b68420fda6c6393f86fd7f542bb5dee9b54f7bedb710c2cc3e96d73924b2b6ce"
     },
     {
       "path": "apps/web/app/components/ReviewTools.vue",
@@ -598,9 +598,19 @@
       "sha256": "9212587988979849b3bbcddebdf46d9b1f80a513c0cf92391d83c9d50b648007"
     },
     {
+      "path": "apps/web/app/composables/useI18n.ts",
+      "bytes": 996,
+      "sha256": "b0b4e7e1e0a0e65784e3bc575bb9f8292cb7e0cb4429ef06b93d2ab186b4764f"
+    },
+    {
       "path": "apps/web/app/composables/useMarket.ts",
-      "bytes": 25341,
-      "sha256": "3906f0145fc17c116dc8a69cf69f008d7362e126e2d2c69188e96c90ec29960c"
+      "bytes": 25534,
+      "sha256": "d158aa0fb24ae8736e345aa083d2ea8b8cea742a30c99316fa401e2e20298927"
+    },
+    {
+      "path": "apps/web/app/i18n-en.json",
+      "bytes": 42324,
+      "sha256": "83dd1c0c5818ed9bf9fad7bad23b3ef169884e1e8d3fe29c0d0da20fbcc48a20"
     },
     {
       "path": "apps/web/app/lib/utils.ts",

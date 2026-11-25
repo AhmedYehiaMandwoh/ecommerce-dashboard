@@ -1,3 +1,4 @@
+import apiAr from "~/i18n-api-ar.json";
 import {startRegistration,startAuthentication} from '@simplewebauthn/browser';
 
 export function useMarket(): any {
@@ -174,9 +175,10 @@ async function run(fn: () => Promise<void>) {
     await fn();
   } catch (e: any) {
     const m = e.data?.message;
+    const loc = (x: string) => (useI18n().locale.value === "ar" ? ((apiAr as Record<string, string>)[x] ?? x) : x);
     error.value = Array.isArray(m)
-      ? m.join(t('، '))
-      : m || t('تعذر الاتصال. تأكد من تشغيل الخادم وحاول مرة أخرى.');
+      ? m.map((x: string) => loc(x)).join(t('، '))
+      : (m ? loc(m) : t('تعذر الاتصال. تأكد من تشغيل الخادم وحاول مرة أخرى.'));
   } finally {
     busy.value = false;
   }

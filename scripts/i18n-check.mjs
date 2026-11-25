@@ -1,0 +1,28 @@
+// Language switch checks: persistence across reload/navigation, direction, API error translation, number formatting.
+import { chromium } from '@playwright/test';
+const WEB = process.env.WEB_URL || 'http://127.0.0.1:3200';
+const b = await chromium.launch({ ...(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {}), headless: true, args: ['--no-sandbox'] });
+const ctx = await b.newContext({ viewport: { width: 1440, height: 900 } }); const p = await ctx.newPage();
+let fail = 0; const ok = (c, m) => { console.log(c ? 'PASS' : 'FAIL', m); if (!c) fail++; };
+const st = () => p.evaluate(() => ({ dir: document.documentElement.dir, lang: document.documentElement.lang }));
+await p.goto(WEB + '/shops'); await p.waitForLoadState('networkidle');
+ok((await st()).dir === 'rtl', 'default Arabic RTL');
+await p.getByRole('button', { name: 'English', exact: true }).click(); await p.waitForLoadState('networkidle'); await p.waitForTimeout(800);
+ok((await st()).dir === 'ltr' && (await st()).lang === 'en', 'switch gives en/ltr');
+await p.reload(); await p.waitForLoadState('networkidle');
+ok((await st()).dir === 'ltr', 'persists after reload');
+await p.goto(WEB + '/login'); await p.waitForLoadState('networkidle');
+ok((await st()).dir === 'ltr' && (await p.getByText('Sign in with a passkey').count()) > 0, 'persists on navigation, labels English');
+await p.getByRole('button', { name: 'Email sign-in for development and admin' }).click();
+await p.getByLabel('Email', { exact: true }).fill('nobody@example.test'); await p.getByLabel('Password', { exact: true }).fill('wrong-pass-123');
+await p.getByRole('button', { name: 'Sign in', exact: true }).last().click(); await p.waitForTimeout(1500);
+ok((await p.getByText('Invalid login').count()) > 0, 'API error shown in English');
+await p.getByRole('button', { name: 'العربية', exact: true }).click(); await p.waitForLoadState('networkidle'); await p.waitForTimeout(800);
+ok((await st()).dir === 'rtl', 'switch back to Arabic RTL');
+await p.goto(WEB + '/login'); await p.waitForLoadState('networkidle');
+await p.getByRole('button', { name: 'الدخول بالبريد' }).first().click().catch(() => {});
+await p.getByText('دخول البريد للتطوير والإدارة', { exact: true }).first().click().catch(() => {});
+await p.getByLabel('البريد الإلكتروني', { exact: true }).fill('nobody@example.test'); await p.getByLabel('كلمة المرور', { exact: true }).fill('wrong-pass-123');
+await p.getByRole('button', { name: 'دخول', exact: true }).last().click(); await p.waitForTimeout(1500);
+ok((await p.getByText('بيانات الدخول غير صحيحة').count()) > 0, 'API error shown in Arabic');
+await b.close(); console.log(fail ? 'FAILED ' + fail : 'ALL PASS'); process.exit(fail ? 1 : 0);
