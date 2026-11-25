@@ -215,6 +215,8 @@ const { busy, categories, category, fitmentVehicle, go, imageUrl, load, login, m
 </template>
 
 <style>
-.shop-thumbs{display:flex;gap:6px;margin:6px 0}.shop-thumbs img{width:56px;height:42px;object-fit:cover;border-radius:8px}
-.shop-desc{color:#334a63;font-size:14px;margin:4px 0}.shop-hours{color:#5b6b80;font-size:13px;margin:2px 0 8px}
+.store-discovery-card .store-cover{width:100%;height:auto!important;aspect-ratio:16/9;object-fit:cover;display:block}
+.shop-thumbs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:10px 14px 4px}.shop-thumbs img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:10px;display:block}
+.shop-desc{color:#334a63;font-size:15px;line-height:1.6;margin:6px 14px 4px}.shop-hours{color:#5b6b80;font-size:14px;margin:2px 14px 10px}
+@media(min-width:1200px){.store-discovery{grid-template-columns:repeat(auto-fill,minmax(360px,1fr))!important;gap:24px!important}}
 </style>

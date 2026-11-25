@@ -22,7 +22,7 @@ await page.getByRole('button', { name: 'دخول البريد للتطوير و�
 await page.getByRole('button', { name: 'لسه جديد؟ اعمل حساب' }).click();
 await page.getByLabel('الاسم', { exact: true }).fill('صاحب محل'); await page.getByLabel('البريد الإلكتروني', { exact: true }).fill(email);
 await page.getByLabel('كلمة المرور', { exact: true }).fill('Test-pass-12345'); await page.getByRole('button', { name: 'إنشاء الحساب' }).click(); await page.waitForTimeout(2500);
-await page.evaluate(() => window.useNuxtApp().$router.push('/profile')); await page.waitForTimeout(1500);
+await page.evaluate(() => window.useNuxtApp().$router.push('/join-shop')); await page.waitForTimeout(1500);
 const f = page.locator('.saf');
 await f.getByLabel('اسم المحل').fill(shopName); await f.getByLabel('المدينة *').fill('القاهرة'); await f.getByLabel('الحي أو المنطقة').fill('مدينة نصر');
 await f.getByLabel('مواعيد العمل').fill('يوميًا 10 ص إلى 10 م'); await f.getByLabel('نبذة عن المحل').fill('قطع غيار يابانية وكورية بضمان الوكيل.');
@@ -42,7 +42,11 @@ await page.reload(); await page.waitForLoadState('networkidle'); await page.wait
 const t = await page.locator('.saf').innerText();
 ok(t.includes('reg.pdf'), 'private document persisted after reload'); ok(await page.locator('.saf .spm-item').count() === 2, 'two photos persisted after reload');
 ok(await page.locator('.saf input[maxlength="100"]').first().inputValue() === shopName, 'form values restored from server');
-await page.screenshot({ path: OUT + '/apply-photos-1440.png', fullPage: true });
+await page.screenshot({ path: OUT + '/join-1440-top.png' });
+await page.locator('.saf-media').scrollIntoViewIfNeeded(); await page.evaluate(() => window.scrollTo(0, 500)); await page.waitForTimeout(400); await page.screenshot({ path: OUT + '/join-1440-media.png' });
+await page.setViewportSize({ width: 390, height: 727 }); await page.waitForTimeout(500); await page.evaluate(() => window.scrollTo(0, 0)); await page.screenshot({ path: OUT + '/join-390-top.png' });
+await page.locator('.saf-media').scrollIntoViewIfNeeded(); await page.waitForTimeout(400); await page.screenshot({ path: OUT + '/join-390-media.png' });
+await page.setViewportSize({ width: 1440, height: 900 });
 const token = await page.evaluate(() => sessionStorage.getItem('ghiyar-token'));
 const mine = await (await j('/shop-application', { headers: { Authorization: 'Bearer ' + token } })).json();
 ok(mine.registrationNumber === 'RC-123456' && mine.description.startsWith('قطع غيار') && mine.photos.length === 2 && mine.documents.length === 1, 'API returns persisted fields, photos, documents');
@@ -85,6 +89,6 @@ await page.screenshot({ path: OUT + '/merchant-shop-profile-1440.png', fullPage:
 const pub2 = (await (await j('/shops')).json()).find((s) => s.name === shopName);
 ok(pub2.workingHours.startsWith('السبت') && pub2.photos.length === 3, 'merchant edit persisted: hours changed, third photo added');
 await page.setViewportSize({ width: 390, height: 727 }); await page.waitForTimeout(800); await page.screenshot({ path: OUT + '/merchant-shop-profile-390.png' });
-await pg2.setViewportSize({ width: 390, height: 727 }); await pg2.waitForTimeout(600); await card.scrollIntoViewIfNeeded(); await pg2.screenshot({ path: OUT + '/shops-page-390.png' });
+await card.screenshot({ path: OUT + '/shop-card-final.png' }); await pg2.setViewportSize({ width: 390, height: 727 }); await pg2.waitForTimeout(600); await card.scrollIntoViewIfNeeded(); await pg2.screenshot({ path: OUT + '/shops-page-390.png' });
 ok(errs.length === 0, 'no page errors ' + errs.slice(0, 2).join('|'));
 await browser.close();

@@ -36,6 +36,7 @@ const docOf = (k: string) => (app.value?.documents || []).find((d: any) => d.kin
     <h2>انضم كتاجر</h2>
     <p class="muted">الإدارة بتراجع الطلب قبل تفعيل البيع. المراجعة يدوية وليست توثيقًا آليًا. الحقول اللي عليها * إجبارية، والباقي اختياري.</p>
     <div v-if="app" class="alert">حالة طلبك: <b>{{ states[app.state] || app.state }}</b><span v-if="app.reviewReason"> • {{ app.reviewReason }}</span></div>
+    <div class="saf-cols">
     <form v-if="editable" class="saf-form" @submit.prevent="save">
       <fieldset class="saf-group">
         <legend>1. بيانات المحل <small>تظهر للعملاء بعد الموافقة</small></legend>
@@ -71,6 +72,7 @@ const docOf = (k: string) => (app.value?.documents || []).find((d: any) => d.kin
       <button :disabled="busy" class="saf-save">{{ app ? 'حفظ التعديلات' : 'إرسال طلب انضمام' }}</button>
     </form>
 
+    <div class="saf-media">
     <template v-if="app && editable && app.state === 'PENDING'">
       <fieldset class="saf-group">
         <legend>5. صور المحل <small>تظهر للعملاء</small></legend>
@@ -88,7 +90,9 @@ const docOf = (k: string) => (app.value?.documents || []).find((d: any) => d.kin
         <p v-if="docErr" class="saf-err" role="alert">{{ docErr }}</p>
       </fieldset>
     </template>
-    <p v-else-if="!app && editable" class="muted">بعد إرسال الطلب تقدر ترفع صور المحل والمستندات.</p>
+    <p v-else-if="!app && editable" class="saf-hint">بعد إرسال الطلب تقدر ترفع صور المحل والمستندات هنا، في قسم الصور وقسم المستندات الخاصة.</p>
+    </div>
+    </div>
   </section>
 </template>
 
@@ -100,8 +104,9 @@ const docOf = (k: string) => (app.value?.documents || []).find((d: any) => d.kin
 .saf-grid label{display:grid;gap:4px;font-weight:600;font-size:14px;align-content:start}.saf-grid label.wide{grid-column:1/-1}
 .saf-grid small{font-weight:400;color:#5b6b80}
 @media(max-width:700px){.saf-grid{grid-template-columns:1fr}}
-@media(min-width:1200px){.saf-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.saf-grid label.wide{grid-column:span 2}}
-.saf-docs{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+@media(min-width:1100px){.saf-cols{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:24px;align-items:start}.saf-media{position:sticky;top:12px}}
+.saf-hint{border:1px dashed #b9c6d8;border-radius:16px;padding:16px;color:#5b6b80;margin:12px 0 0}
+.saf-docs{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}.saf{padding:20px 24px!important}
 .saf-doc{display:grid;gap:6px;border:1px dashed #b9c6d8;border-radius:12px;padding:12px;align-content:start}.saf-doc small{color:#5b6b80}
 .saf-file{font-size:13px;word-break:break-all}.saf-x{color:#b3261e;background:none;border:0;padding:0 6px;text-decoration:underline}
 .saf-up{display:inline-flex;justify-content:center;align-items:center;min-height:42px;border-radius:12px;background:#eaf1fc;color:#0b5bd3;font-weight:700;cursor:pointer}.saf-up input{display:none}

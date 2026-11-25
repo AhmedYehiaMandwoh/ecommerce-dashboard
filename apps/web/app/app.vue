@@ -22,7 +22,7 @@ watch(() => route.path, () => {
     </div>
     <header v-if="view !== 'home'">
       <a href="/" class="brand"><img src="/assets/reference-logo.png" alt="غيار" /></a>
-      <div class="top"><strong>{{ ({shops:"المحلات ونتائج البحث",product:"تفاصيل المنتج",cart:"سلة المشتريات",checkout:"إتمام الطلب",orders:"طلباتي",profile:"حسابي",login:"أهلًا بيك",dashboard:"لوحة التحكم"} as Record<string,string>)[view] }}</strong></div>
+      <div class="top"><strong>{{ ({shops:"المحلات ونتائج البحث",product:"تفاصيل المنتج",cart:"سلة المشتريات",checkout:"إتمام الطلب",orders:"طلباتي",profile:"حسابي","join-shop":"الانضمام كتاجر",login:"أهلًا بيك",dashboard:"لوحة التحكم"} as Record<string,string>)[view] }}</strong></div>
       <button v-if="user" @click="go('profile')">أهلًا {{ user.name }}</button
       ><button v-else @click="go('login')">دخول / حساب جديد</button
       ><button @click="go('cart')">
