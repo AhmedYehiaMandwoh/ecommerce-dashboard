@@ -22,7 +22,7 @@ onMounted(async () => {
             <p class="muted">{{ detail.brand }} • {{ detail.partNumber }}</p>
             <h1>{{ detail.title }}</h1>
             <div class="product-primary-offer" v-if="detail.offers[0]"><p class="price">{{ money(detail.offers[0].price) }}</p><button class="orange" :disabled="!detail.offers[0].stock" @click="add(detail,detail.offers[0])">{{ detail.offers[0].stock?t('أضف للسلة'):t('غير متوفر') }}</button></div>
-            <button class="product-shop-link" v-if="detail.offers[0]" @click="shopFilter=detail.offers[0].shopId;go('shops');load()"><img src="/assets/shop-icon.png" alt=""/><span>{{ detail.offers[0].shop.name }}<small>{{ t('قطع غيار وصيانة') }}</small></span><b>‹</b></button>
+            <button class="product-shop-link" v-if="detail.offers[0]" @click="shopFilter=detail.offers[0].shopId;go('shops');load()"><img src="/assets/shop-icon.png" alt=""/><span>{{ detail.offers[0].shop.name }}<small>{{ t('قطع غيار وصيانة') }}</small></span><b><i class="chv"></i></b></button>
             <div class="vehicle-compatibility"><strong>{{ t('هل القطعة مناسبة لعربيتك؟') }}</strong><small>{{ t('راجع رقم القطعة والمحرك مع البائع') }}</small><button class="alt" @click="go(user?'profile':'login')">{{ t('اختار عربيتك') }}</button></div>
             <h3>{{ t('تفاصيل القطعة') }}</h3><p>{{ detail.description }}</p>
             <div class="alert">

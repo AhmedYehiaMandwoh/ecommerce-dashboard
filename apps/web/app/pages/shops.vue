@@ -85,7 +85,7 @@ const { busy, categories, category, fitmentVehicle, go, imageUrl, load, login, m
           /><span
             ><strong>{{ t('اختار عربيتك') }}</strong
             ><small>{{ t('سجّل بياناتها، وتأكد من التوافق قبل الشراء') }}</small></span
-          ><b>‹</b>
+          ><b><i class="chv"></i></b>
         </button>
         <div v-if="view === 'home'" class="campaigns">
           <button

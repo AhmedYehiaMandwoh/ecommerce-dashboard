@@ -12,7 +12,7 @@ const { addresses, busy, cart, deliveryAreas, deliveryQuote, go, imageUrl, login
         </div>
         <div v-else class="two">
           <div class="card cart-lines">
-            <button class="cart-shop" @click="go('shops')"><img src="/assets/shop-icon.png" alt=""/><span>{{ new Set(cart.map((i: any)=>i.shopId)).size>1 ? t('سلة من {0} محلات', new Set(cart.map((i: any)=>i.shopId)).size) : (cart[0]?.shopName || t('منتجات المحل')) }}<small>{{ t('راجع رقم القطعة والتوافق مع البائع') }}</small></span><b>‹</b></button>
+            <button class="cart-shop" @click="go('shops')"><img src="/assets/shop-icon.png" alt=""/><span>{{ new Set(cart.map((i: any)=>i.shopId)).size>1 ? t('سلة من {0} محلات', new Set(cart.map((i: any)=>i.shopId)).size) : (cart[0]?.shopName || t('منتجات المحل')) }}<small>{{ t('راجع رقم القطعة والتوافق مع البائع') }}</small></span><b><i class="chv"></i></b></button>
             <div v-for="(i, n) in cart" :key="i.offerId" class="cart-item line">
               <img :src="imageUrl(i.image)" :alt="i.title" />
               <div style="flex: 1">
