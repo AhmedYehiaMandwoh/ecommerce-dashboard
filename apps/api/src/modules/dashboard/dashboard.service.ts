@@ -18,6 +18,13 @@ import { OrdersService } from "../orders/orders.service";
 @Injectable()
 export class DashboardService {
   constructor(private db: Db, private ordersService: OrdersService) {}
+  async shopApplicationsWithMedia(){
+    const apps=await this.db.shopApplication.findMany({orderBy:{createdAt:'desc'},take:100});
+    const ids=apps.map(a=>a.id);
+    const photos=await this.db.shopPhoto.findMany({where:{applicationId:{in:ids}},orderBy:{createdAt:'asc'}});
+    const docs=await this.db.shopDocument.findMany({where:{applicationId:{in:ids}},select:{id:true,applicationId:true,kind:true,originalName:true,mime:true,size:true,createdAt:true}});
+    return apps.map(a=>({...a,photos:photos.filter(p=>p.applicationId===a.id),documents:docs.filter(d=>d.applicationId===a.id)}));
+  }
   async dashboard(user: any) {
     requireRole(user, "MERCHANT", "ADMIN");
     const where = user.role === "ADMIN" ? {} : { ownerId: user.id };
@@ -25,9 +32,10 @@ export class DashboardService {
       where,
       include: { offers: { include: { product: true } } },
     });
+    const shopPhotos = await this.db.shopPhoto.findMany({ where: { shopId: { in: shops.map((s) => s.id) } }, orderBy: { createdAt: "asc" } });
     const orders = await this.ordersService.orders(user);
     return {
-      shops,
+      shops: shops.map((s) => ({ ...s, photos: shopPhotos.filter((p) => p.shopId === s.id) })),
       orders,
       summary: {
         orders: orders.length,
@@ -45,7 +53,7 @@ export class DashboardService {
               take: 100,
               orderBy: { title: "asc" },include:{fitments:true},
             }),
-            shopApplications:await this.db.shopApplication.findMany({orderBy:{createdAt:'desc'},take:100}),
+            shopApplications:await this.shopApplicationsWithMedia(),
             deliveryAreas:await this.db.deliveryArea.findMany({orderBy:[{city:'asc'},{area:'asc'}]}),
             users: await this.db.user.findMany({
               select: { id: true, name: true, email: true, role: true },

@@ -70,6 +70,9 @@ model Shop {
  name String
  city String
  approved Boolean @default(false)
+ district String @default("")
+ workingHours String @default("")
+ description String @default("")
  offers Offer[]
  orders Order[]
 }
@@ -239,6 +242,14 @@ model ShopApplication {
  address String
  phone String
  details String
+ contactName String @default("")
+ email String @default("")
+ whatsapp String @default("")
+ district String @default("")
+ workingHours String @default("")
+ description String @default("")
+ registrationNumber String @default("")
+ taxNumber String @default("")
  state String @default("PENDING")
  reviewReason String @default("")
  reviewedBy String?
@@ -366,4 +377,27 @@ model ProductProposal {
  stock Int
  createdAt DateTime @default(now())
  @@index([ownerId])
+}
+
+model ShopPhoto {
+ id String @id @default(uuid())
+ applicationId String?
+ shopId String?
+ role String @default("GALLERY")
+ url String
+ demo Boolean @default(false)
+ createdAt DateTime @default(now())
+ @@index([applicationId])
+ @@index([shopId])
+}
+model ShopDocument {
+ id String @id @default(uuid())
+ applicationId String
+ kind String
+ file String
+ originalName String
+ mime String
+ size Int
+ createdAt DateTime @default(now())
+ @@index([applicationId])
 }

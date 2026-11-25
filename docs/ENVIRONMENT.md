@@ -57,3 +57,9 @@ Native source keeps a revocable 30-day device token in authentication-protected 
 MEDIA_DIR=media is a private server filesystem directory for uploaded, decoded/re-encoded WebP images. Mount persistent storage and back it up. Only administrators can upload. The API serves these images at /api/media. No object-storage credentials are required for this local implementation.
 
 References: https://www.twilio.com/docs/verify/api/verification , https://www.twilio.com/docs/verify/api/verification-check , https://docs.expo.dev/versions/latest/sdk/securestore/ , https://docs.expo.dev/versions/latest/sdk/local-authentication/ , https://developer.mozilla.org/en-US/docs/Web/API/Web_Authentication_API .
+
+## Shop profile, photos and private documents
+- `MEDIA_DIR` (default `media`) holds public images, including shop photos, served at `/api/media/`.
+- `PRIVATE_DOCS_DIR` (default `private-docs`) holds submitted shop documents. It is never served statically. Documents are readable only through `GET /api/shop-documents/:id` by the applicant or an admin. Keep this folder out of any public web root and out of backups that are shared.
+- Shop photos are flagged `demo` when `NODE_ENV` is not `production`. The UI shows a "demo photo" label for them.
+- Migration `20261125160000_shop_profile_photos_documents` adds shop profile fields, `ShopPhoto` and `ShopDocument`. It only adds columns and tables.

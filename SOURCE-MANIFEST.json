@@ -4,8 +4,8 @@
   "files": [
     {
       "path": ".gitignore",
-      "bytes": 275,
-      "sha256": "ec68b3591a955436a1c1b8d4a8aeeacc3494df2ba03fc7ecc5642fbd14b67afe"
+      "bytes": 289,
+      "sha256": "fb494576658adc4820b2c1e962cdde7ad3cef431780693cc82fbeac1cd7f801e"
     },
     {
       "path": "README-REPOSITORY.md",
@@ -99,8 +99,8 @@
     },
     {
       "path": "apps/api/prisma/schema.prisma",
-      "bytes": 8237,
-      "sha256": "1e77633c996ad967c917a75dd5c0302cfba320afd406fccdeb2d60f1c277daa8"
+      "bytes": 9049,
+      "sha256": "db68de2a4291a9381f416cf013e6ce5bb8e40cae54f9baf3746b0db3177aa050"
     },
     {
       "path": "apps/api/prisma/seed.ts",
@@ -134,8 +134,8 @@
     },
     {
       "path": "apps/api/src/dto.ts",
-      "bytes": 7565,
-      "sha256": "cb237d70b0ae1e81894e3bec94942188ff16f6babe3cb8bbbaf8d501125d1caf"
+      "bytes": 8313,
+      "sha256": "ad0ef0c7d46ed43657e7e5eda86087304df92fa8c42554144f5c1c5bdfdc7ec1"
     },
     {
       "path": "apps/api/src/errors.ts",
@@ -194,8 +194,8 @@
     },
     {
       "path": "apps/api/src/modules/catalog/catalog.controller.ts",
-      "bytes": 2042,
-      "sha256": "938f059aab85c4418a444438c69ca8e70189543676e0540efe9edd7ec89195bf"
+      "bytes": 2416,
+      "sha256": "ef896a7ade33807894e53589d3782cf5589b12597f5cd3d5504fdd1ee24e9891"
     },
     {
       "path": "apps/api/src/modules/catalog/catalog.module.ts",
@@ -214,8 +214,8 @@
     },
     {
       "path": "apps/api/src/modules/dashboard/dashboard.service.ts",
-      "bytes": 2272,
-      "sha256": "4303091e72db4c0b372b2b6f76960aa53c42ddaae2eea5203dd2e7600e18c635"
+      "bytes": 3054,
+      "sha256": "8aa9cf8fa1e7e06c3a5567b4bf5b2e6ba1783fcefa5f72e04a3e474b2168e9c0"
     },
     {
       "path": "apps/api/src/modules/health/health.controller.ts",
@@ -244,18 +244,18 @@
     },
     {
       "path": "apps/api/src/modules/shops/merchant.controller.ts",
-      "bytes": 4070,
-      "sha256": "48f0e01670d16063d8227c97028a7ebe262a0d0c42de4d64f1d9a688ddfd7c4f"
+      "bytes": 4393,
+      "sha256": "39f81369bb3cb79a6bad0835cda22259da0d82e43d97bde569d44a0e52ea7020"
     },
     {
       "path": "apps/api/src/modules/shops/shops.module.ts",
-      "bytes": 379,
-      "sha256": "b11cf256111872246da66ec80098975bb2eef086cebb4dc22d16c190fcece21d"
+      "bytes": 469,
+      "sha256": "344ac9bb8e42c820773a630bf7d96039825108bb2487d91399d373532ec6e11c"
     },
     {
       "path": "apps/api/src/modules/shops/shops.service.ts",
-      "bytes": 10367,
-      "sha256": "5c74959c04264aaa756561f3e2632d580af23898c901dde0b31e608f2b8395f8"
+      "bytes": 10574,
+      "sha256": "338d7f2bddffa33fcaff5389decf09a363f4d86241c73d913ba8e985bf7466af"
     },
     {
       "path": "apps/api/src/security.ts",
@@ -579,8 +579,8 @@
     },
     {
       "path": "apps/web/app/composables/useMarket.ts",
-      "bytes": 24987,
-      "sha256": "ac6a0f3104972561b2a098471db45bbe718798495f68737a67fc2e9fd3d2f658"
+      "bytes": 25101,
+      "sha256": "082f0b5957e48389686a760322e6bd3e2f963df5c085d9841c2565a46515aeda"
     },
     {
       "path": "apps/web/app/lib/utils.ts",
@@ -599,8 +599,8 @@
     },
     {
       "path": "apps/web/app/pages/dashboard.vue",
-      "bytes": 9585,
-      "sha256": "6823f8a5a6e18e2fad4d83549a0f7cfaf496d3645bef8bb95640cc0577c4955b"
+      "bytes": 9698,
+      "sha256": "85004d3561d1a9116177fc872912d798e2b7dad1c2068a4c2ed430e60d3a7866"
     },
     {
       "path": "apps/web/app/pages/dashboard/add-product.vue",
@@ -609,8 +609,8 @@
     },
     {
       "path": "apps/web/app/pages/dashboard/applications.vue",
-      "bytes": 4963,
-      "sha256": "663853b169f85da2023d972231c5818ec7ce5570b735aa1e3009804872a7c3a7"
+      "bytes": 6834,
+      "sha256": "0236e601d628066869f4fd3d491a39aea2810a2c44a5634167a7b0fd958e894c"
     },
     {
       "path": "apps/web/app/pages/dashboard/catalog.vue",
@@ -694,13 +694,13 @@
     },
     {
       "path": "apps/web/app/pages/profile.vue",
-      "bytes": 7557,
-      "sha256": "0c42b650b9ac6a8461b02b5d050add24db6bbc912ece2efcccc4ca662d48c108"
+      "bytes": 6335,
+      "sha256": "08e67e87313902a1dfdc2870648bb497bfd0dee5ce18689cf0dabab1081a5db9"
     },
     {
       "path": "apps/web/app/pages/shops.vue",
-      "bytes": 8164,
-      "sha256": "c787b21ce9b4a20fed7e51f46397a41b59179a65a529bf020c8345d9147895db"
+      "bytes": 9375,
+      "sha256": "53b92f28fb4db974263f147cfc36012850c4557608942a60bef5df31a4522883"
     },
     {
       "path": "apps/web/components.json",
@@ -899,8 +899,8 @@
     },
     {
       "path": "docs/ENVIRONMENT.md",
-      "bytes": 4794,
-      "sha256": "1aa40b445e189611aa7df90f4a50321ab7c9473dbf2323e734016ef9aa9c7452"
+      "bytes": 5491,
+      "sha256": "0f8ff50c3fd663c0b93b95f1d2fd2a8fb7e4dfb064d1ecd0cf3a80436c1032ef"
     },
     {
       "path": "docs/HANDOVER.md",

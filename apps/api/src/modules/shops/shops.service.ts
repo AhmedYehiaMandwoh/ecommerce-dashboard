@@ -95,7 +95,7 @@ export class ShopsService {
       if(!application||application.state!=='PENDING')throw new ConflictException('Application no longer pending');
       const claimed=await tx.shopApplication.updateMany({where:{id,state:'PENDING'},data:{state:d.approve?'APPROVED':'REJECTED',reviewReason:d.reason,reviewedBy:user.id,reviewedAt:new Date()}});
       if(claimed.count!==1)throw new ConflictException('Application changed');
-      if(d.approve){await tx.user.update({where:{id:application.userId},data:{role:'MERCHANT'}});await tx.shop.create({data:{ownerId:application.userId,name:application.name,city:application.city,approved:true}});}
+      if(d.approve){await tx.user.update({where:{id:application.userId},data:{role:'MERCHANT'}});const shop=await tx.shop.create({data:{ownerId:application.userId,name:application.name,city:application.city,district:application.district,workingHours:application.workingHours,description:application.description,approved:true}});await tx.shopPhoto.updateMany({where:{applicationId:application.id},data:{shopId:shop.id}});}
       return tx.shopApplication.findUniqueOrThrow({where:{id}});
     },{isolationLevel:Prisma.TransactionIsolationLevel.Serializable});
   }

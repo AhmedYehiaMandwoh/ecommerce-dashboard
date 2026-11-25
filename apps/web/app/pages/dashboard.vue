@@ -31,6 +31,7 @@ const sideMore = computed(() => {
   const taken = new Set(sideMain.value.map((n) => n.to));
   const extra = [
     { to: "/dashboard/catalog", label: "الكتالوج والحسابات (تفصيلي)", icon: BookOpen, show: admin.value },
+    { to: "/dashboard/shop-profile", label: "ملف المحل والصور", icon: Store, show: !admin.value },
     { to: "/dashboard/legacy-orders", label: "التحصيل وطلبات الإلغاء", icon: Banknote, show: true },
     { to: "/dashboard/import", label: "استيراد وإضافة (CSV)", icon: Upload, show: true },
     { to: "/dashboard/settlements", label: "تسويات الشحن", icon: Wallet, show: true },

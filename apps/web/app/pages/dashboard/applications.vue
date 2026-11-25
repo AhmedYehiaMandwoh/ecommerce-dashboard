@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { Store, FileText, Phone, Check, X, XCircle } from "lucide-vue-next";
-const { applicationReasons, busy, dash, decideShopApplication, suspendShopApplication, user } = useMarket();
+const { applicationReasons, base, busy, dash, decideShopApplication, imageUrl, suspendShopApplication, token, user } = useMarket();
+const docLabel: Record<string, string> = { REGISTRATION: "السجل التجاري", TAX: "البطاقة الضريبية", ID: "هوية صاحب المحل", OTHER: "مستند آخر" };
+async function openDoc(d: any) {
+  const res = await fetch(base + "/shop-documents/" + d.id, { headers: { Authorization: "Bearer " + token.value } });
+  if (!res.ok) return;
+  const url = URL.createObjectURL(await res.blob()); window.open(url, "_blank"); setTimeout(() => URL.revokeObjectURL(url), 60000);
+}
 const tab = ref("PENDING");
 const states = [["PENDING", "طلبات جديدة"], ["APPROVED", "نشط"], ["SUSPENDED", "موقوف"], ["REJECTED", "مرفوض"]];
 const count = (s: string) => (dash.value.shopApplications || []).filter((a: any) => a.state === s).length;
@@ -18,14 +24,18 @@ const list = computed(() => (dash.value.shopApplications || []).filter((a: any) 
     <Card v-for="a in list" :key="a.id" class="gap-1 px-3 py-3">
       <div class="flex items-center gap-3"><div class="flex size-12 shrink-0 items-center justify-center rounded-xl bg-secondary"><Store class="size-6 text-primary" /></div><div class="min-w-0 flex-1 break-words"><h3 class="font-extrabold">{{ a.name }}</h3><p class="text-sm text-muted-foreground">{{ a.city }} • {{ a.address }}</p></div><Badge class="shrink-0">{{ ({ PENDING: "طلب جديد", APPROVED: "نشط", SUSPENDED: "موقوف", REJECTED: "مرفوض" } as any)[a.state] || a.state }}</Badge></div>
       <div class="mt-1 divide-y text-sm">
-        <div class="space-y-0.5 py-1"><h4 class="flex items-center gap-2 font-extrabold"><Store class="size-4 text-primary" /> بيانات المتجر</h4><p>اسم المتجر: <b>{{ a.name }}</b></p><p class="flex items-start gap-2"><FileText class="mt-0.5 size-4" /> {{ a.details }}</p></div>
-        <div class="space-y-0.5 py-1"><h4 class="flex items-center gap-2 font-extrabold"><FileText class="size-4 text-primary" /> المستندات</h4>
-          <p class="flex items-center gap-2 text-destructive"><XCircle class="size-4" /> الهوية / السجل التجاري: غير متوفر</p>
-          <p class="flex items-center gap-2 text-destructive"><XCircle class="size-4" /> عقد الإيجار: غير متوفر</p>
-          </div>
-        <div class="space-y-0.5 py-1"><h4 class="flex items-center gap-2 font-extrabold"><Phone class="size-4 text-primary" /> تفاصيل التواصل</h4>
-          <p>رقم الجوال: <b dir="ltr">{{ a.phone }}</b></p>
-          <p class="flex items-center gap-2 text-destructive"><XCircle class="size-4" /> البريد الإلكتروني: غير متوفر</p></div>
+        <div class="space-y-0.5 py-1"><h4 class="flex items-center gap-2 font-extrabold"><Store class="size-4 text-primary" /> بيانات المتجر</h4>
+          <p>اسم المتجر: <b>{{ a.name }}</b></p><p>المدينة: <b>{{ a.city }}</b><template v-if="a.district"> • {{ a.district }}</template></p>
+          <p>العنوان: <b>{{ a.address }}</b></p><p v-if="a.workingHours">مواعيد العمل: <b>{{ a.workingHours }}</b></p>
+          <p v-if="a.description">النبذة: <b>{{ a.description }}</b></p><p class="flex items-start gap-2"><FileText class="mt-0.5 size-4 shrink-0" /> <span>تفاصيل النشاط: {{ a.details }}</span></p></div>
+        <div v-if="a.photos && a.photos.length" class="py-1"><h4 class="font-extrabold">صور المتجر (تظهر للعملاء)</h4><div class="mt-1 grid grid-cols-3 gap-2"><div v-for="p in a.photos" :key="p.id" class="relative"><img :src="imageUrl(p.url)" :alt="'صورة ' + a.name" class="aspect-[4/3] w-full rounded-lg object-cover" /><span v-if="p.demo" class="absolute bottom-1 start-1 rounded bg-black/70 px-1 text-[10px] text-white">صورة تجريبية</span></div></div></div>
+        <div class="space-y-0.5 py-1"><h4 class="flex items-center gap-2 font-extrabold"><FileText class="size-4 text-primary" /> المستندات (خاصة)</h4>
+          <p v-if="a.registrationNumber">رقم السجل التجاري: <b dir="ltr">{{ a.registrationNumber }}</b></p><p v-if="a.taxNumber">رقم البطاقة الضريبية: <b dir="ltr">{{ a.taxNumber }}</b></p>
+          <p v-for="d in a.documents || []" :key="d.id" class="flex items-center gap-2"><Check class="size-4 text-accent" /> {{ docLabel[d.kind] || d.kind }}: <button type="button" class="underline" @click="openDoc(d)">{{ d.originalName }}</button></p>
+          <p v-if="!(a.documents || []).length" class="flex items-center gap-2 text-muted-foreground"><XCircle class="size-4" /> لم يتم رفع مستندات</p></div>
+        <div class="space-y-0.5 py-1"><h4 class="flex items-center gap-2 font-extrabold"><Phone class="size-4 text-primary" /> تفاصيل التواصل (للإدارة فقط)</h4>
+          <p v-if="a.contactName">المسؤول: <b>{{ a.contactName }}</b></p><p>رقم الجوال: <b dir="ltr">{{ a.phone }}</b></p>
+          <p v-if="a.whatsapp">واتساب: <b dir="ltr">{{ a.whatsapp }}</b></p><p v-if="a.email">البريد الإلكتروني: <b dir="ltr">{{ a.email }}</b></p></div>
       </div>
       <div v-if="a.state === 'PENDING'" class="sticky bottom-[84px] z-10 mt-1 space-y-1 bg-card pb-1 md:static">
         <Label :for="'r-' + a.id">سبب قرار الانضمام</Label>

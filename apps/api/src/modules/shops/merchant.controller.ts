@@ -34,7 +34,7 @@ export class MerchantController {
     private shopsSvc: ShopsService,
     private dashboardSvc: DashboardService,
   ) {}
-  @Get('shop-application') shopApplication(@Req() r:any){return this.db.shopApplication.findUnique({where:{userId:r.user.id}});}
+  @Get('shop-application') async shopApplication(@Req() r:any){const a=await this.db.shopApplication.findUnique({where:{userId:r.user.id}});if(!a)return a;const photos=await this.db.shopPhoto.findMany({where:{applicationId:a.id},orderBy:{createdAt:'asc'}});const documents=await this.db.shopDocument.findMany({where:{applicationId:a.id},select:{id:true,kind:true,originalName:true,mime:true,size:true,createdAt:true}});return {...a,photos,documents};}
   @Post('shop-applications') applyShop(@Req() r:any,@Body() d:D.ShopApplicationDto){return this.shopsSvc.applyShop(r.user,d);}
   @Get("dashboard") dashboard(@Req() r: any) {
     return this.dashboardSvc.dashboard(r.user);

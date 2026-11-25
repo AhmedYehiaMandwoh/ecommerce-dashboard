@@ -113,7 +113,7 @@ const productForm = reactive({
   description: "",
 });
 const shopApplication=ref<any>(null);
-const joinForm=reactive({name:'',city:'',address:'',phone:'',details:''});
+const joinForm=reactive({name:'',city:'',district:'',workingHours:'',description:'',details:'',contactName:'',phone:'',whatsapp:'',email:'',address:'',registrationNumber:'',taxNumber:''});
 const applicationReasons=reactive<Record<string,string>>({});
 async function applyShop(){await run(async()=>{shopApplication.value=await api('/shop-applications','POST',joinForm);message.value='تم إرسال طلب الانضمام، البيع متوقف لحد موافقة الإدارة';});}
 async function decideShopApplication(a:any,approve:boolean){await run(async()=>{await api('/admin/shop-applications/'+a.id+'/decision','POST',{approve,reason:applicationReasons[a.id]||''});dash.value=await api('/dashboard');message.value='تم تسجيل قرار طلب الانضمام';});}

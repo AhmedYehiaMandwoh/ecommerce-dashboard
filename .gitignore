@@ -21,3 +21,4 @@ playwright-report/
 .verify-*.log
 
 verification-output/
+private-docs/

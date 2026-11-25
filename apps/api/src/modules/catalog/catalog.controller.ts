@@ -36,11 +36,13 @@ export class CatalogController {
   @Get("products/:id") product(@Param("id") id: string) {
     return this.catalogSvc.product(id);
   }
-  @Get("shops") shops() {
-    return this.db.shop.findMany({
+  @Get("shops") async shops() {
+    const shops = await this.db.shop.findMany({
       where: { approved: true },
-      select: { id: true, name: true, city: true },
+      select: { id: true, name: true, city: true, district: true, workingHours: true, description: true },
     });
+    const photos = await this.db.shopPhoto.findMany({ where: { shopId: { in: shops.map((s) => s.id) } }, orderBy: { createdAt: "asc" }, select: { id: true, shopId: true, role: true, url: true, demo: true } });
+    return shops.map((s) => ({ ...s, photos: photos.filter((p) => p.shopId === s.id) }));
   }
   @Get("delivery-areas") deliveryAreas(){return this.catalogSvc.deliveryAreas();}
   @Get("categories") async categories() {

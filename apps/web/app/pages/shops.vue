@@ -41,10 +41,20 @@ const { busy, categories, category, fitmentVehicle, go, imageUrl, load, login, m
           </select>
         </div>
         <div v-if="view === 'shops'" class="store-discovery section-gap">
-          <div v-for="(s, n) in shops" :key="s.id" class="card store-discovery-card"><img class="store-cover" :src="'/assets/shop-demo-'+((Number(n)%2)+1)+'.png'" alt="تصور لمحل تجريبي، ليست صورة المحل الفعلي" />
-            <span class="badge">متجر تجريبي</span>
+          <div v-for="(s, n) in shops" :key="s.id" class="card store-discovery-card">
+            <template v-if="s.photos && s.photos.length">
+              <img class="store-cover" :src="imageUrl((s.photos.find((p: any) => p.role === 'COVER') || s.photos[0]).url)" :alt="'صورة ' + s.name" />
+              <span v-if="(s.photos.find((p: any) => p.role === 'COVER') || s.photos[0]).demo" class="badge">صورة تجريبية</span>
+              <div v-if="s.photos.length > 1" class="shop-thumbs"><img v-for="p in s.photos.filter((x: any) => x.url !== (s.photos.find((q: any) => q.role === 'COVER') || s.photos[0]).url)" :key="p.id" :src="imageUrl(p.url)" :alt="'صورة من ' + s.name" /></div>
+            </template>
+            <template v-else>
+              <img class="store-cover" :src="'/assets/shop-demo-'+((Number(n)%2)+1)+'.png'" alt="تصور لمحل تجريبي، ليست صورة المحل الفعلي" />
+              <span class="badge">متجر تجريبي</span>
+            </template>
             <h2>{{ s.name }}</h2>
-            <p>{{ s.city }}</p>
+            <p>{{ s.city }}<template v-if="s.district"> • {{ s.district }}</template></p>
+            <p v-if="s.description" class="shop-desc">{{ s.description }}</p>
+            <p v-if="s.workingHours" class="shop-hours">مواعيد العمل: {{ s.workingHours }}</p>
             <button @click="shopFilter = s.id; load(); ($refs.catalogGrid as any)?.scrollIntoView({behavior: 'smooth'});">عرض المنتجات</button>
           </div>
         </div>
@@ -203,3 +213,8 @@ const { busy, categories, category, fitmentVehicle, go, imageUrl, load, login, m
       </template>
   </div>
 </template>
+
+<style>
+.shop-thumbs{display:flex;gap:6px;margin:6px 0}.shop-thumbs img{width:56px;height:42px;object-fit:cover;border-radius:8px}
+.shop-desc{color:#334a63;font-size:14px;margin:4px 0}.shop-hours{color:#5b6b80;font-size:13px;margin:2px 0 8px}
+</style>

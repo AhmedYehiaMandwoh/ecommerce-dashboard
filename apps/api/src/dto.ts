@@ -134,6 +134,19 @@ export class ShopApplicationDto {
  @IsString() @MinLength(8) @MaxLength(180) address!: string;
  @IsString() @Matches(/^\+?[0-9]{8,15}$/) phone!: string;
  @IsString() @MinLength(10) @MaxLength(180) details!: string;
+ @IsOptional() @IsString() @MaxLength(100) contactName?: string;
+ @IsOptional() @IsString() @MaxLength(120) email?: string;
+ @IsOptional() @IsString() @Matches(/^\+?[0-9]{8,15}$/) whatsapp?: string;
+ @IsOptional() @IsString() @MaxLength(80) district?: string;
+ @IsOptional() @IsString() @MaxLength(120) workingHours?: string;
+ @IsOptional() @IsString() @MaxLength(180) description?: string;
+ @IsOptional() @IsString() @MaxLength(40) registrationNumber?: string;
+ @IsOptional() @IsString() @MaxLength(40) taxNumber?: string;
+}
+export class ShopProfileDto {
+ @IsOptional() @IsString() @MaxLength(80) district?: string;
+ @IsOptional() @IsString() @MaxLength(120) workingHours?: string;
+ @IsOptional() @IsString() @MaxLength(180) description?: string;
 }
 export class ShopApplicationDecisionDto {
  @IsBoolean() approve!: boolean;
