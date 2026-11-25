@@ -1,0 +1,23 @@
+// API check for admin shop suspension/reinstatement. Needs a running API and a DB with at least one APPROVED or SUSPENDED shop application.
+const API = process.env.API_URL || 'http://127.0.0.1:4000/api';
+const PW = process.env.DEMO_PASSWORD;
+if (!PW) throw Error('Set DEMO_PASSWORD');
+const j = (r) => r.json().catch(() => ({}));
+const login = await j(await fetch(API + '/auth/login', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email: 'admin@example.test', password: PW }) }));
+const H = { 'content-type': 'application/json', authorization: 'Bearer ' + login.token };
+const post = (id, body) => fetch(`${API}/admin/shop-applications/${id}/suspension`, { method: 'POST', headers: H, body: JSON.stringify(body) });
+const apps = async () => (await j(await fetch(API + '/dashboard', { headers: H }))).shopApplications || [];
+const check = (c, m) => { if (!c) throw Error('FAIL ' + m); console.log('ok', m); };
+const a = (await apps()).find((x) => x.state === 'APPROVED' || x.state === 'SUSPENDED');
+if (!a) throw Error('No approved/suspended application to test');
+const start = a.state;
+if (start === 'SUSPENDED') check((await post(a.id, { suspend: false, reason: 'إعادة تفعيل' })).status === 201, 'reinstate suspended');
+check((await post(a.id, { suspend: false, reason: 'إعادة تفعيل' })).status === 409, 'reinstate of an active shop is refused');
+check((await post(a.id, { suspend: true, reason: 'x' })).status === 400, 'short reason is refused');
+check((await post(a.id, { suspend: true, reason: 'سبب الإيقاف' })).status === 201, 'suspend approved shop');
+check((await apps()).find((x) => x.id === a.id).state === 'SUSPENDED', 'state is SUSPENDED');
+check((await post(a.id, { suspend: true, reason: 'سبب الإيقاف' })).status === 409, 'double suspend is refused');
+const noAuth = await fetch(`${API}/admin/shop-applications/${a.id}/suspension`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ suspend: false, reason: 'إعادة تفعيل' }) });
+check(noAuth.status === 401, 'unauthenticated is refused');
+if (start === 'APPROVED') check((await post(a.id, { suspend: false, reason: 'إعادة تفعيل' })).status === 201, 'reinstate restores APPROVED');
+console.log('PASS shop suspension API');

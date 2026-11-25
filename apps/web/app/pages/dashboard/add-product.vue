@@ -38,9 +38,9 @@ async function submit() {
 
 <template>
   <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 [&>*]:min-w-0">
-    <Card class="p-3">
+    <Card class="p-2">
       <h2 class="mb-2 hidden text-lg font-extrabold lg:block">بيانات المنتج</h2>
-      <form class="space-y-2" @submit.prevent="submit">
+      <form class="space-y-1.5" @submit.prevent="submit">
         <div class="space-y-2">
           <label class="flex h-20 w-full cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed text-sm text-muted-foreground">
             <img v-if="preview" :src="preview" alt="معاينة الصورة" class="h-full w-full rounded-xl object-contain" />
@@ -74,7 +74,7 @@ async function submit() {
           <ul class="space-y-1 text-sm"><li v-for="(r, i) in rows" :key="i" class="flex items-center justify-between rounded-lg bg-white px-3 py-2"><span>{{ r.make }} {{ r.model }} • {{ r.fromYear }}-{{ r.toYear }} • {{ r.engine }}</span><button type="button" :aria-label="'حذف توافق ' + (i + 1)" @click="rows.splice(i, 1)"><X class="size-4" /></button></li></ul>
           <div class="flex items-start gap-2 rounded-xl bg-blue-50 p-3 text-xs text-muted-foreground"><Info class="mt-0.5 size-5 shrink-0 text-primary" /><div><b class="block text-sm text-primary">تحقق من بيانات التوافق</b>التوافق يُحفظ كغير مؤكد، وتراجعه الإدارة قبل ظهوره كمؤكد للعملاء.</div></div>
         </div>
-        <div class="sticky bottom-[4.75rem] z-10 -mx-1 bg-card px-1 pb-1 pt-2 lg:static"><Button type="submit" class="w-full bg-accent text-accent-foreground" size="lg" :disabled="busy || !productForm.category">حفظ المنتج وإرساله للمراجعة</Button></div>
+        <div class="px-1 pb-1 pt-1"><Button type="submit" class="w-full bg-accent text-accent-foreground" size="lg" :disabled="busy || !productForm.category">حفظ المنتج وإرساله للمراجعة</Button></div>
       </form>
     </Card>
     <div class="space-y-4">

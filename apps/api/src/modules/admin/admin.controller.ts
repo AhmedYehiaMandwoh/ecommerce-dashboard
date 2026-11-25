@@ -34,6 +34,7 @@ export class AdminController {
     private shopsSvc: ShopsService,
     private ordersSvc: OrdersService,
   ) {}
+  @Post('admin/shop-applications/:id/suspension') suspendShop(@Req() r:any,@Param('id') id:string,@Body() d:D.ShopSuspensionDto){return this.shopsSvc.suspendShop(r.user,id,d);}
   @Post('admin/shop-applications/:id/decision') decideShopApplication(@Req() r:any,@Param('id') id:string,@Body() d:D.ShopApplicationDecisionDto){return this.shopsSvc.decideShopApplication(r.user,id,d);}
   @Patch('admin/support-tickets/:id') ticketReply(@Req() r:any,@Param('id') id:string,@Body() d:D.TicketReplyDto){requireRole(r.user,'ADMIN');return this.db.supportTicket.update({where:{id},data:{...d,repliedBy:r.user.id,repliedAt:new Date()}});}
   @Post('admin/delivery-areas') deliveryArea(@Req() r:any,@Body() d:D.DeliveryAreaDto){return this.catalogSvc.saveDeliveryArea(r.user,d);}

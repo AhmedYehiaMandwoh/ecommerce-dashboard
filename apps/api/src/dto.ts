@@ -140,6 +140,11 @@ export class ShopApplicationDecisionDto {
  @IsString() @MinLength(5) @MaxLength(180) reason!: string;
 }
 
+export class ShopSuspensionDto {
+ @IsBoolean() suspend!: boolean;
+ @IsString() @MinLength(5) @MaxLength(180) reason!: string;
+}
+
 export class StartPhoneDto {
  @IsString() @Matches(/^\+[1-9][0-9]{7,14}$/) phone!: string;
  @IsString() @MinLength(2) @MaxLength(80) deviceLabel!: string;

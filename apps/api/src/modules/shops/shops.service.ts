@@ -99,6 +99,19 @@ export class ShopsService {
       return tx.shopApplication.findUniqueOrThrow({where:{id}});
     },{isolationLevel:Prisma.TransactionIsolationLevel.Serializable});
   }
+  // Admin suspends an approved shop (APPROVED -> SUSPENDED, shop.approved=false) or reinstates it. Rejection stays a separate state.
+  async suspendShop(user:any,id:string,d:any){
+    requireRole(user,'ADMIN');
+    return this.db.$transaction(async tx=>{
+      const application=await tx.shopApplication.findUnique({where:{id}});
+      const from=d.suspend?'APPROVED':'SUSPENDED',to=d.suspend?'SUSPENDED':'APPROVED';
+      if(!application||application.state!==from)throw new ConflictException('Application is not '+from.toLowerCase());
+      const claimed=await tx.shopApplication.updateMany({where:{id,state:from},data:{state:to,reviewReason:d.reason,reviewedBy:user.id,reviewedAt:new Date()}});
+      if(claimed.count!==1)throw new ConflictException('Application changed');
+      await tx.shop.updateMany({where:{ownerId:application.userId},data:{approved:!d.suspend}});
+      return tx.shopApplication.findUniqueOrThrow({where:{id}});
+    },{isolationLevel:Prisma.TransactionIsolationLevel.Serializable});
+  }
   async importHistory(user:any,shopId:string){await this.shopFor(user,shopId);return this.db.inventoryImport.findMany({where:{shopId},select:{id:true,actorId:true,fileHash:true,state:true,total:true,invalid:true,createdAt:true,expiresAt:true,committedAt:true},orderBy:{createdAt:'desc'},take:50});}
   async importCsv(user:any,shopId:string,csv:string,commit:boolean,previewId?:string){
     await this.shopFor(user,shopId);const fileHash=digest(csv);
