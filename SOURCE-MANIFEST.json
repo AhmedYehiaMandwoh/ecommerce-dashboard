@@ -609,8 +609,8 @@
     },
     {
       "path": "apps/web/app/pages/dashboard/applications.vue",
-      "bytes": 4567,
-      "sha256": "4f2fedc0ef042a681b84527768768e485471c3501ab003c4c4411d252fb12615"
+      "bytes": 4592,
+      "sha256": "caf67cc8c4bbd4acb7142b1e7f62e0ff9f5e5bffbb9e7e0199d2d0925517599a"
     },
     {
       "path": "apps/web/app/pages/dashboard/catalog.vue",
@@ -1011,6 +1011,11 @@
       "path": "scripts/reference-check.mjs",
       "bytes": 740,
       "sha256": "73d1e04768143a6e9291a2ef3a9009929380a81e4d333b61a4595663e467a6e6"
+    },
+    {
+      "path": "scripts/shop-suspension-test.mjs",
+      "bytes": 2329,
+      "sha256": "882bb697d977c293a324eae28ee71e2ae652b9c33b67667be99487768fa418bb"
     },
     {
       "path": "scripts/verify-local.mjs",
