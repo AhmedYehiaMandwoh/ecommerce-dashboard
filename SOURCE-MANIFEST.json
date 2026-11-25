@@ -324,8 +324,8 @@
     },
     {
       "path": "apps/web/app/components/CartCheckout.vue",
-      "bytes": 5606,
-      "sha256": "5b35e7d4b371cb9bb1a4ceb55b673030b106783a325f7170c1bfad841bc078b7"
+      "bytes": 5713,
+      "sha256": "2152e20648ed71269c66edad37baf10877c6dc5c1b97ec0d8dd193c783b3cf88"
     },
     {
       "path": "apps/web/app/components/DashboardOrders.vue",
@@ -1001,6 +1001,11 @@
       "path": "scripts/check-env.mjs",
       "bytes": 524,
       "sha256": "651c846b094e178024d30456e7861d75840940052457b2f7e743fedca725f1e0"
+    },
+    {
+      "path": "scripts/checkout-flow.mjs",
+      "bytes": 5129,
+      "sha256": "88d3b13a3fc101e93922944c22918f754259b675bab2cd1eea5525cfdf94cdb3"
     },
     {
       "path": "scripts/customer-check.mjs",

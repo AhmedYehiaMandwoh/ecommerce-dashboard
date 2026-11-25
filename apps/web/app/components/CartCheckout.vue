@@ -36,7 +36,7 @@ const { addresses, busy, cart, deliveryAreas, deliveryQuote, go, imageUrl, login
                 <option v-for="a in addresses" :key="a.id" :value="a.id">
                   {{ a.label }} • {{ a.city }} • {{ a.details }}
                 </option></select
-              ><div v-if="deliveryAreas.length" class="delivery-quote-selection"><label>منطقة التوصيل<select v-model="selectedDeliveryArea" aria-label="منطقة التوصيل"><option value="">اختار منطقة التوصيل</option><option v-for="a in deliveryAreas" :key="a.id" :value="a.id">{{ a.city }} • {{ a.area }} • {{ money(a.fee) }}</option></select></label><button class="alt" :disabled="!selectedAddress||!selectedDeliveryArea||busy" @click="reviewDeliveryQuote">راجع التكلفة النهائية</button><p v-if="deliveryQuote">رسوم المنطقة للسلة كلها: {{ money(deliveryQuote.delivery) }} • الإجمالي: {{ money(deliveryQuote.total) }}</p></div><button
+              ><div v-if="deliveryAreas.length" class="delivery-quote-selection"><label>منطقة التوصيل<select v-model="selectedDeliveryArea" aria-label="منطقة التوصيل"><option value="">اختار منطقة التوصيل</option><option v-for="a in deliveryAreas.filter((x: any)=>{const ad=addresses.find((y: any)=>y.id===selectedAddress);return !ad||x.city===ad.city})" :key="a.id" :value="a.id">{{ a.city }} • {{ a.area }} • {{ money(a.fee) }}</option></select></label><button class="alt" :disabled="!selectedAddress||!selectedDeliveryArea||busy" @click="reviewDeliveryQuote">راجع التكلفة النهائية</button><p v-if="deliveryQuote">رسوم المنطقة للسلة كلها: {{ money(deliveryQuote.delivery) }} • الإجمالي: {{ money(deliveryQuote.total) }}</p></div><button
                 class="alt section-gap"
                 @click="go(user ? 'profile' : 'login')"
               >
