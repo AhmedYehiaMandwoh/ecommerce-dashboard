@@ -629,8 +629,8 @@
     },
     {
       "path": "apps/web/app/pages/dashboard/index.vue",
-      "bytes": 7941,
-      "sha256": "da8632fe5d261d648fa7ff1afb2313cb6d0ca3e6d1cc940b9d35833b6ac615b9"
+      "bytes": 7995,
+      "sha256": "1801918564bf7697c353ea351b2002f87e777ecf9d8467c20e9bab43c51b6fef"
     },
     {
       "path": "apps/web/app/pages/dashboard/inventory.vue",

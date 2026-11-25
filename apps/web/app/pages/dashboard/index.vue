@@ -29,21 +29,21 @@ const badgeVariant = (s: string) => (s === "PLACED" ? "default" : s === "CANCELL
       <div class="flex size-12 items-center justify-center rounded-full bg-secondary"><Store class="size-6 text-accent" /></div>
       <div><h2 class="text-xl font-extrabold">لوحة التاجر</h2><p class="text-muted-foreground">{{ shopName }}</p></div>
     </Card>
-    <div class="grid grid-cols-3 gap-3">
+    <div class="grid grid-cols-3 gap-2">
       <template v-if="!admin">
         <Card class="gap-0.5 border-0 bg-accent p-3 text-accent-foreground"><ShoppingCart class="size-6" /><div class="text-sm font-bold">طلبات اليوم</div><div class="text-3xl font-extrabold">{{ todayCount }}</div></Card>
         <Card class="gap-0.5 border-0 bg-accent p-3 text-accent-foreground"><Package class="size-6" /><div class="text-sm font-bold">منتجات</div><div class="text-3xl font-extrabold">{{ dash.summary.offers }}</div></Card>
         <Card class="gap-0.5 border-0 bg-accent p-3 text-accent-foreground"><FileText class="size-6" /><div class="text-sm font-bold">تحتاج مراجعة</div><div class="text-3xl font-extrabold">{{ newOrders }}</div></Card>
       </template>
       <template v-else>
-        <Card class="gap-0.5 border-0 bg-orange-50 p-3"><Store class="size-6 text-accent" /><div class="text-sm font-bold">المحلات</div><div class="text-3xl font-extrabold text-accent">{{ dash.shops.length }}</div></Card>
-        <Card class="gap-0.5 border-0 bg-blue-50 p-3"><FileText class="size-6 text-primary" /><div class="text-sm font-bold">الطلبات</div><div class="text-3xl font-extrabold text-primary">{{ dash.summary.orders }}</div></Card>
-        <Card class="gap-0.5 border-0 bg-orange-50 p-3"><Package class="size-6 text-accent" /><div class="text-sm font-bold">منتجات للمراجعة</div><div class="text-3xl font-extrabold text-accent">{{ pendingProducts }}</div></Card>
+        <Card class="gap-0.5 border-0 bg-orange-50 p-3"><Store class="size-6 text-accent" /><div class="whitespace-nowrap text-xs font-bold">المحلات</div><div class="text-3xl font-extrabold text-accent">{{ dash.shops.length }}</div></Card>
+        <Card class="gap-0.5 border-0 bg-blue-50 p-3"><FileText class="size-6 text-primary" /><div class="whitespace-nowrap text-xs font-bold">الطلبات</div><div class="text-3xl font-extrabold text-primary">{{ dash.summary.orders }}</div></Card>
+        <Card class="gap-0.5 border-0 bg-orange-50 p-3"><Package class="size-6 text-accent" /><div class="whitespace-nowrap text-xs font-bold">منتجات للمراجعة</div><div class="text-3xl font-extrabold text-accent">{{ pendingProducts }}</div></Card>
       </template>
     </div>
     <p class="text-center text-xs text-muted-foreground">أرقام تجريبية من قاعدة بيانات الاختبار • إجمالي المسلّم {{ money(dash.summary.revenue) }}</p>
 
-    <Card v-if="admin" class="p-4">
+    <Card v-if="admin" class="p-3">
       <div class="mb-2 flex items-center justify-between"><h3 class="font-extrabold">الطلبات الأسبوعية (آخر ٧ أيام)</h3><span class="flex items-center gap-1 text-[10px] text-muted-foreground"><Info class="size-3" /> بيانات اختبار</span></div>
       <div class="flex gap-2">
         <div class="flex h-24 flex-col justify-between pb-0 text-[10px] text-muted-foreground" dir="ltr"><span v-for="t in yTicks" :key="t" class="leading-none">{{ t }}</span></div>
@@ -59,8 +59,8 @@ const badgeVariant = (s: string) => (s === "PLACED" ? "default" : s === "CANCELL
 
     <div v-if="admin" class="space-y-2">
       <h3 class="font-extrabold">قائمة المراجعة</h3>
-      <NuxtLink to="/dashboard/applications"><Card class="flex-row items-center gap-3 p-4"><Store class="size-8 text-primary" /><div class="flex-1"><div class="font-bold">محلات جديدة</div><div class="text-xs text-muted-foreground">مراجعة طلبات انضمام محلات جديدة</div></div><Badge class="bg-accent text-accent-foreground">{{ pendingApps }}</Badge><ChevronLeft class="size-4" /></Card></NuxtLink>
-      <NuxtLink to="/dashboard/review"><Card class="flex-row items-center gap-3 p-4"><Package class="size-8 text-primary" /><div class="flex-1"><div class="font-bold">منتجات جديدة</div><div class="text-xs text-muted-foreground">مراجعة منتجات بانتظار الموافقة</div></div><Badge class="bg-accent text-accent-foreground">{{ pendingProducts }}</Badge><ChevronLeft class="size-4" /></Card></NuxtLink>
+      <NuxtLink to="/dashboard/applications"><Card class="flex-row items-center gap-3 p-3"><Store class="size-8 text-primary" /><div class="flex-1"><div class="font-bold">محلات جديدة</div><div class="text-xs text-muted-foreground">مراجعة طلبات انضمام محلات جديدة</div></div><Badge class="bg-accent text-accent-foreground">{{ pendingApps }}</Badge><ChevronLeft class="size-4" /></Card></NuxtLink>
+      <NuxtLink to="/dashboard/review"><Card class="flex-row items-center gap-3 p-3"><Package class="size-8 text-primary" /><div class="flex-1"><div class="font-bold">منتجات جديدة</div><div class="text-xs text-muted-foreground">مراجعة منتجات بانتظار الموافقة</div></div><Badge class="bg-accent text-accent-foreground">{{ pendingProducts }}</Badge><ChevronLeft class="size-4" /></Card></NuxtLink>
     </div>
 
     <Card class="p-3">
