@@ -6,6 +6,7 @@ export function useMarket(): any {
 const config = useRuntimeConfig();
 const base = config.public.apiBase;
 const imageUrl=(path:string)=>path.startsWith('/api/media/')?String(base).replace(/\/api$/,'')+path:path;
+const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 const view = computed(() => {
@@ -39,9 +40,9 @@ const lastPlacedOrder = ref<any>(null);
 const catalogEditor=ref<any>(null);
 function editCatalog(p:any){catalogEditor.value=JSON.parse(JSON.stringify(p));}
 const fitmentForm=reactive({make:'',model:'',fromYear:2020,toYear:2020,engine:'',verified:false});
-async function saveCatalog(){await run(async()=>{const p=catalogEditor.value;await api('/admin/products/'+p.id+'/details','PATCH',{title:p.title,category:p.category,description:p.description});dash.value=await api('/dashboard');message.value='تم حفظ المنتج وإعادته للمراجعة';});}
-async function uploadCatalogImage(e:any){const file=e.target.files?.[0];if(!file||!catalogEditor.value)return;await run(async()=>{const form=new FormData();form.append('image',file);const response=await fetch(base+'/admin/products/'+catalogEditor.value.id+'/image',{method:'POST',headers:{Authorization:'Bearer '+token.value},body:form});const data=await response.json();if(!response.ok)throw Error(data.message||'تعذر رفع الصورة');catalogEditor.value.image=data.image;dash.value=await api('/dashboard');message.value='تم حفظ الصورة وإعادة المنتج للمراجعة';});}
-async function saveFitment(){await run(async()=>{await api('/admin/products/'+catalogEditor.value.id+'/fitments','POST',fitmentForm);dash.value=await api('/dashboard');catalogEditor.value=dash.value.products.find((p:any)=>p.id===catalogEditor.value.id);message.value='تم حفظ سجل التوافق';});}
+async function saveCatalog(){await run(async()=>{const p=catalogEditor.value;await api('/admin/products/'+p.id+'/details','PATCH',{title:p.title,category:p.category,description:p.description});dash.value=await api('/dashboard');message.value=t('تم حفظ المنتج وإعادته للمراجعة');});}
+async function uploadCatalogImage(e:any){const file=e.target.files?.[0];if(!file||!catalogEditor.value)return;await run(async()=>{const form=new FormData();form.append('image',file);const response=await fetch(base+'/admin/products/'+catalogEditor.value.id+'/image',{method:'POST',headers:{Authorization:'Bearer '+token.value},body:form});const data=await response.json();if(!response.ok)throw Error(data.message||t('تعذر رفع الصورة'));catalogEditor.value.image=data.image;dash.value=await api('/dashboard');message.value=t('تم حفظ الصورة وإعادة المنتج للمراجعة');});}
+async function saveFitment(){await run(async()=>{await api('/admin/products/'+catalogEditor.value.id+'/fitments','POST',fitmentForm);dash.value=await api('/dashboard');catalogEditor.value=dash.value.products.find((p:any)=>p.id===catalogEditor.value.id);message.value=t('تم حفظ سجل التوافق');});}
 async function deleteFitment(id:string){await run(async()=>{await api('/admin/fitments/'+id,'DELETE');dash.value=await api('/dashboard');catalogEditor.value=dash.value.products.find((p:any)=>p.id===catalogEditor.value.id);});}
 const favorites=ref<any[]>([]);
 const tickets=ref<any[]>([]);
@@ -50,45 +51,45 @@ const supportForm=reactive({subject:'',message:''});
 const ticketReplies=reactive<Record<string,any>>({});
 function ticketReply(t:any){return ticketReplies[t.id]||(ticketReplies[t.id]={reply:t.reply||'',state:t.state});}
 async function loadAccountTools(){await run(async()=>{favorites.value=await api('/favorites');tickets.value=await api('/support-tickets');profileName.value=user.value.name;});}
-async function toggleFavorite(p:any){if(!user.value){go('login');return;}await run(async()=>{const old=await api('/favorites');const exists=old.some((f:any)=>f.id===p.id);await api('/favorites/'+p.id,exists?'DELETE':'POST');favorites.value=await api('/favorites');message.value=exists?'تم الحذف من المفضلة':'تم الحفظ في المفضلة';});}
-async function saveProfile(){await run(async()=>{user.value=await api('/me','PATCH',{name:profileName.value});message.value='تم حفظ الاسم';});}
-async function sendTicket(){await run(async()=>{await api('/support-tickets','POST',supportForm);tickets.value=await api('/support-tickets');supportForm.subject='';supportForm.message='';message.value='تم تسجيل رسالة الدعم داخل النظام';});}
-async function replyTicket(t:any){await run(async()=>{await api('/admin/support-tickets/'+t.id,'PATCH',ticketReply(t));tickets.value=await api('/support-tickets');message.value='تم حفظ رد الدعم داخل النظام';});}
+async function toggleFavorite(p:any){if(!user.value){go('login');return;}await run(async()=>{const old=await api('/favorites');const exists=old.some((f:any)=>f.id===p.id);await api('/favorites/'+p.id,exists?'DELETE':'POST');favorites.value=await api('/favorites');message.value=exists?t('تم الحذف من المفضلة'):t('تم الحفظ في المفضلة');});}
+async function saveProfile(){await run(async()=>{user.value=await api('/me','PATCH',{name:profileName.value});message.value=t('تم حفظ الاسم');});}
+async function sendTicket(){await run(async()=>{await api('/support-tickets','POST',supportForm);tickets.value=await api('/support-tickets');supportForm.subject='';supportForm.message='';message.value=t('تم تسجيل رسالة الدعم داخل النظام');});}
+async function replyTicket(t:any){await run(async()=>{await api('/admin/support-tickets/'+t.id,'PATCH',ticketReply(t));tickets.value=await api('/support-tickets');message.value=t('تم حفظ رد الدعم داخل النظام');});}
 const returnForms=reactive<Record<string,any>>({});
 const returnDecisions=reactive<Record<string,any>>({});
 const refundForms=reactive<Record<string,any>>({});
 function returnForm(o:any){return returnForms[o.id]||(returnForms[o.id]={reason:'',items:Object.fromEntries(o.items.map((i:any)=>[i.id,0]))});}
 function returnDecision(r:any){return returnDecisions[r.id]||(returnDecisions[r.id]={reason:'',refundAmount:0,goodsReceived:false,restock:false});}
 function refundForm(r:any){return refundForms[r.id]||(refundForms[r.id]={reference:'',note:''});}
-async function requestReturn(o:any){await run(async()=>{const f=returnForm(o);await api('/orders/'+o.id+'/returns','POST',{reason:f.reason,items:Object.entries(f.items).filter(([id,q])=>Number(q)>0).map(([orderItemId,quantity])=>({orderItemId,quantity:Number(quantity)}))});await personal();message.value='تم إرسال طلب الإرجاع للإدارة للمراجعة، لا يوجد رد أموال تلقائي.';});}
-async function decideReturn(r:any,approve:boolean){await run(async()=>{const f=returnDecision(r);await api('/admin/returns/'+r.id+'/decision','POST',approve?{...f,approve}:{approve,reason:f.reason,refundAmount:0,goodsReceived:false,restock:false});dash.value=await api('/dashboard');message.value='تم تسجيل قرار الإرجاع. تسجيل رد النقدية منفصل.';});}
-async function recordRefund(r:any){await run(async()=>{await api('/admin/returns/'+r.id+'/refund-evidence','POST',refundForm(r));dash.value=await api('/dashboard');message.value='تم تسجيل إثبات رد النقدية. لم ينفّذ النظام تحويلًا.';});}
+async function requestReturn(o:any){await run(async()=>{const f=returnForm(o);await api('/orders/'+o.id+'/returns','POST',{reason:f.reason,items:Object.entries(f.items).filter(([id,q])=>Number(q)>0).map(([orderItemId,quantity])=>({orderItemId,quantity:Number(quantity)}))});await personal();message.value=t('تم إرسال طلب الإرجاع للإدارة للمراجعة، لا يوجد رد أموال تلقائي.');});}
+async function decideReturn(r:any,approve:boolean){await run(async()=>{const f=returnDecision(r);await api('/admin/returns/'+r.id+'/decision','POST',approve?{...f,approve}:{approve,reason:f.reason,refundAmount:0,goodsReceived:false,restock:false});dash.value=await api('/dashboard');message.value=t('تم تسجيل قرار الإرجاع. تسجيل رد النقدية منفصل.');});}
+async function recordRefund(r:any){await run(async()=>{await api('/admin/returns/'+r.id+'/refund-evidence','POST',refundForm(r));dash.value=await api('/dashboard');message.value=t('تم تسجيل إثبات رد النقدية. لم ينفّذ النظام تحويلًا.');});}
 const cancellationReasons=reactive<Record<string,string>>({});
 const settlementForms=reactive<Record<string,{amount:number;method:string;reference:string;note:string}>>({});
 function settlementForm(o:any){return settlementForms[o.id]||(settlementForms[o.id]={amount:0,method:'REMITTANCE',reference:'',note:''});}
 function shippingBalance(o:any){return (o.shippingEntries||[]).reduce((n:number,e:any)=>n+e.amount,0);}
-async function settleShipping(o:any){await run(async()=>{await api('/admin/orders/'+o.id+'/shipping-settlements','POST',settlementForm(o));dash.value=await api('/dashboard');message.value='تم تسجيل مستند التسوية، بدون إجراء تحويل مالي';});}
+async function settleShipping(o:any){await run(async()=>{await api('/admin/orders/'+o.id+'/shipping-settlements','POST',settlementForm(o));dash.value=await api('/dashboard');message.value=t('تم تسجيل مستند التسوية، بدون إجراء تحويل مالي');});}
 const decisionForms=reactive<Record<string,{reason:string;shippingRetained:number}>>({});
-async function requestCancellation(o:any){await run(async()=>{await api('/orders/'+o.id+'/cancellation-requests','POST',{reason:cancellationReasons[o.id]||''});await personal();message.value='تم إرسال طلب الإلغاء للإدارة. الحسابات مجمدة لحد القرار.';});}
-async function decideCancellation(r:any,approve:boolean){await run(async()=>{const d=decisionForms[r.id]||{reason:'',shippingRetained:0};await api('/admin/cancellation-requests/'+r.id+'/decision','POST',{approve,reason:d.reason,...(approve?{shippingRetained:d.shippingRetained}:{})});dash.value=await api('/dashboard');message.value='تم تسجيل قرار الإدارة في سجل الحسابات';});}
+async function requestCancellation(o:any){await run(async()=>{await api('/orders/'+o.id+'/cancellation-requests','POST',{reason:cancellationReasons[o.id]||''});await personal();message.value=t('تم إرسال طلب الإلغاء للإدارة. الحسابات مجمدة لحد القرار.');});}
+async function decideCancellation(r:any,approve:boolean){await run(async()=>{const d=decisionForms[r.id]||{reason:'',shippingRetained:0};await api('/admin/cancellation-requests/'+r.id+'/decision','POST',{approve,reason:d.reason,...(approve?{shippingRetained:d.shippingRetained}:{})});dash.value=await api('/dashboard');message.value=t('تم تسجيل قرار الإدارة في سجل الحسابات');});}
 function decisionForm(r:any){return decisionForms[r.id]||(decisionForms[r.id]={reason:'',shippingRetained:0});}
 const registerMode = ref(false);
 const phoneMode=ref(true);
 const passkeys=ref<any[]>([]);
 async function loadPasskeys(){await run(async()=>{passkeys.value=await api('/auth/passkeys');});}
-async function registerPasskey(){await run(async()=>{const request=await api('/auth/passkeys/register/options','POST');const response=await startRegistration({optionsJSON:request.options});await api('/auth/passkeys/register/verify','POST',{challengeId:request.challengeId,response});passkeys.value=await api('/auth/passkeys');message.value='تم تفعيل مفتاح المرور. وسيلة الفتح يحددها الجهاز: بصمة أو Face ID أو رمز الجهاز.';});}
+async function registerPasskey(){await run(async()=>{const request=await api('/auth/passkeys/register/options','POST');const response=await startRegistration({optionsJSON:request.options});await api('/auth/passkeys/register/verify','POST',{challengeId:request.challengeId,response});passkeys.value=await api('/auth/passkeys');message.value=t('تم تفعيل مفتاح المرور. وسيلة الفتح يحددها الجهاز: بصمة أو Face ID أو رمز الجهاز.');});}
 async function loginPasskey(){await run(async()=>{const request=await api('/auth/passkeys/login/options','POST');const response=await startAuthentication({optionsJSON:request.options});const r=await api('/auth/passkeys/login/verify','POST',{challengeId:request.challengeId,response});token.value=r.token;user.value=r.user;sessionStorage.setItem('ghiyar-token',r.token);await personal();go('home');});}
-async function revokePasskey(id:string){await run(async()=>{await api('/auth/passkeys/'+id,'DELETE');passkeys.value=passkeys.value.filter(k=>k.id!==id);message.value='تم إلغاء مفتاح المرور';});}
+async function revokePasskey(id:string){await run(async()=>{await api('/auth/passkeys/'+id,'DELETE');passkeys.value=passkeys.value.filter(k=>k.id!==id);message.value=t('تم إلغاء مفتاح المرور');});}
 
 const phoneAuth=reactive({phone:'',name:'',code:'',challengeId:'',expiresAt:''});
-async function startPhone(){await run(async()=>{const r=await api('/auth/phone/start','POST',{phone:phoneAuth.phone,deviceLabel:'متصفح الويب'});phoneAuth.challengeId=r.challengeId;phoneAuth.expiresAt=r.expiresAt;message.value=r.testMode?'اختبار فقط: كود التحقق الثابت 123456. لم يتم إرسال SMS.':'تم طلب كود التحقق. أدخله خلال الوقت الموضح.';});}
-async function checkPhone(){await run(async()=>{const r=await api('/auth/phone/check','POST',{challengeId:phoneAuth.challengeId,code:phoneAuth.code,name:phoneAuth.name});token.value=r.token;user.value=r.user;sessionStorage.setItem('ghiyar-token',r.token);phoneAuth.code='';phoneAuth.challengeId='';await personal();go('home');message.value='تم التحقق من الموبايل. تقدر تفعّل مفتاح مرور من حسابك للدخول بقفل الجهاز بدل الكود في المرات الجاية.';});}
+async function startPhone(){await run(async()=>{const r=await api('/auth/phone/start','POST',{phone:phoneAuth.phone,deviceLabel:t('متصفح الويب')});phoneAuth.challengeId=r.challengeId;phoneAuth.expiresAt=r.expiresAt;message.value=r.testMode?t('اختبار فقط: كود التحقق الثابت 123456. لم يتم إرسال SMS.'):t('تم طلب كود التحقق. أدخله خلال الوقت الموضح.');});}
+async function checkPhone(){await run(async()=>{const r=await api('/auth/phone/check','POST',{challengeId:phoneAuth.challengeId,code:phoneAuth.code,name:phoneAuth.name});token.value=r.token;user.value=r.user;sessionStorage.setItem('ghiyar-token',r.token);phoneAuth.code='';phoneAuth.challengeId='';await personal();go('home');message.value=t('تم التحقق من الموبايل. تقدر تفعّل مفتاح مرور من حسابك للدخول بقفل الجهاز بدل الكود في المرات الجاية.');});}
 const deliveryArea=reactive({city:'',area:'',fee:0,active:true});
-async function saveDeliveryArea(){await run(async()=>{await api('/admin/delivery-areas','POST',deliveryArea);dash.value=await api('/dashboard');message.value='تم حفظ منطقة ورسوم التوصيل';});}
+async function saveDeliveryArea(){await run(async()=>{await api('/admin/delivery-areas','POST',deliveryArea);dash.value=await api('/dashboard');message.value=t('تم حفظ منطقة ورسوم التوصيل');});}
 const passwords=reactive({currentPassword:'',newPassword:''});
-async function changePassword(){await run(async()=>{await api('/auth/password','POST',passwords);passwords.currentPassword='';passwords.newPassword='';token.value='';user.value=null;sessionStorage.removeItem('ghiyar-token');go('login');message.value='تم تغيير كلمة المرور وتسجيل الخروج من كل الأجهزة. سجّل الدخول بالكلمة الجديدة.';});}
+async function changePassword(){await run(async()=>{await api('/auth/password','POST',passwords);passwords.currentPassword='';passwords.newPassword='';token.value='';user.value=null;sessionStorage.removeItem('ghiyar-token');go('login');message.value=t('تم تغيير كلمة المرور وتسجيل الخروج من كل الأجهزة. سجّل الدخول بالكلمة الجديدة.');});}
 const auth = reactive({ name: "", email: "", password: "" });
-const address = reactive({ label: "المنزل", city: "", details: "", phone: "" });
+const address = reactive({ label: t('المنزل'), city: "", details: "", phone: "" });
 const fitmentVehicle=ref("");
 const vehicle = reactive({ make: "", model: "", year: 2020, engine: "" });
 const selectedAddress = ref("");
@@ -115,28 +116,28 @@ const productForm = reactive({
 const shopApplication=ref<any>(null);
 const joinForm=reactive({name:'',city:'',district:'',workingHours:'',description:'',details:'',contactName:'',phone:'',whatsapp:'',email:'',address:'',registrationNumber:'',taxNumber:''});
 const applicationReasons=reactive<Record<string,string>>({});
-async function applyShop(){await run(async()=>{shopApplication.value=await api('/shop-applications','POST',joinForm);message.value='تم إرسال طلب الانضمام، البيع متوقف لحد موافقة الإدارة';});}
-async function decideShopApplication(a:any,approve:boolean){await run(async()=>{await api('/admin/shop-applications/'+a.id+'/decision','POST',{approve,reason:applicationReasons[a.id]||''});dash.value=await api('/dashboard');message.value='تم تسجيل قرار طلب الانضمام';});}
-async function suspendShopApplication(a:any,suspend:boolean){await run(async()=>{await api('/admin/shop-applications/'+a.id+'/suspension','POST',{suspend,reason:applicationReasons[a.id]||''});dash.value=await api('/dashboard');message.value=suspend?'تم إيقاف المتجر':'تمت إعادة تفعيل المتجر';});}
+async function applyShop(){await run(async()=>{shopApplication.value=await api('/shop-applications','POST',joinForm);message.value=t('تم إرسال طلب الانضمام، البيع متوقف لحد موافقة الإدارة');});}
+async function decideShopApplication(a:any,approve:boolean){await run(async()=>{await api('/admin/shop-applications/'+a.id+'/decision','POST',{approve,reason:applicationReasons[a.id]||''});dash.value=await api('/dashboard');message.value=t('تم تسجيل قرار طلب الانضمام');});}
+async function suspendShopApplication(a:any,suspend:boolean){await run(async()=>{await api('/admin/shop-applications/'+a.id+'/suspension','POST',{suspend,reason:applicationReasons[a.id]||''});dash.value=await api('/dashboard');message.value=suspend?t('تم إيقاف المتجر'):t('تمت إعادة تفعيل المتجر');});}
 const newShop = reactive({ name: "", city: "" });
 const offerForm = reactive({ productId: "", sku: "", price: 0, stock: 0 });
 const visualCategories = [
-  { label: "فرامل", value: "فرامل", image: "/assets/category-brakes.png" },
-  { label: "زيوت", value: "زيوت", image: "/assets/category-oil.png" },
-  { label: "فلاتر", value: "فلاتر", image: "/assets/category-filter.png" },
-  { label: "عفشة", value: "تعليق", image: "/assets/category-suspension.png" },
-  { label: "كل الأقسام", value: "", image: "/assets/category-accessory.png" },
+  { label: t('فرامل'), value: t('فرامل'), image: "/assets/category-brakes.png" },
+  { label: t('زيوت'), value: t('زيوت'), image: "/assets/category-oil.png" },
+  { label: t('فلاتر'), value: t('فلاتر'), image: "/assets/category-filter.png" },
+  { label: t('عفشة'), value: t('تعليق'), image: "/assets/category-suspension.png" },
+  { label: t('كل الأقسام'), value: "", image: "/assets/category-accessory.png" },
 ];
 const page = ref(1);
 const pages = ref(1);
 const requestKey = ref("");
 const statusLabels: Record<string, string> = {
-  PLACED: "تم الطلب",
-  ACCEPTED: "مقبول",
-  PREPARING: "قيد التجهيز",
-  SHIPPED: "في الطريق",
-  DELIVERED: "تم التسليم",
-  CANCELLED: "ملغي",
+  PLACED: t('تم الطلب'),
+  ACCEPTED: t('مقبول'),
+  PREPARING: t('قيد التجهيز'),
+  SHIPPED: t('في الطريق'),
+  DELIVERED: t('تم التسليم'),
+  CANCELLED: t('ملغي'),
 };
 const next: Record<string, string> = {
   PLACED: "ACCEPTED",
@@ -145,7 +146,7 @@ const next: Record<string, string> = {
   SHIPPED: "DELIVERED",
 };
 const money = (p: number) =>
-  new Intl.NumberFormat("ar-EG", { style: "currency", currency: "EGP" }).format(
+  new Intl.NumberFormat(useI18n().locale.value === "en" ? "en-EG" : "ar-EG", { style: "currency", currency: "EGP" }).format(
     p / 100,
   );
 const total = computed(() =>
@@ -174,8 +175,8 @@ async function run(fn: () => Promise<void>) {
   } catch (e: any) {
     const m = e.data?.message;
     error.value = Array.isArray(m)
-      ? m.join("، ")
-      : m || "تعذر الاتصال. تأكد من تشغيل الخادم وحاول مرة أخرى.";
+      ? m.join(t('، '))
+      : m || t('تعذر الاتصال. تأكد من تشغيل الخادم وحاول مرة أخرى.');
   } finally {
     busy.value = false;
   }
@@ -238,7 +239,7 @@ function add(p: any, o: any) {
       stock: o.stock,
     });
   requestKey.value = "";
-  message.value = "اتضاف للسلة";
+  message.value = t('اتضاف للسلة');
 }
 async function login() {
   await run(async () => {
@@ -284,7 +285,7 @@ async function submitOrder() {
   }
   await run(async () => {
     if (!requestKey.value) requestKey.value = crypto.randomUUID();
-    if(!deliveryQuote.value)throw new Error('اختار منطقة التوصيل وراجع التكلفة النهائية أولًا');
+    if(!deliveryQuote.value)throw new Error(t('اختار منطقة التوصيل وراجع التكلفة النهائية أولًا'));
     const placed = await api("/checkouts", "POST", {
       items: cart.value.map((i) => ({
         offerId: i.offerId,
@@ -301,7 +302,7 @@ async function submitOrder() {
     requestKey.value = "";
     await personal();
     go("orders");
-    message.value = "تم تسجيل طلب تجريبي. لا يوجد تحصيل أو توصيل حقيقي.";
+    message.value = t('تم تسجيل طلب تجريبي. لا يوجد تحصيل أو توصيل حقيقي.');
   });
 }
 async function status(id: string, s: string, trackingNumber?: string) {
@@ -317,14 +318,14 @@ async function saveAddress() {
     await personal();
     selectedAddress.value = a.id;
     address.details = "";
-    message.value = "تم حفظ العنوان";
+    message.value = t('تم حفظ العنوان');
   });
 }
 async function saveVehicle() {
   await run(async () => {
     await api("/vehicles", "POST", { ...vehicle, year: Number(vehicle.year) });
     await personal();
-    message.value = "تم حفظ العربية. ده مش تأكيد لتوافق المنتجات.";
+    message.value = t('تم حفظ العربية. ده مش تأكيد لتوافق المنتجات.');
   });
 }
 async function saveOffer(o: any) {
@@ -334,14 +335,14 @@ async function saveOffer(o: any) {
       stock: Number(o.stock),
       active: o.active,
     });
-    message.value = "تم تحديث العرض";
+    message.value = t('تم تحديث العرض');
   });
 }
 async function importFile(e: any) {
   const file = e.target.files[0];
   if (file) {
     if (file.size > 2000000) {
-      error.value = "حجم الملف أكبر من ٢ ميجابايت";
+      error.value = t('حجم الملف أكبر من ٢ ميجابايت');
       return;
     }
     csv.value = await file.text();
@@ -355,7 +356,7 @@ async function doImport(commit: boolean) {
       "POST",
       { csv: csv.value, commit,...(commit?{previewId:importResult.value?.previewId}:{}) },
     );
-    if (commit) message.value = "تم الاستيراد";
+    if (commit) message.value = t('تم الاستيراد');
   });
 }
 async function approve(type: string, id: string, value: boolean) {
@@ -367,14 +368,14 @@ async function approve(type: string, id: string, value: boolean) {
 async function createProduct() {
   await run(async () => {
     await api("/products", "POST", productForm);
-    message.value = "تم إرسال المنتج لمراجعة الإدارة";
+    message.value = t('تم إرسال المنتج لمراجعة الإدارة');
   });
 }
 async function createShop() {
   await run(async () => {
     await api("/shops", "POST", newShop);
     dash.value = await api("/dashboard");
-    message.value = "المتجر بانتظار موافقة الإدارة";
+    message.value = t('المتجر بانتظار موافقة الإدارة');
   });
 }
 async function createOffer() {
@@ -385,7 +386,7 @@ async function createOffer() {
       stock: Number(offerForm.stock),
     });
     dash.value = await api("/dashboard");
-    message.value = "تم حفظ العرض";
+    message.value = t('تم حفظ العرض');
   });
 }
 watch(importShop, () => {
@@ -418,7 +419,7 @@ watch(view, async (v) => {
     try {
       await personal();
     } catch (e: any) {
-      error.value = "تعذر تحديث بيانات الحساب";
+      error.value = t('تعذر تحديث بيانات الحساب');
     }
   }
 });
