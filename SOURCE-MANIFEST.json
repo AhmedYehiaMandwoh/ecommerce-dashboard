@@ -314,8 +314,8 @@
     },
     {
       "path": "apps/web/app/assets/css/tailwind.css",
-      "bytes": 3647,
-      "sha256": "db75d3d87a0c78cbe26bb2479f0943543350ef096f4c9620cb44cfe73d043b4e"
+      "bytes": 5113,
+      "sha256": "ecad9100c48355fd4085502cfe04073638544742979874a66117c264d074ecef"
     },
     {
       "path": "apps/web/app/assets/main.css",
@@ -334,8 +334,8 @@
     },
     {
       "path": "apps/web/app/components/ReferenceHome.vue",
-      "bytes": 16689,
-      "sha256": "d0f046613d8d462b8fc789cfdf9ce15ed6354c2a32cc10251ea490dfd5f2b123"
+      "bytes": 17605,
+      "sha256": "6b2c4b880c46812337c7b3b5b5a16e20d6a4c74ffd62aca94942cb6aa0bd829f"
     },
     {
       "path": "apps/web/app/components/ReviewTools.vue",
@@ -609,8 +609,8 @@
     },
     {
       "path": "apps/web/app/pages/dashboard/applications.vue",
-      "bytes": 4949,
-      "sha256": "c473cdf94136900b86260d9e09ee454923efd1189fc2e2c0ecfd8eda7d9c3359"
+      "bytes": 4963,
+      "sha256": "663853b169f85da2023d972231c5818ec7ce5570b735aa1e3009804872a7c3a7"
     },
     {
       "path": "apps/web/app/pages/dashboard/catalog.vue",
@@ -1013,9 +1013,19 @@
       "sha256": "73d1e04768143a6e9291a2ef3a9009929380a81e4d333b61a4595663e467a6e6"
     },
     {
+      "path": "scripts/responsive-check.mjs",
+      "bytes": 2566,
+      "sha256": "0270ffc080331c67a9f2c2b4434e794987b8bdc8b377f5761e6b26aa62d6dea1"
+    },
+    {
       "path": "scripts/shop-suspension-test.mjs",
       "bytes": 2329,
       "sha256": "882bb697d977c293a324eae28ee71e2ae652b9c33b67667be99487768fa418bb"
+    },
+    {
+      "path": "scripts/site-check.mjs",
+      "bytes": 1486,
+      "sha256": "45b212a32410f83548378ccc2d6e72d7915a2c3afb06d5ded7c3225aa6419055"
     },
     {
       "path": "scripts/verify-local.mjs",

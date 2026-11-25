@@ -102,3 +102,19 @@ html.dash-theme body { background: var(--background); }
 @media (min-width: 1000px) {
   .marketplace-shell .grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
 }
+
+/* Customer pages: deliberate desktop layouts (orders, profile, cart and checkout) */
+@media (min-width: 1000px) {
+  .marketplace-shell main > div:has(> .card.section-gap > .order-progress) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: start; }
+  .marketplace-shell main > div:has(> .card.section-gap > .order-progress) > .card { margin: 0; }
+  .marketplace-shell main > div:has(> .card.section-gap > .order-progress) > :is(.order-success, .empty, .alert) { grid-column: 1 / -1; }
+  .marketplace-shell main > div:has(> h1 + .card.section-gap) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: start; }
+  .marketplace-shell main > div:has(> h1 + .card.section-gap) > :is(h1, .two, .empty, .alert) { grid-column: 1 / -1; }
+  .marketplace-shell main > div:has(> h1 + .card.section-gap) > .card { margin: 0; }
+  .marketplace-shell main > div:has(> h1 + .card.section-gap) .form { max-width: none; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .marketplace-shell main > div:has(> h1 + .card.section-gap) .form > :is(button, label:has(textarea), p) { grid-column: 1 / -1; }
+  .marketplace-shell main > .two > aside.card, .marketplace-shell main .two > aside.card { position: sticky; top: 76px; align-self: start; }
+}
+@media (min-width: 1500px) {
+  .marketplace-shell main > div:has(> .card.section-gap > .order-progress) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}

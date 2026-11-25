@@ -10,7 +10,7 @@ const list = computed(() => (dash.value.shopApplications || []).filter((a: any) 
 <template>
   <div v-if="user.role === 'ADMIN'" class="space-y-2">
     <Tabs v-model="tab" dir="rtl">
-      <TabsList class="h-auto min-h-12 w-full flex-wrap gap-1 rounded-2xl p-1"><TabsTrigger v-for="[s, l] in (states as [string, string][])" :key="s" :value="s as string" class="min-w-0 gap-1 px-1 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">{{ l }} <Badge variant="secondary" class="px-1.5 text-xs">{{ count(s) }}</Badge></TabsTrigger></TabsList>
+      <TabsList class="grid! h-auto w-full grid-cols-2 gap-1 rounded-2xl p-1 sm:grid-cols-4"><TabsTrigger v-for="[s, l] in (states as [string, string][])" :key="s" :value="s as string" class="min-w-0 gap-1 px-1 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">{{ l }} <Badge variant="secondary" class="px-1.5 text-xs">{{ count(s) }}</Badge></TabsTrigger></TabsList>
     </Tabs>
     <p class="text-xs text-muted-foreground">راجع بيانات النشاط وتواصل مع مقدم الطلب قبل الموافقة. لا يوجد تحقق آلي من المستندات.</p>
     <p v-if="!list.length" class="text-muted-foreground">لا توجد طلبات في هذه القائمة.</p>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-defineProps<{ shops: any[]; cartCount: number }>();
+const props = defineProps<{ shops: any[]; cartCount: number }>();
+const shopCount = computed(() => (props.shops.length > 2 ? Math.min(props.shops.length, 4) : 2));
 const emit = defineEmits(['navigate', 'search', 'category']);
 const query = ref('');
 const items = [
@@ -27,7 +28,7 @@ const items = [
    <button class="reference-vehicle" @click="emit('navigate','profile')"><img src="/assets/car-icon.png" alt=""/><span><strong>اختار عربيتك</strong><small>عشان توصل للقطعة المناسبة</small></span><b>❯</b></button>
    <div class="reference-promos"><button class="promo-live braking-live" @click="emit('category','فرامل')"><img src="/assets/braking-parts.png" alt="فرامل توضيحية"/><span class="promo-copy"><strong>فرامل<br/>وأمان</strong><small>لقيادة أكثر أمانًا</small></span><span class="promo-cta">شوف الاختيارات ❯</span></button><button class="promo-live maintenance-live" @click="emit('category','فلاتر')"><img src="/assets/maintenance-parts.png" alt="زيت وفلاتر توضيحية"/><span class="promo-copy"><strong>وقت<br/>الصيانة؟</strong><small>جهز عربيتك</small></span><span class="promo-cta">جهز عربيتك ❯</span></button></div>
    <div class="reference-section-title"><h2>اكتشف المحلات</h2><button @click="emit('navigate','shops')">عرض الكل ‹</button></div>
-   <div class="reference-shops"><button v-for="n in 2" :key="n" @click="emit('navigate','shops')"><img :src="'/assets/shop-demo-'+n+'.png'" alt="تصور توضيحي لمحل قطع غيار"/><div><span class="reference-store"><svg viewBox="0 0 32 32"><path d="M5 12v16h22V12M3 12l3-9h20l3 9M3 12q3 7 7 0 3 7 6 0 3 7 6 0 4 7 7 0M13 28V18h7v10"/></svg></span><span><strong>{{ shops[n-1]?.name || (n === 1 ? 'أوتو بارتس' : 'متجر النور') }}</strong><small>قطع غيار وصيانة</small></span><b>‹</b></div></button></div>
+   <div class="reference-shops"><button v-for="n in shopCount" :key="n" @click="emit('navigate','shops')"><img :src="'/assets/shop-demo-'+(((n-1)%2)+1)+'.png'" alt="تصور توضيحي لمحل قطع غيار"/><div><span class="reference-store"><svg viewBox="0 0 32 32"><path d="M5 12v16h22V12M3 12l3-9h20l3 9M3 12q3 7 7 0 3 7 6 0 3 7 6 0 4 7 7 0M13 28V18h7v10"/></svg></span><span><strong>{{ shops[n-1]?.name || (n === 1 ? 'أوتو بارتس' : 'متجر النور') }}</strong><small>قطع غيار وصيانة</small></span><b>‹</b></div></button></div>
    <p class="reference-demo">تصور مبدئي · صور ومحلات توضيحية · الطلب والدفع للتجربة فقط</p>
   </div>
   <div class="reference-bottom"><button v-for="(entry,n) in [['home','الرئيسية'],['shops','المحلات'],['orders','طلباتي'],['profile','حسابي']]" :key="entry[0]" :class="{active:n===0}" @click="emit('navigate',entry[0])"><svg viewBox="0 0 32 32"><path v-if="n===0" d="m3 15 13-12 13 12-4 1v13h-7v-9h-4v9H7V16Z"/><path v-else-if="n===1" d="M5 12v17h22V12M3 12l3-9h20l3 9M3 12q4 7 9 0 4 7 8 0 5 7 9 0M13 29v-9h7v9"/><path v-else-if="n===2" d="M7 3h19v26l-4-2-4 2-4-2-4 2-3-2ZM11 9h11M11 14h11M11 19h7"/><path v-else d="M5 29q0-13 11-13t11 13ZM22 8a6 6 0 1 1-12 0 6 6 0 0 1 12 0Z"/></svg><span>{{ entry[1] }}</span></button></div>
@@ -73,5 +74,12 @@ const items = [
  .reference-home .reference-demo{font-size:14px;margin:28px 0}
  .reference-home .reference-bottom{display:none}
 }
-@media(min-width:1500px){.reference-home .reference-shops{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1200px){
+ .reference-home .reference-content{max-width:1680px;padding:40px 48px 0}
+ .reference-home .reference-categories{max-width:none;gap:28px;margin-bottom:40px}.reference-home .reference-categories img{aspect-ratio:1.5;border-radius:22px}.reference-home .reference-categories strong{font-size:22px;padding-top:10px}
+ .reference-home .reference-vehicle{max-width:none;margin:0 0 36px;padding:22px 40px!important}.reference-home .reference-vehicle strong{font-size:24px}.reference-home .reference-vehicle img{width:72px}
+ .reference-home .reference-promos{gap:32px}.reference-home .reference-promos .promo-live{height:clamp(240px,16vw,360px)}
+ .reference-home .reference-shops{grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:28px}.reference-home .reference-shops>button>img{aspect-ratio:2.2}
+ .reference-home .reference-search{max-width:880px}
+}
 </style>
