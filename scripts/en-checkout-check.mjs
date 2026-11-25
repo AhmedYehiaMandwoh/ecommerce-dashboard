@@ -1,0 +1,37 @@
+// English web checkout assertions (isolated test stack only, places NO order): labels, direction, enabled states, Arabic UI leaks.
+import { chromium } from '@playwright/test';
+import fs from 'node:fs';
+const WEB = process.env.WEB_URL || 'http://127.0.0.1:3200';
+const b = await chromium.launch({ ...(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {}), headless: true, args: ['--no-sandbox'] });
+const p = await (await b.newContext({ viewport: { width: 1440, height: 900 } })).newPage();
+let fail = 0; const ok = (c, m) => { console.log(c ? 'PASS' : 'FAIL', m); if (!c) fail++; };
+const body = () => p.evaluate(() => document.body.innerText);
+await p.goto(WEB + '/login'); await p.waitForLoadState('networkidle');
+await p.getByRole('button', { name: 'English', exact: true }).click(); await p.waitForTimeout(800);
+await p.getByRole('button', { name: 'Email sign-in for development and admin' }).click();
+await p.getByLabel('Email', { exact: true }).fill('customer@example.test'); await p.getByLabel('Password', { exact: true }).fill(process.env.DEMO_PASSWORD);
+await p.getByRole('button', { name: 'Sign in', exact: true }).last().click(); await p.waitForTimeout(2500);
+await p.evaluate(() => window.useNuxtApp().$router.push('/shops')); await p.waitForTimeout(1500);
+await p.getByRole('button', { name: /Details/ }).first().click(); await p.waitForTimeout(1200);
+await p.getByRole('button', { name: /Add to cart/ }).first().click(); await p.waitForTimeout(800);
+ok(/Added to cart|added/i.test(await body()), 'English added-to-cart banner');
+await p.evaluate(() => window.useNuxtApp().$router.push('/cart')); await p.waitForTimeout(1500);
+const cart = await body();
+ok(/EGP\s?\d/.test(cart) && !/ج\.م/.test(cart), 'cart totals use EGP, no Arabic currency');
+await p.evaluate(() => window.useNuxtApp().$router.push('/checkout')); await p.waitForTimeout(1500);
+ok(await p.evaluate(() => document.documentElement.dir) === 'ltr', 'checkout is LTR');
+const t = await body();
+for (const s of ['Checkout', 'Delivery address', 'Review final cost', 'Confirm test order']) ok(t.includes(s), 'label present: ' + s);
+const confirm = p.getByRole('button', { name: /Confirm test order/ }), review = p.getByRole('button', { name: 'Review final cost' });
+ok(!(await confirm.isEnabled()), 'confirm disabled before address and area');
+await p.locator('select').first().selectOption({ index: 1 }); await p.waitForTimeout(500);
+const area = p.locator('select').nth(1); if (await area.count()) { await area.selectOption({ index: 1 }); await p.waitForTimeout(500); }
+ok(await review.isEnabled(), 'review enabled after address and area');
+await review.click(); await p.waitForTimeout(2000);
+ok(await confirm.isEnabled(), 'confirm enabled after review (not clicked, no order placed)');
+const t2 = await body();
+ok(/Total|Delivery|Subtotal/.test(t2) && /EGP/.test(t2), 'English cost summary shown');
+const leaks = (await p.evaluate(() => { const ar = /[\u0600-\u06FF]/, o = []; const w = document.createTreeWalker(document.querySelector('main') || document.body, NodeFilter.SHOW_TEXT); let n; while ((n = w.nextNode())) { const s = n.textContent.trim(); if (s && ar.test(s) && !n.parentElement.closest('header,nav,select,option')) o.push(s.slice(0, 60)); } return o; }));
+console.log('Arabic text left in main (authored data expected):', JSON.stringify([...new Set(leaks)].slice(0, 6)));
+await p.screenshot({ path: (process.env.OUT || '/tmp/en-checkout') + '.png', fullPage: true });
+await b.close(); console.log(fail ? 'FAILED ' + fail : 'ALL PASS'); process.exit(fail ? 1 : 0);
