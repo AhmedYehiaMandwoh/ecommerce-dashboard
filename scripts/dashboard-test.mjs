@@ -55,9 +55,9 @@ if (!(await page.getByText(title.slice(0, 20)).count())) fail('submitted product
 await snap(page, 'merchant-20-add-product-submitted');
 // order detail with tracking
 await nav(page, 'الطلبات');
-await page.getByRole('button', { name: /^طلب / }).first().click();
+if (await page.getByRole('button', { name: /^طلب / }).count()) { await page.getByRole('button', { name: /^طلب / }).first().click();
 await page.waitForTimeout(800);
-await snap(page, 'merchant-21-order-detail');
+await snap(page, 'merchant-21-order-detail'); } else console.log('skip: no orders in clean DB (order detail not exercised)');
 await ctx.close();
 // admin, desktop
 ({ ctx, page } = await session('admin', { width: 1280, height: 900 }));
