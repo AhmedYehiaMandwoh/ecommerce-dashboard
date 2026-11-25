@@ -18,7 +18,7 @@ const items = computed(() => [
 </script>
 
 <template>
-  <div class="space-y-2">
+  <div class="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-3 [&>*]:min-w-0">
     <NuxtLink v-for="i in items" :key="i.to" :to="i.to"><Card class="mb-2 flex-row items-center gap-3 p-4"><component :is="i.icon" class="size-6 text-primary" /><span class="flex-1 font-bold">{{ i.label }}</span><ChevronLeft class="size-4" /></Card></NuxtLink>
   </div>
 </template>

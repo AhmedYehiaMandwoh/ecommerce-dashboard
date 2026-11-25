@@ -69,3 +69,36 @@
   }
   button[data-slot]:disabled { cursor: not-allowed; }
 }
+
+/* Dashboards (merchant and admin): neutral shadcn look, black primary, rounded cards */
+html.dash-theme {
+  --radius: 0.875rem;
+  --background: oklch(0.975 0.002 250);
+  --foreground: oklch(0.18 0 0);
+  --primary: oklch(0.2 0 0);
+  --primary-foreground: oklch(0.99 0 0);
+  --accent: oklch(0.2 0 0);
+  --accent-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.955 0 0);
+  --secondary-foreground: oklch(0.25 0 0);
+  --muted: oklch(0.96 0 0);
+  --muted-foreground: oklch(0.5 0 0);
+  --border: oklch(0.92 0 0);
+  --input: oklch(0.9 0 0);
+  --ring: oklch(0.7 0 0);
+}
+html.dash-theme body { background: var(--background); }
+
+@layer components {
+  .dash-root :is(header, nav, footer, aside, main) { background: transparent; color: inherit; padding: 0; margin: 0; border: 0; box-shadow: none; display: block; position: static; max-width: none; gap: 0; flex-wrap: nowrap; overflow: visible; }
+  .dash-root header { position: sticky; }
+}
+
+/* Customer website: use the available desktop width instead of a phone column */
+@media (min-width: 1400px) {
+  .marketplace-shell { max-width: 1760px; }
+  .marketplace-shell main { max-width: 1640px; }
+}
+@media (min-width: 1000px) {
+  .marketplace-shell .grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+}

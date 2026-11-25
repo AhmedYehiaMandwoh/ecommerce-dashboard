@@ -19,6 +19,7 @@ const edit = (p: any) => { editCatalog(p); router.push("/dashboard/catalog"); };
     </Tabs>
     <template v-if="tab === 'products'">
       <p v-if="!pending.length" class="text-muted-foreground">لا توجد منتجات بانتظار المراجعة.</p>
+      <div class="grid grid-cols-1 items-start gap-3 md:grid-cols-2 2xl:grid-cols-3 [&>*]:min-w-0">
       <Card v-for="p in pending" :key="p.id" class="gap-3 p-3">
         <div class="flex gap-3">
           <div class="min-w-0 flex-1 space-y-1"><h3 class="text-lg font-extrabold">{{ p.title }}</h3><p class="text-sm text-muted-foreground">{{ p.brand }} • {{ p.partNumber }}</p><Badge variant="outline" class="border-accent text-accent">بانتظار المراجعة</Badge></div>
@@ -26,6 +27,7 @@ const edit = (p: any) => { editCatalog(p); router.push("/dashboard/catalog"); };
         </div>
         <div class="grid grid-cols-3 gap-2"><Button class="bg-accent text-accent-foreground" size="lg" :disabled="busy" @click="approve('products', p.id, true)">قبول</Button><Button variant="outline" size="lg" class="border-accent text-accent" @click="edit(p)">طلب تعديل</Button><Button variant="outline" size="lg" class="text-primary" @click="edit(p)">عرض</Button></div>
       </Card>
+      </div>
       <NuxtLink v-if="open[0]" to="/dashboard/support"><Card class="flex-row items-center gap-3 bg-orange-50 p-3"><MessageSquare class="size-7 text-primary" /><div class="flex-1"><div class="font-bold">{{ open[0].subject }}</div><div class="text-xs text-muted-foreground">{{ open[0].message.slice(0, 60) }}</div></div></Card></NuxtLink>
     </template>
     <template v-else>

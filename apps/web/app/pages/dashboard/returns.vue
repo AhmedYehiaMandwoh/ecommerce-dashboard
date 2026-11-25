@@ -7,7 +7,7 @@ const { busy, dash, decideReturn, money, recordRefund, refundForm, returnDecisio
     <h2 class="text-lg font-extrabold">الإرجاع ورد النقدية</h2>
     <p class="rounded-lg bg-secondary p-3 text-sm">إدارة حالات اختبار، لا قبول تلقائي ولا تحويل أموال. رد النقدية لا يشمل الشحن تلقائيًا. المراجعة ليست سياسة تجارية.</p>
     <p v-if="!dash.orders.some((o: any) => o.returns?.length)" class="text-muted-foreground">لا توجد حالات إرجاع.</p>
-    <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 [&>*]:min-w-0">
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2 2xl:grid-cols-3 [&>*]:min-w-0">
       <template v-for="o in dash.orders" :key="o.id">
         <Card v-for="r in o.returns" :key="r.id" class="space-y-3 p-5">
           <div class="flex items-center justify-between"><h3 class="font-extrabold">#{{ o.id.slice(0, 8) }} • {{ o.shop.name }}</h3><Badge>{{ r.state }}</Badge></div>

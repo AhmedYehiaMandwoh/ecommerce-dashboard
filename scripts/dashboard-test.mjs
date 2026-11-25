@@ -69,7 +69,7 @@ if (!(await page.getByText(title).count())) fail('merchant product missing from 
 await snap(page, 'admin-24-review-center');
 await page.getByText(title, { exact: true }).locator('xpath=ancestor::*[@data-slot="card"][1]').getByRole('button', { name: 'قبول', exact: true }).click();
 await page.waitForTimeout(1200);
-await nav(page, 'المزيد');
+await nav(page, 'التحصيل وطلبات الإلغاء');
 await snap(page, 'admin-more');
 await ctx.close();
 // New merchant session: the server-persisted proposed price and stock prefill the offer form after approval.
@@ -101,7 +101,6 @@ await ctx.close();
     const req = await call('/orders/' + target.id + '/cancellation-requests', 'POST', ct, { reason: 'العميل لا يستطيع الاستلام اليوم' });
     if (req.status !== 201) fail('cancellation request failed ' + req.status);
     ({ ctx, page } = await session('admin', { width: 1280, height: 900 }));
-    await nav(page, 'المزيد');
     await page.locator('a[href="/dashboard/legacy-orders"]').first().click();
     await page.waitForTimeout(1200);
     const rv = page.locator('[data-review-order="' + target.id + '"]');

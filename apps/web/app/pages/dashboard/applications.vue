@@ -10,12 +10,13 @@ const list = computed(() => (dash.value.shopApplications || []).filter((a: any) 
 <template>
   <div v-if="user.role === 'ADMIN'" class="space-y-2">
     <Tabs v-model="tab" dir="rtl">
-      <TabsList class="h-12 w-full gap-1 rounded-2xl p-1"><TabsTrigger v-for="[s, l] in (states as [string, string][])" :key="s" :value="s as string" class="gap-1 px-1 text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">{{ l }} <Badge variant="secondary" class="px-1.5 text-xs">{{ count(s) }}</Badge></TabsTrigger></TabsList>
+      <TabsList class="h-auto min-h-12 w-full flex-wrap gap-1 rounded-2xl p-1"><TabsTrigger v-for="[s, l] in (states as [string, string][])" :key="s" :value="s as string" class="min-w-0 gap-1 px-1 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">{{ l }} <Badge variant="secondary" class="px-1.5 text-xs">{{ count(s) }}</Badge></TabsTrigger></TabsList>
     </Tabs>
     <p class="text-xs text-muted-foreground">راجع بيانات النشاط وتواصل مع مقدم الطلب قبل الموافقة. لا يوجد تحقق آلي من المستندات.</p>
     <p v-if="!list.length" class="text-muted-foreground">لا توجد طلبات في هذه القائمة.</p>
+    <div class="grid grid-cols-1 items-start gap-3 md:grid-cols-2 2xl:grid-cols-3 [&>*]:min-w-0">
     <Card v-for="a in list" :key="a.id" class="gap-1 px-3 py-3">
-      <div class="flex items-center gap-3"><div class="flex size-12 items-center justify-center rounded-xl bg-secondary"><Store class="size-6 text-primary" /></div><div class="flex-1"><h3 class="font-extrabold">{{ a.name }}</h3><p class="text-sm text-muted-foreground">{{ a.city }} • {{ a.address }}</p></div><Badge>{{ ({ PENDING: "طلب جديد", APPROVED: "نشط", SUSPENDED: "موقوف", REJECTED: "مرفوض" } as any)[a.state] || a.state }}</Badge></div>
+      <div class="flex items-center gap-3"><div class="flex size-12 shrink-0 items-center justify-center rounded-xl bg-secondary"><Store class="size-6 text-primary" /></div><div class="min-w-0 flex-1 break-words"><h3 class="font-extrabold">{{ a.name }}</h3><p class="text-sm text-muted-foreground">{{ a.city }} • {{ a.address }}</p></div><Badge class="shrink-0">{{ ({ PENDING: "طلب جديد", APPROVED: "نشط", SUSPENDED: "موقوف", REJECTED: "مرفوض" } as any)[a.state] || a.state }}</Badge></div>
       <div class="mt-1 divide-y text-sm">
         <div class="space-y-0.5 py-1"><h4 class="flex items-center gap-2 font-extrabold"><Store class="size-4 text-primary" /> بيانات المتجر</h4><p>اسم المتجر: <b>{{ a.name }}</b></p><p class="flex items-start gap-2"><FileText class="mt-0.5 size-4" /> {{ a.details }}</p></div>
         <div class="space-y-0.5 py-1"><h4 class="flex items-center gap-2 font-extrabold"><FileText class="size-4 text-primary" /> المستندات</h4>
@@ -29,7 +30,7 @@ const list = computed(() => (dash.value.shopApplications || []).filter((a: any) 
       <div v-if="a.state === 'PENDING'" class="sticky bottom-[84px] z-10 mt-1 space-y-1 bg-card pb-1 md:static">
         <Label :for="'r-' + a.id">سبب قرار الانضمام</Label>
         <Textarea :id="'r-' + a.id" v-model="applicationReasons[a.id]" rows="1" class="min-h-9" minlength="5" maxlength="180" />
-        <div class="grid grid-cols-2 gap-3"><Button class="bg-accent text-accent-foreground" :disabled="busy" @click="decideShopApplication(a, true)"><Check class="size-4" /> قبول وتفعيل المتجر</Button><Button variant="outline" :disabled="busy" @click="decideShopApplication(a, false)"><X class="size-4" /> رفض</Button></div>
+        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2"><Button class="bg-accent text-accent-foreground" :disabled="busy" @click="decideShopApplication(a, true)"><Check class="size-4" /> قبول وتفعيل المتجر</Button><Button variant="outline" :disabled="busy" @click="decideShopApplication(a, false)"><X class="size-4" /> رفض</Button></div>
       </div>
       <div v-if="a.state === 'APPROVED' || a.state === 'SUSPENDED'" class="mt-1 space-y-1">
         <Label :for="'s-' + a.id">{{ a.state === 'APPROVED' ? 'سبب إيقاف المتجر' : 'سبب إعادة التفعيل' }}</Label>
@@ -38,6 +39,7 @@ const list = computed(() => (dash.value.shopApplications || []).filter((a: any) 
         <Button v-else class="w-full bg-accent text-accent-foreground" :disabled="busy || (applicationReasons[a.id] || '').trim().length < 5" @click="suspendShopApplication(a, false)">إعادة تفعيل المتجر</Button>
       </div>
     </Card>
+    </div>
   </div>
   <p v-else class="text-muted-foreground">هذه الصفحة للإدارة فقط.</p>
 </template>

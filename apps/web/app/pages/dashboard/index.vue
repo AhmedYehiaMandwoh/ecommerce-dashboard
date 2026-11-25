@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ClipboardList, ShoppingCart, Package, FileText, Store, Clock, ChevronLeft, Info } from "lucide-vue-next";
+import { ClipboardList, ShoppingCart, Package, FileText, Store, Clock, ChevronLeft, Info, Banknote } from "lucide-vue-next";
 const { dash, money, user, statusLabels, imageUrl } = useMarket();
 const admin = computed(() => user.value?.role === "ADMIN");
 const todayCount = computed(() => dash.value.orders.filter((o: any) => new Date(o.createdAt).toDateString() === new Date().toDateString()).length);
@@ -19,59 +19,69 @@ const yMax = computed(() => {
   return Math.ceil(m / step) * step;
 });
 const yTicks = computed(() => { const n = yMax.value <= 4 ? yMax.value : 4; return Array.from({ length: n + 1 }, (_, i) => Math.round((yMax.value / n) * (n - i))); });
+const maxDay = computed(() => Math.max(...week.value.map((w) => w.n)));
+const totalWeek = computed(() => week.value.reduce((a, w) => a + w.n, 0));
+const recent = computed(() => dash.value.orders.slice(0, 6));
 const shopName = computed(() => dash.value.shops?.[0]?.name || "متجرك");
 const badgeVariant = (s: string) => (s === "PLACED" ? "default" : s === "CANCELLED" ? "destructive" : "secondary");
 </script>
 
 <template>
-  <div class="space-y-3">
-    <Card v-if="!admin" class="flex-row items-center gap-3 p-2">
-      <div class="flex size-14 items-center justify-center rounded-full bg-secondary"><Store class="size-8 text-accent" /></div>
-      <div><h2 class="text-xl font-extrabold">لوحة التاجر</h2><p class="text-muted-foreground">{{ shopName }}</p></div>
-    </Card>
-    <div class="grid grid-cols-3 gap-2">
+  <div class="space-y-4">
+    <div class="grid grid-cols-2 gap-3 xl:grid-cols-4 [&>*]:min-w-0">
       <template v-if="!admin">
-        <Card class="gap-0 border-0 bg-accent p-3 text-accent-foreground"><ShoppingCart class="size-7" /><div class="text-sm font-bold">طلبات اليوم</div><div class="text-3xl font-extrabold">{{ todayCount }}</div></Card>
-        <Card class="gap-0 border-0 bg-accent p-3 text-accent-foreground"><Package class="size-7" /><div class="text-sm font-bold">منتجات</div><div class="text-3xl font-extrabold">{{ dash.summary.offers }}</div></Card>
-        <Card class="gap-0 border-0 bg-accent p-3 text-accent-foreground"><FileText class="size-7" /><div class="text-sm font-bold">تحتاج مراجعة</div><div class="text-3xl font-extrabold">{{ newOrders }}</div></Card>
+        <Card class="gap-2 p-4"><div class="flex items-center justify-between"><span class="text-sm font-bold text-muted-foreground">طلبات اليوم</span><span class="flex size-9 items-center justify-center rounded-lg bg-teal-50 text-teal-700"><ShoppingCart class="size-5" /></span></div><div class="text-3xl font-extrabold">{{ todayCount }}</div><div class="text-xs text-muted-foreground">{{ shopName }}</div></Card>
+        <Card class="gap-2 p-4"><div class="flex items-center justify-between"><span class="text-sm font-bold text-muted-foreground">منتجات</span><span class="flex size-9 items-center justify-center rounded-lg bg-orange-50 text-orange-600"><Package class="size-5" /></span></div><div class="text-3xl font-extrabold">{{ dash.summary.offers }}</div><div class="text-xs text-muted-foreground">عروض في متجرك</div></Card>
+        <Card class="gap-2 p-4"><div class="flex items-center justify-between"><span class="text-sm font-bold text-muted-foreground">تحتاج مراجعة</span><span class="flex size-9 items-center justify-center rounded-lg bg-blue-50 text-blue-600"><FileText class="size-5" /></span></div><div class="text-3xl font-extrabold">{{ newOrders }}</div><div class="text-xs text-muted-foreground">طلبات جديدة</div></Card>
+        <Card class="gap-2 p-4"><div class="flex items-center justify-between"><span class="text-sm font-bold text-muted-foreground">إجمالي المسلّم</span><span class="flex size-9 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700"><Banknote class="size-5" /></span></div><div class="text-2xl font-extrabold">{{ money(dash.summary.revenue) }}</div><div class="text-xs text-muted-foreground">أرقام تجريبية</div></Card>
       </template>
       <template v-else>
-        <Card class="gap-0 border-0 bg-orange-50 p-3"><Store class="size-7 text-accent" /><div class="text-xs font-bold leading-tight">المحلات</div><div class="text-3xl font-extrabold text-accent">{{ dash.shops.length }}</div></Card>
-        <Card class="gap-0 border-0 bg-blue-50 p-3"><FileText class="size-7 text-primary" /><div class="text-xs font-bold leading-tight">الطلبات</div><div class="text-3xl font-extrabold text-primary">{{ dash.summary.orders }}</div></Card>
-        <Card class="gap-0 border-0 bg-orange-50 p-3"><Package class="size-7 text-accent" /><div class="text-xs font-bold leading-tight">منتجات للمراجعة</div><div class="text-3xl font-extrabold text-accent">{{ pendingProducts }}</div></Card>
+        <Card class="gap-2 p-4"><div class="flex items-center justify-between"><span class="text-sm font-bold text-muted-foreground">المحلات</span><span class="flex size-9 items-center justify-center rounded-lg bg-orange-50 text-orange-600"><Store class="size-5" /></span></div><div class="text-3xl font-extrabold">{{ dash.shops.length }}</div><div class="text-xs text-muted-foreground">بانتظار الاعتماد: {{ pendingApps }}</div></Card>
+        <Card class="gap-2 p-4"><div class="flex items-center justify-between"><span class="text-sm font-bold text-muted-foreground">الطلبات</span><span class="flex size-9 items-center justify-center rounded-lg bg-blue-50 text-blue-600"><FileText class="size-5" /></span></div><div class="text-3xl font-extrabold">{{ dash.summary.orders }}</div><div class="text-xs text-muted-foreground">اليوم: {{ todayCount }}</div></Card>
+        <Card class="gap-2 p-4"><div class="flex items-center justify-between"><span class="text-sm font-bold text-muted-foreground">منتجات للمراجعة</span><span class="flex size-9 items-center justify-center rounded-lg bg-teal-50 text-teal-700"><Package class="size-5" /></span></div><div class="text-3xl font-extrabold">{{ pendingProducts }}</div><div class="text-xs text-muted-foreground">بانتظار الموافقة</div></Card>
+        <Card class="gap-2 p-4"><div class="flex items-center justify-between"><span class="text-sm font-bold text-muted-foreground">إجمالي المسلّم</span><span class="flex size-9 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700"><Banknote class="size-5" /></span></div><div class="text-2xl font-extrabold">{{ money(dash.summary.revenue) }}</div><div class="text-xs text-muted-foreground">أرقام تجريبية</div></Card>
       </template>
     </div>
-    <p class="text-center text-xs text-muted-foreground">أرقام تجريبية من قاعدة بيانات الاختبار • إجمالي المسلّم {{ money(dash.summary.revenue) }}</p>
 
-    <Card v-if="admin" class="gap-1 p-3">
-      <div class="mb-2 flex items-center justify-between"><h3 class="font-extrabold">الطلبات الأسبوعية (آخر ٧ أيام)</h3><span class="flex items-center gap-1 text-xs text-muted-foreground"><Info class="size-3" /> بيانات اختبار</span></div>
-      <div class="flex gap-2">
-        <div class="flex h-20 flex-col justify-between pb-0 text-xs text-muted-foreground" dir="ltr"><span v-for="t in yTicks" :key="t" class="leading-none">{{ t }}</span></div>
-        <div class="relative flex-1">
-          <div class="pointer-events-none absolute inset-x-0 top-0 flex h-20 flex-col justify-between"><i v-for="t in yTicks" :key="t" class="block border-t border-dashed border-border" /></div>
-          <div class="relative flex h-20 items-end gap-2">
-            <div v-for="w in week" :key="w.d" class="flex h-full flex-1 items-end"><div class="w-full rounded-t-md bg-accent" :style="{ height: w.n ? w.h + '%' : '2px' }" :title="w.n + ' طلب'" /></div>
+    <div class="grid grid-cols-1 gap-4 lg:grid-cols-3 [&>*]:min-w-0">
+      <Card class="gap-3 p-5 lg:col-span-2">
+        <div class="flex items-start justify-between"><div><h3 class="text-lg font-extrabold">الطلبات الأسبوعية</h3><p class="text-sm text-muted-foreground">آخر ٧ أيام • {{ totalWeek }} طلب</p></div><span class="flex items-center gap-1 text-xs text-muted-foreground"><Info class="size-3" /> بيانات اختبار</span></div>
+        <div class="flex h-44 items-end gap-2 pt-6 sm:h-56 sm:gap-4">
+          <div v-for="w in week" :key="w.d" class="flex h-full min-w-0 flex-1 flex-col items-center justify-end gap-1">
+            <span class="text-sm font-extrabold">{{ w.n }}</span>
+            <div class="w-full rounded-lg" :class="w.n && w.n === maxDay ? 'bg-teal-600' : 'bg-teal-100'" :style="{ height: w.n ? Math.max(w.h, 4) * 0.7 + '%' : '4px' }" :title="w.n + ' طلب'" />
+            <span class="truncate text-xs text-muted-foreground">{{ w.d }}</span>
           </div>
-          <div class="mt-1 flex gap-2"><span v-for="w in week" :key="w.d" class="flex-1 text-center text-xs text-muted-foreground">{{ w.d }}</span></div>
         </div>
-      </div>
-    </Card>
-
-    <div v-if="admin" class="space-y-2">
-      <h3 class="font-extrabold">قائمة المراجعة</h3>
-      <NuxtLink to="/dashboard/applications"><Card class="flex-row items-center gap-3 p-3"><Store class="size-8 text-primary" /><div class="flex-1"><div class="font-bold">محلات جديدة</div><div class="text-xs text-muted-foreground">مراجعة طلبات انضمام محلات جديدة</div></div><Badge class="bg-accent text-accent-foreground">{{ pendingApps }}</Badge><ChevronLeft class="size-4" /></Card></NuxtLink>
-      <NuxtLink to="/dashboard/review"><Card class="flex-row items-center gap-3 p-3"><Package class="size-8 text-primary" /><div class="flex-1"><div class="font-bold">منتجات جديدة</div><div class="text-xs text-muted-foreground">مراجعة منتجات بانتظار الموافقة</div></div><Badge class="bg-accent text-accent-foreground">{{ pendingProducts }}</Badge><ChevronLeft class="size-4" /></Card></NuxtLink>
+      </Card>
+      <Card v-if="admin" class="gap-2 p-5">
+        <h3 class="text-lg font-extrabold">قائمة المراجعة</h3>
+        <NuxtLink to="/dashboard/applications" class="flex items-center gap-3 rounded-xl border p-3 hover:bg-secondary/60"><Store class="size-7" /><div class="min-w-0 flex-1"><div class="font-bold">محلات جديدة</div><div class="text-xs text-muted-foreground">مراجعة طلبات انضمام محلات جديدة</div></div><Badge>{{ pendingApps }}</Badge><ChevronLeft class="size-4" /></NuxtLink>
+        <NuxtLink to="/dashboard/review" class="flex items-center gap-3 rounded-xl border p-3 hover:bg-secondary/60"><Package class="size-7" /><div class="min-w-0 flex-1"><div class="font-bold">منتجات جديدة</div><div class="text-xs text-muted-foreground">مراجعة منتجات بانتظار الموافقة</div></div><Badge>{{ pendingProducts }}</Badge><ChevronLeft class="size-4" /></NuxtLink>
+      </Card>
+      <Card v-else class="gap-2 p-5">
+        <h3 class="text-lg font-extrabold">إجراءات سريعة</h3>
+        <NuxtLink to="/dashboard/orders"><Button class="w-full" size="lg"><ClipboardList class="size-5" /> الطلبات</Button></NuxtLink>
+        <NuxtLink to="/dashboard/add-product"><Button class="w-full" variant="outline" size="lg"><Package class="size-5" /> إضافة منتج</Button></NuxtLink>
+      </Card>
     </div>
 
-    <Card class="gap-1 p-3">
-      <div class="mb-1 flex items-center justify-between"><h3 class="flex items-center gap-2 font-extrabold"><Clock class="size-5" /> أحدث الطلبات</h3><NuxtLink to="/dashboard/orders" class="text-sm font-bold text-primary">عرض الكل</NuxtLink></div>
+    <Card class="gap-2 p-5">
+      <div class="flex items-center justify-between"><h3 class="flex items-center gap-2 text-lg font-extrabold"><Clock class="size-5" /> أحدث الطلبات</h3><NuxtLink to="/dashboard/orders" class="text-sm font-bold underline">عرض الكل</NuxtLink></div>
       <p v-if="!dash.orders.length" class="text-muted-foreground">مفيش طلبات لسه.</p>
-      <NuxtLink v-for="o in dash.orders.slice(0, admin ? 3 : 2)" :key="o.id" :to="'/dashboard/orders?id=' + o.id" class="flex items-center gap-3 border-t py-1">
-        <div class="flex shrink-0 flex-col items-center gap-1"><Badge :variant="badgeVariant(o.status)">{{ statusLabels[o.status] }}</Badge><span class="text-xs text-muted-foreground">{{ new Date(o.createdAt).toLocaleDateString("ar-EG") }}</span></div>
-        <div class="min-w-0 flex-1"><div class="truncate font-bold">#{{ o.id.slice(0, 8) }}</div><div class="truncate text-xs text-muted-foreground">{{ o.items[0]?.title }}<template v-if="admin"> • {{ o.shop.name }}</template></div></div>
-        <img :src="imageUrl(o.items[0]?.offer?.product?.image || '/assets/shop-icon.png')" alt="" class="size-12 rounded-xl border bg-secondary object-contain" />
-      </NuxtLink>
-      <div v-if="!admin" class="mt-1 grid grid-cols-2 gap-3"><NuxtLink to="/dashboard/orders"><Button class="w-full bg-accent text-accent-foreground" size="lg"><ClipboardList class="size-6" /> الطلبات</Button></NuxtLink><NuxtLink to="/dashboard/add-product"><Button class="w-full text-primary" variant="outline" size="lg"><Package class="size-6" /> إضافة منتج</Button></NuxtLink></div>
+      <Table v-else>
+        <TableHeader><TableRow><TableHead>رقم الطلب</TableHead><TableHead>الحالة</TableHead><TableHead class="hidden md:table-cell">المتجر</TableHead><TableHead class="hidden lg:table-cell">المنتجات</TableHead><TableHead class="hidden sm:table-cell">التاريخ</TableHead><TableHead>الإجمالي</TableHead></TableRow></TableHeader>
+        <TableBody>
+          <TableRow v-for="o in recent" :key="o.id" class="cursor-pointer" @click="navigateTo('/dashboard/orders?id=' + o.id)">
+            <TableCell><NuxtLink :to="'/dashboard/orders?id=' + o.id" class="font-bold">#{{ o.id.slice(0, 8) }}</NuxtLink></TableCell>
+            <TableCell><Badge :variant="badgeVariant(o.status)">{{ statusLabels[o.status] }}</Badge></TableCell>
+            <TableCell class="hidden md:table-cell">{{ o.shop.name }}</TableCell>
+            <TableCell class="hidden max-w-64 truncate lg:table-cell">{{ o.items.map((i: any) => i.title).join("، ") }}</TableCell>
+            <TableCell class="hidden sm:table-cell">{{ new Date(o.createdAt).toLocaleDateString("ar-EG") }}</TableCell>
+            <TableCell class="font-bold">{{ money(o.total) }}</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
     </Card>
   </div>
 </template>

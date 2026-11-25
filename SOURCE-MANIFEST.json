@@ -314,8 +314,8 @@
     },
     {
       "path": "apps/web/app/assets/css/tailwind.css",
-      "bytes": 2383,
-      "sha256": "4a485100ed6f6829d4598d5117ddb2dee274354b5042474a92dc10f52cd710db"
+      "bytes": 3647,
+      "sha256": "db75d3d87a0c78cbe26bb2479f0943543350ef096f4c9620cb44cfe73d043b4e"
     },
     {
       "path": "apps/web/app/assets/main.css",
@@ -329,13 +329,13 @@
     },
     {
       "path": "apps/web/app/components/DashboardOrders.vue",
-      "bytes": 3927,
-      "sha256": "b0eb92769b05ef02c35770b6a9c9db9306cbaacee7b8990aa5442b8692027af1"
+      "bytes": 3943,
+      "sha256": "e6119ea95ca09733b3cfd96f03b0623a4606880ebc0c41cb71576f1b46837c4e"
     },
     {
       "path": "apps/web/app/components/ReferenceHome.vue",
-      "bytes": 13139,
-      "sha256": "959370639b8fef6f7493c35604a77aff0e539f15fa3713163470c1639b240427"
+      "bytes": 16689,
+      "sha256": "d0f046613d8d462b8fc789cfdf9ce15ed6354c2a32cc10251ea490dfd5f2b123"
     },
     {
       "path": "apps/web/app/components/ReviewTools.vue",
@@ -599,8 +599,8 @@
     },
     {
       "path": "apps/web/app/pages/dashboard.vue",
-      "bytes": 6696,
-      "sha256": "87eee56d97a68917d6977679167291a1fa0ec738dcb1e279934cd54792549a88"
+      "bytes": 9585,
+      "sha256": "6823f8a5a6e18e2fad4d83549a0f7cfaf496d3645bef8bb95640cc0577c4955b"
     },
     {
       "path": "apps/web/app/pages/dashboard/add-product.vue",
@@ -609,8 +609,8 @@
     },
     {
       "path": "apps/web/app/pages/dashboard/applications.vue",
-      "bytes": 4739,
-      "sha256": "37d6782e809fe274bddd5408da1e88b3f7cd55a437e18308688212e0ac12cc47"
+      "bytes": 4949,
+      "sha256": "c473cdf94136900b86260d9e09ee454923efd1189fc2e2c0ecfd8eda7d9c3359"
     },
     {
       "path": "apps/web/app/pages/dashboard/catalog.vue",
@@ -624,13 +624,13 @@
     },
     {
       "path": "apps/web/app/pages/dashboard/import.vue",
-      "bytes": 4208,
-      "sha256": "40406cd072caf986a55f5ced6bdca0bc4a3a88687136b2529d818c406fbf436b"
+      "bytes": 4224,
+      "sha256": "2fc3b764246d2a2e9ec00f14fc1b97e18c448296c20dd74063e61c91fa35e5ea"
     },
     {
       "path": "apps/web/app/pages/dashboard/index.vue",
-      "bytes": 8055,
-      "sha256": "1a96e9c85116578d987ca7eba36c6c782325504a8938a4ac1bc562a91f8792ab"
+      "bytes": 10151,
+      "sha256": "6c5e0c50054cd2904ee4483617a44574c8b9930f07437e53535e3661ec8d8567"
     },
     {
       "path": "apps/web/app/pages/dashboard/inventory.vue",
@@ -644,33 +644,33 @@
     },
     {
       "path": "apps/web/app/pages/dashboard/more.vue",
-      "bytes": 1713,
-      "sha256": "11af25bc34ffc25ffcc7f477d726f272601632b17a9ff0bebd3790859be7941e"
+      "bytes": 1770,
+      "sha256": "819bac5585f18f2229d463169f4624f759974283d40d9d764d4a95722f3f13c6"
     },
     {
       "path": "apps/web/app/pages/dashboard/orders.vue",
-      "bytes": 5287,
-      "sha256": "aae6cf5322e04f31a9f052892fffc35098df3b8d39349805c6cf87f9b7797ea8"
+      "bytes": 5319,
+      "sha256": "b77211463e13de0d776d62ffd097d5421270971f4afc25abd43a2e7503092ee3"
     },
     {
       "path": "apps/web/app/pages/dashboard/returns.vue",
-      "bytes": 3304,
-      "sha256": "9e7674cf25bd32d04a87f546e1678bfd595e6299b6aa07af1dce7fa0df4c2ca7"
+      "bytes": 3320,
+      "sha256": "8222556bcaa92d705eb6e10ba63a02df80841c76958e437765eea0242f665ce1"
     },
     {
       "path": "apps/web/app/pages/dashboard/review.vue",
-      "bytes": 3681,
-      "sha256": "7a08581bcda5cc11fcdf61e9286d1e17280df020064a5fc72237564209e10a9a"
+      "bytes": 3794,
+      "sha256": "6db1ea41abbcff048d6d73b862d97f7d1df0e33e7307d32ae448cbf063de07e7"
     },
     {
       "path": "apps/web/app/pages/dashboard/settlements.vue",
-      "bytes": 2862,
-      "sha256": "ab590c6dce01b4672cff23213c7d7eda648fc1e7b5bbc1ee8982fe27ab700b01"
+      "bytes": 2878,
+      "sha256": "7a2794268729f9c5d121a90f5bea099e097a4870c61a43d243464ea1eaa55fe9"
     },
     {
       "path": "apps/web/app/pages/dashboard/support.vue",
-      "bytes": 1675,
-      "sha256": "d0d8bb00a9169a8e612eefe267eddab70e50c49c4e2bd5828b790fd4b58d5e2f"
+      "bytes": 1691,
+      "sha256": "2ac0fa0d83f7dac6c1f9ebfc78f90dcc49a7e183f1d9bc3c644c93c5ef7f036b"
     },
     {
       "path": "apps/web/app/pages/index.vue",
@@ -1004,8 +1004,8 @@
     },
     {
       "path": "scripts/dashboard-test.mjs",
-      "bytes": 10818,
-      "sha256": "6e5d1dd63b27f27a418335c0a6baad997222209a7a7fc43b491f33f7ac448aa1"
+      "bytes": 10811,
+      "sha256": "f0976c9eb9413bf23a22a93b326c0ed702e42da0527f6895411e2edb6351347d"
     },
     {
       "path": "scripts/reference-check.mjs",

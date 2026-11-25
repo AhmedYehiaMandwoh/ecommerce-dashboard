@@ -14,6 +14,7 @@ const items = [
  <div class="reference-home" dir="rtl">
   <div class="reference-blue">
    <div class="reference-top">
+    <nav class="reference-links" aria-label="روابط الموقع"><button v-for="l in [['shops','المحلات'],['orders','طلباتي'],['profile','حسابي']]" :key="l[0]" @click="emit('navigate',l[0])">{{ l[1] }}</button></nav>
     <button class="reference-cart" aria-label="السلة" @click="emit('navigate','cart')"><svg viewBox="0 0 40 40"><path d="M4 6h6l5 22h18l5-17H12M17 35h.1M31 35h.1"/></svg><span>{{ cartCount }}</span></button>
     <img class="reference-logo" src="/assets/reference-logo.png" alt="غيار" />
     <button class="reference-location" @click="emit('navigate','profile')"><svg viewBox="0 0 24 32"><path d="M12 30S1 17 1 12a11 11 0 0 1 22 0c0 5-11 18-11 18Z"/><circle cx="12" cy="11" r="4"/></svg><span>حدد موقع التوصيل</span><b>⌄</b></button>
@@ -46,4 +47,31 @@ const items = [
 </style>
 <style scoped>
 @media(max-width:500px){.hero-live-copy h1{font-size:23px;line-height:1.16}.hero-live-copy>strong{font-size:20px}.hero-live-copy p{font-size:10px}.promo-copy strong{font-size:23px}.promo-copy small{font-size:11px}.promo-cta{font-size:11px}.reference-promos .promo-live{aspect-ratio:371/260}.reference-promos .promo-live>img{width:57%;right:0}.promo-copy{left:5%;top:8%}.reference-location{font-size:12px}.reference-logo{width:23%}}
+</style>
+
+<style>
+.reference-links{display:none}
+.reference-home nav.reference-links{background:none;padding:0;border:0;box-shadow:none;position:static}
+@media(min-width:900px){
+ .recovered-home .reference-home{max-width:none;width:100%}
+ .reference-home .reference-top{height:84px;padding:0 max(32px,calc((100% - 1400px)/2))}
+ .reference-home .reference-logo{width:150px;height:62px;top:11px}
+ .reference-home .reference-cart{width:36px}.reference-home .reference-cart span{font-size:11px;min-width:18px}
+ .reference-home .reference-location{font-size:16px;gap:8px}.reference-home .reference-location svg{width:20px}
+ .reference-home .reference-top{gap:24px}.reference-home .reference-logo{position:static;transform:none;order:2}.reference-home .reference-location{order:4;margin:0;margin-inline-start:auto}.reference-home nav.reference-links{display:flex;gap:28px;order:3;margin-inline-start:32px;position:static}.reference-home .reference-links button{color:#fff!important;font-size:17px;font-weight:700;background:none!important}
+ .reference-home .reference-search{height:56px;max-width:760px;margin:0 auto 24px;width:calc(100% - 64px)}.reference-home .reference-search input{font-size:18px}.reference-home .reference-search svg{width:30px}
+ .reference-home .reference-blue{padding-bottom:0}
+ .reference-home .reference-hero{aspect-ratio:auto;height:clamp(300px,30vw,480px);border-radius:0 0 50% 50%/0 0 12% 12%}
+ .reference-home .hero-live-copy{width:46%;padding-top:5%;padding-inline:4%}.reference-home .hero-live-copy h1{font-size:clamp(34px,3.6vw,58px)}.reference-home .hero-live-copy>strong{font-size:clamp(28px,3vw,48px)}.reference-home .hero-live-copy p{font-size:clamp(15px,1.5vw,22px)}
+ .reference-home .reference-hero>img{width:46%;right:8%}.reference-home .hero-quality{font-size:22px}
+ .reference-home .reference-content{max-width:1400px;margin:0 auto;padding:32px 32px 0}
+ .reference-home .reference-categories{max-width:900px;margin:0 auto 32px;gap:20px}.reference-home .reference-categories strong{font-size:18px;padding-top:8px}
+ .reference-home .reference-vehicle{max-width:760px;margin:0 auto 28px;padding:16px 28px!important;gap:24px}.reference-home .reference-vehicle img{width:56px}.reference-home .reference-vehicle strong{font-size:20px}.reference-home .reference-vehicle small{font-size:15px}
+ .reference-home .reference-promos{gap:24px;margin-bottom:36px}.reference-home .reference-promos .promo-live{aspect-ratio:auto;height:clamp(200px,17vw,280px)}.reference-home .promo-copy strong{font-size:clamp(28px,2.6vw,40px)}.reference-home .promo-copy small{font-size:17px}.reference-home .promo-cta{font-size:17px;padding:10px 22px}
+ .reference-home .reference-section-title{margin-bottom:16px}.reference-home .reference-section-title h2{font-size:28px}.reference-home .reference-section-title button{font-size:18px}
+ .reference-home .reference-shops{gap:24px}.reference-home .reference-shops strong{font-size:20px}.reference-home .reference-shops small{font-size:15px}.reference-home .reference-shops>button>div{padding:14px 18px}.reference-home .reference-store{width:48px}
+ .reference-home .reference-demo{font-size:14px;margin:28px 0}
+ .reference-home .reference-bottom{display:none}
+}
+@media(min-width:1500px){.reference-home .reference-shops{grid-template-columns:repeat(2,1fr)}}
 </style>

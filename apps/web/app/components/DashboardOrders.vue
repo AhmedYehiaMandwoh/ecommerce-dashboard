@@ -5,7 +5,7 @@ const { busy, dash, decideCancellation, decisionForm, expandedOrder, imageUrl, m
 <template>
   <div class="space-y-4">
     <p v-if="!dash.orders.length" class="text-muted-foreground">مفيش طلبات لسه.</p>
-    <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 [&>*]:min-w-0">
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2 2xl:grid-cols-3 [&>*]:min-w-0">
       <Card v-for="o in dash.orders" :key="o.id" class="space-y-3 p-5">
         <div class="flex items-center justify-between gap-2"><strong>#{{ o.id.slice(0, 8) }} • {{ o.shop.name }}</strong><Badge>{{ statusLabels[o.status] }}</Badge><b>{{ money(o.total) }}</b></div>
         <div class="flex gap-3">
