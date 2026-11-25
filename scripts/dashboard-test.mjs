@@ -14,7 +14,7 @@ async function session(role, viewport) {
   const page = await ctx.newPage();
   page.on('pageerror', (e) => fail(role + ' pageerror: ' + e.message.slice(0, 160)));
   page.on('console', (m) => { if (m.type() === 'error') fail(role + ' console: ' + m.text().slice(0, 160)); });
-  await page.goto(WEB + '/login');
+  await page.goto(WEB + '/login'); await page.waitForLoadState('networkidle'); await page.waitForTimeout(800);
   await page.getByRole('button', { name: 'دخول البريد للتطوير والإدارة', exact: true }).click();
   await page.getByLabel('البريد الإلكتروني', { exact: true }).fill(role + '@example.test');
   await page.getByLabel('كلمة المرور', { exact: true }).fill(process.env.DEMO_PASSWORD);

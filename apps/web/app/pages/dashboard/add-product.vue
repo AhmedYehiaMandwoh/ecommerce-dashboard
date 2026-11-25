@@ -44,7 +44,7 @@ async function submit() {
         <div class="space-y-2">
           <label class="flex h-20 w-full cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed text-sm text-muted-foreground">
             <img v-if="preview" :src="preview" alt="معاينة الصورة" class="h-full w-full rounded-xl object-contain" />
-            <template v-else><Camera class="size-6" /> إضافة صورة المنتج</template>
+            <template v-else><Camera class="size-6" /> إضافة صورة المنتج (صورة واحدة)</template>
             <input type="file" accept="image/png,image/jpeg,image/webp" class="sr-only" aria-label="صورة المنتج" @change="pick" />
           </label>
           <div class="space-y-1"><Label for="p-title">اسم المنتج</Label><Input id="p-title" v-model="productForm.title" required placeholder="فحمات فرامل أمامية" /></div>

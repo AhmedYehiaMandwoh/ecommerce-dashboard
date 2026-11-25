@@ -599,18 +599,18 @@
     },
     {
       "path": "apps/web/app/pages/dashboard.vue",
-      "bytes": 6285,
-      "sha256": "98115e18c9f54c61552349a4db36fe1b759bf35fd7ef50aed075f9f6a52cacbf"
+      "bytes": 6696,
+      "sha256": "87eee56d97a68917d6977679167291a1fa0ec738dcb1e279934cd54792549a88"
     },
     {
       "path": "apps/web/app/pages/dashboard/add-product.vue",
-      "bytes": 10985,
-      "sha256": "9843ccdba0b8364327c4d5ddd41bec66c8fc0b187b08b5183b6dd5619b903ce8"
+      "bytes": 11007,
+      "sha256": "46816ad845f301b132b0a38e437a8f005d45210f4df5c94326461d21c3b7369a"
     },
     {
       "path": "apps/web/app/pages/dashboard/applications.vue",
-      "bytes": 4592,
-      "sha256": "caf67cc8c4bbd4acb7142b1e7f62e0ff9f5e5bffbb9e7e0199d2d0925517599a"
+      "bytes": 4588,
+      "sha256": "229e08f66a23edf99ab31f74eafe6f1e0edc7f769a5ea5b4c3a7bb37cfe32878"
     },
     {
       "path": "apps/web/app/pages/dashboard/catalog.vue",
@@ -629,8 +629,8 @@
     },
     {
       "path": "apps/web/app/pages/dashboard/index.vue",
-      "bytes": 7995,
-      "sha256": "414bfaa49081813ed4057dce7f662f459b8380948709e19f3438cb4c93163da0"
+      "bytes": 7967,
+      "sha256": "6e94819651972c49d376cbd4d025221a9d36151954dd5bba5af32c2db5e1f1eb"
     },
     {
       "path": "apps/web/app/pages/dashboard/inventory.vue",
@@ -644,13 +644,13 @@
     },
     {
       "path": "apps/web/app/pages/dashboard/more.vue",
-      "bytes": 1427,
-      "sha256": "84fa5124325af846437553398540f7cdd7bc9804be06305f4ad46ab394e0f0bb"
+      "bytes": 1713,
+      "sha256": "11af25bc34ffc25ffcc7f477d726f272601632b17a9ff0bebd3790859be7941e"
     },
     {
       "path": "apps/web/app/pages/dashboard/orders.vue",
-      "bytes": 5175,
-      "sha256": "bdfa0ac2bad9dadb72db020d8f1d880ac5fdb7b3cc17f52f206854ed05653bc8"
+      "bytes": 5281,
+      "sha256": "2682159fddc2d0d93c866b5fc9f145192e51238c924267d7542d0035f59e2007"
     },
     {
       "path": "apps/web/app/pages/dashboard/returns.vue",
@@ -1004,8 +1004,8 @@
     },
     {
       "path": "scripts/dashboard-test.mjs",
-      "bytes": 10758,
-      "sha256": "5ab2a2ee982d7686b11861db77c0c13d6ab06a4febb22810d7bcd6132ac59d8a"
+      "bytes": 10834,
+      "sha256": "4471a06802d249f7febeb17489a19863b94f992a3010d2d3b906db6dce694b3e"
     },
     {
       "path": "scripts/reference-check.mjs",

@@ -54,9 +54,8 @@ async function update() {
       <p v-if="!dash.orders.length" class="text-muted-foreground">مفيش طلبات لسه.</p>
       <div class="grid grid-cols-1 gap-3 lg:grid-cols-2 [&>*]:min-w-0"><Card v-for="o in dash.orders" :key="o.id" class="cursor-pointer flex-row items-center gap-3 p-4" role="button" :aria-label="'طلب ' + o.id.slice(0, 8)" @click="router.push('/dashboard/orders?id=' + o.id)">
         <img :src="imageUrl(o.items[0]?.offer?.product?.image || '/assets/shop-icon.png')" alt="" class="size-14 rounded-lg bg-secondary object-contain" />
-        <div class="flex-1"><div class="font-bold">#{{ o.id.slice(0, 8) }} • {{ o.shop.name }}</div><div class="text-xs text-muted-foreground">{{ o.items.map((i: any) => i.title).join("، ") }}</div></div>
-        <b class="text-sm">{{ money(o.total) }}</b>
-        <Badge :variant="badgeVariant(o.status)">{{ statusLabels[o.status] }}</Badge>
+        <div class="min-w-0 flex-1"><div class="truncate font-bold">#{{ o.id.slice(0, 8) }}</div><div class="truncate text-sm">{{ o.shop.name }}</div><div class="truncate text-xs text-muted-foreground">{{ o.items.map((i: any) => i.title).join("، ") }}</div></div>
+        <div class="flex shrink-0 flex-col items-end gap-1"><b class="text-sm">{{ money(o.total) }}</b><Badge :variant="badgeVariant(o.status)">{{ statusLabels[o.status] }}</Badge></div>
       </Card></div>
     </template>
   </div>

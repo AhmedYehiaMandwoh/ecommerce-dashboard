@@ -20,6 +20,12 @@ const nav = computed(() =>
         { to: "/dashboard/more", label: "المزيد", icon: MoreHorizontal },
       ],
 );
+const mobileNav = computed(() =>
+  admin.value
+    ? [nav.value[0]!, nav.value[1]!, nav.value[2]!, nav.value[4]!]
+    : [nav.value[0]!, nav.value[2]!, nav.value[1]!, { to: "/dashboard/more", label: "المتجر", icon: Store }],
+);
+useHead({ htmlAttrs: { class: "dash-scale" } });
 watch(() => route.path, () => { message.value = ""; error.value = ""; });
 const active = (to: string) => (to === "/dashboard" ? route.path.replace(/\/$/, "") === "/dashboard" : route.path.startsWith(to));
 const menuOpen = ref(false);
@@ -28,9 +34,9 @@ const title = computed(() => route.path === "/dashboard/orders" && route.query.i
 
 <template>
   <div class="mx-auto flex min-h-screen w-full max-w-6xl flex-col">
-    <header class="relative bg-primary px-4 pb-2 pt-2 text-primary-foreground md:flex md:items-center md:justify-between md:rounded-b-3xl md:px-6 md:py-4">
+    <header class="relative rounded-b-[28px] bg-primary px-4 pb-4 pt-3 text-primary-foreground md:flex md:items-center md:justify-between md:px-6 md:py-4">
       <div class="flex w-full flex-col items-center gap-1 md:w-auto md:flex-row md:gap-3">
-        <img src="/assets/reference-logo.png" alt="غيار" class="h-9 brightness-0 invert md:h-10" />
+        <img src="/assets/reference-logo.png" alt="غيار" class="h-10 brightness-0 invert md:h-10" />
         <h1 class="text-xl font-extrabold md:text-xl">{{ title }}</h1>
       </div>
       <div class="absolute inset-x-3 top-3 flex flex-row-reverse items-center justify-between md:flex-row md:static md:inset-auto md:justify-end md:gap-2">
@@ -54,7 +60,7 @@ const title = computed(() => route.path === "/dashboard/orders" && route.query.i
         <component :is="n.icon" class="size-4" /> {{ n.label }}
       </NuxtLink>
     </nav>
-    <div role="main" class="w-full flex-1 px-3 pb-20 pt-2 md:pb-10">
+    <div role="main" class="w-full flex-1 px-3 pb-24 pt-3 md:pb-10">
       <div v-if="error" class="mb-3 rounded-xl border border-destructive/30 bg-destructive/10 p-3 text-sm font-bold text-destructive" role="alert">{{ error }}</div>
       <div v-if="message" class="mb-3 rounded-xl border border-primary/30 bg-primary/10 p-3 text-sm font-bold text-primary" role="status">{{ message }}</div>
       <NuxtPage v-if="dash" />
@@ -65,10 +71,15 @@ const title = computed(() => route.path === "/dashboard/orders" && route.query.i
       </div>
     </div>
     <footer class="hidden py-4 text-center md:block text-xs text-muted-foreground">غيار • نسخة تطوير • بيانات تجريبية • الدفع كاش فقط</footer>
-    <nav class="z-20 flex justify-around border-t bg-background px-1 py-2 shadow-lg md:hidden" style="position: fixed; left: 0; right: 0; top: auto; bottom: 0; height: auto; max-height: 80px" aria-label="التنقل السفلي">
-      <NuxtLink v-for="n in nav" :key="'b' + n.to" :to="n.to" class="flex min-w-14 flex-1 flex-col items-center gap-1 py-1 text-[11px] font-bold" :class="active(n.to) ? 'text-accent' : 'text-muted-foreground'">
-        <component :is="n.icon" class="size-6" /> {{ n.label }}
+    <nav class="z-20 flex justify-around border-t bg-background px-1 py-2 shadow-lg md:hidden" style="position: fixed; left: 0; right: 0; top: auto; bottom: 0; height: auto; max-height: 84px" aria-label="التنقل السفلي">
+      <NuxtLink v-for="n in mobileNav" :key="'b' + n.to" :to="n.to" class="flex min-w-14 flex-1 flex-col items-center gap-1 py-1 text-[13px] font-bold" :class="active(n.to) ? 'text-accent' : 'text-muted-foreground'">
+        <component :is="n.icon" class="size-7" /> {{ n.label }}
       </NuxtLink>
     </nav>
   </div>
 </template>
+
+<style>
+html.dash-scale { font-size: 17px; }
+@media (min-width: 768px) { html.dash-scale { font-size: 16px; } }
+</style>
