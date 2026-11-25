@@ -1,4 +1,4 @@
-// Web dashboard (Nuxt + shadcn-vue) end-to-end test. Needs API :4000 and web :3000 running with a freshly seeded DB.
+// Web dashboard (Nuxt + shadcn-vue) end-to-end test. Requires an API with TEST_CHECKOUT=true and at least one order (isolated test DB only). Needs API :4000 and web :3000 running with a freshly seeded DB.
 import { chromium } from '@playwright/test';
 import fs from 'node:fs';
 const out = process.env.OUT || '/tmp/dash-shots';
@@ -55,9 +55,9 @@ if (!(await page.getByText(title.slice(0, 20)).count())) fail('submitted product
 await snap(page, 'merchant-20-add-product-submitted');
 // order detail with tracking
 await nav(page, 'الطلبات');
-if (await page.getByRole('button', { name: /^طلب / }).count()) { await page.getByRole('button', { name: /^طلب / }).first().click();
+await page.getByRole('button', { name: /^طلب / }).first().click();
 await page.waitForTimeout(800);
-await snap(page, 'merchant-21-order-detail'); } else console.log('skip: no orders in clean DB (order detail not exercised)');
+await snap(page, 'merchant-21-order-detail');
 await ctx.close();
 // admin, desktop
 ({ ctx, page } = await session('admin', { width: 1280, height: 900 }));
