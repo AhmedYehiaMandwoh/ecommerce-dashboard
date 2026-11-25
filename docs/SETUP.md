@@ -47,7 +47,7 @@ For fictional local demo data only, supply a temporary `DEMO_PASSWORD` of at lea
 ALLOW_DEMO_SEED=true pnpm --filter @ghiyar/api db:seed
 ```
 
-This creates `customer@example.test`, `merchant@example.test`, `admin@example.test`. They use the password **you** supplied, not a bundled default. Seed is refused when `NODE_ENV=production`. Re-running seed resets only these demo account password hashes and preserves existing catalog/offer data. Use a fresh disposable database for repeatable tests.
+This creates `customer@example.test`, `merchant@example.test`, `admin@example.test`. They use the password **you** supplied, not a bundled default. Seed is refused when `NODE_ENV=production`. Re-running seed resets only these demo account password hashes and preserves existing catalog/offer data. Use a fresh disposable database for repeatable tests. The seed also creates one demo delivery area (القاهرة / مدينة نصر, demo fee 50 EGP) so the demo checkout works on a clean database; the administrator sets real areas and fees. Verified on a fresh database: migrate, seed (twice, idempotent), then the checkout flow reaches quote and an enabled confirm button. That flow does not place an order.
 
 In separate terminals, from root:
 

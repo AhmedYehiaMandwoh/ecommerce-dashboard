@@ -38,6 +38,8 @@ async function main() {
       update: {},
     });
     await db.discountCode.upsert({ where: { code: "GHIYAR10" }, create: { code: "GHIYAR10", percent: 10 }, update: {} });
+    // Demo delivery area so the advertised demo checkout works on a clean seed. Fee is demo-only, in piasters (5000 = 50 EGP); admin sets real fees.
+    await db.deliveryArea.upsert({ where: { city_area: { city: "القاهرة", area: "مدينة نصر" } }, create: { city: "القاهرة", area: "مدينة نصر", fee: 5000 }, update: {} });
     const examples = [
       [
         "BOSCH",
