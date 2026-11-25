@@ -599,8 +599,8 @@
     },
     {
       "path": "apps/web/app/pages/dashboard.vue",
-      "bytes": 5338,
-      "sha256": "96f41865682210d352eeb13939f657b959af4e39ecb8dbc2785b1a1cab36bdda"
+      "bytes": 6285,
+      "sha256": "98115e18c9f54c61552349a4db36fe1b759bf35fd7ef50aed075f9f6a52cacbf"
     },
     {
       "path": "apps/web/app/pages/dashboard/add-product.vue",
@@ -718,9 +718,19 @@
       "sha256": "8d1556e4e0f5850f8f603cdd20c06599a0e3df8265736aa319590db5a9b04861"
     },
     {
+      "path": "apps/web/public/assets/belt-sq.png",
+      "bytes": 52239,
+      "sha256": "69c12003b5ef9c7b85c65d4312b5c8519e4d22df59fd658e8230c8e4f7a007a1"
+    },
+    {
       "path": "apps/web/public/assets/belt.png",
       "bytes": 78133,
       "sha256": "2f5a5851ae334158ae66c8a1a78657a8316408230c574c8072d7e5d92dc16213"
+    },
+    {
+      "path": "apps/web/public/assets/brakes-sq.png",
+      "bytes": 95421,
+      "sha256": "9131c8087ed31cf9e1e9181149b3c5d05f179e63e15260d60f8d54df820a7924"
     },
     {
       "path": "apps/web/public/assets/brakes.png",
@@ -763,6 +773,11 @@
       "sha256": "7d2b16f56fd332623cda9b4600fa7d060799c79a3aa9ff8e912b38449ac01f4e"
     },
     {
+      "path": "apps/web/public/assets/filter-sq.png",
+      "bytes": 53249,
+      "sha256": "5401f9ed75f6a0c55d69cf2ed3e0a9efc06574eac436a344c3eb6efb1b233cbc"
+    },
+    {
       "path": "apps/web/public/assets/filter.png",
       "bytes": 138078,
       "sha256": "485905809a06eae42c63b8bc58f5268d95527ac19ae61c913064c4206b02d312"
@@ -793,9 +808,19 @@
       "sha256": "0587d562fa76e515fb9938e2446b2256ac826d58c29131dc21f9075a16c0d2e7"
     },
     {
+      "path": "apps/web/public/assets/oil-sq.png",
+      "bytes": 47166,
+      "sha256": "17b5f571dad44326057730f361d42228206b85c9b038824488d2f69f58910d4a"
+    },
+    {
       "path": "apps/web/public/assets/oil.png",
       "bytes": 77139,
       "sha256": "6fa9cd6dd7cdfa5c9a11693e0d2065430d47991d97f4025632ea777bb27e94cf"
+    },
+    {
+      "path": "apps/web/public/assets/plug-sq.png",
+      "bytes": 80492,
+      "sha256": "8bbd0c2ca92bb323f3bc69cb8f809c98a524002593e52455d808d00c6c10f895"
     },
     {
       "path": "apps/web/public/assets/plug.png",

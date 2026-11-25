@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Bell, ClipboardList, Home, Package, Store, MoreHorizontal, LogOut, ShieldCheck, RefreshCw } from "lucide-vue-next";
+import { Bell, ClipboardList, Home, Package, Store, MoreHorizontal, LogOut, ShieldCheck, RefreshCw, Menu } from "lucide-vue-next";
 const { dash, dashboard, user, logout, error, message, busy } = useMarket();
 const route = useRoute();
 const admin = computed(() => user.value?.role === "ADMIN");
@@ -22,6 +22,7 @@ const nav = computed(() =>
 );
 watch(() => route.path, () => { message.value = ""; error.value = ""; });
 const active = (to: string) => (to === "/dashboard" ? route.path.replace(/\/$/, "") === "/dashboard" : route.path.startsWith(to));
+const menuOpen = ref(false);
 const title = computed(() => route.path === "/dashboard/orders" && route.query.id ? "تفاصيل الطلب" : ({ "/dashboard/orders": "الطلبات", "/dashboard/add-product": "إضافة منتج", "/dashboard/applications": "مراجعة المحلات", "/dashboard/review": "مركز المراجعة", "/dashboard/inventory": "المنتجات والمخزون", "/dashboard/more": "المزيد" } as Record<string, string>)[route.path.replace(/\/$/, "")] || (admin.value ? "إدارة المنصة" : "لوحة التاجر"));
 </script>
 
@@ -32,13 +33,20 @@ const title = computed(() => route.path === "/dashboard/orders" && route.query.i
         <img src="/assets/reference-logo.png" alt="غيار" class="h-9 brightness-0 invert md:h-10" />
         <h1 class="text-xl font-extrabold md:text-xl">{{ title }}</h1>
       </div>
-      <div class="absolute inset-x-3 top-3 flex items-center justify-between md:static md:inset-auto md:justify-end md:gap-2">
+      <div class="absolute inset-x-3 top-3 flex flex-row-reverse items-center justify-between md:flex-row md:static md:inset-auto md:justify-end md:gap-2">
         <div class="flex items-center gap-2">
-          <Button variant="secondary" size="icon" aria-label="خروج" @click="logout"><LogOut class="size-4" /></Button>
           <Button variant="secondary" size="icon" aria-label="تنبيهات"><Bell class="size-4" /></Button>
           <Button v-if="route.path === '/dashboard/orders' && route.query.id" variant="secondary" size="icon" aria-label="كل الطلبات" @click="navigateTo('/dashboard/orders')">‹</Button>
+          <Button class="hidden md:inline-flex" variant="secondary" size="icon" aria-label="خروج" @click="logout"><LogOut class="size-4" /></Button>
         </div>
-        <Button variant="secondary" size="icon" aria-label="تحديث" :disabled="busy" @click="dashboard"><RefreshCw class="size-4" /></Button>
+        <div class="relative">
+          <Button class="hidden md:inline-flex" variant="secondary" size="icon" aria-label="تحديث" :disabled="busy" @click="dashboard"><RefreshCw class="size-4" /></Button>
+          <Button class="md:hidden" variant="secondary" size="icon" aria-label="القائمة" :aria-expanded="menuOpen" @click="menuOpen = !menuOpen"><Menu class="size-4" /></Button>
+          <div v-if="menuOpen" class="absolute right-0 top-11 z-30 md:left-0 md:right-auto w-40 space-y-1 rounded-xl bg-white p-2 text-foreground shadow-lg md:hidden" role="menu">
+            <Button variant="ghost" class="w-full justify-start" role="menuitem" aria-label="تحديث" :disabled="busy" @click="menuOpen = false; dashboard()"><RefreshCw class="size-4" /> تحديث</Button>
+            <Button variant="ghost" class="w-full justify-start" role="menuitem" aria-label="خروج" @click="menuOpen = false; logout()"><LogOut class="size-4" /> خروج</Button>
+          </div>
+        </div>
       </div>
     </header>
     <nav class="sticky top-0 z-10 mt-3 hidden gap-1 md:flex overflow-x-auto bg-background/90 px-4 py-2 backdrop-blur" aria-label="التنقل">
