@@ -37,7 +37,7 @@ await page.getByLabel('رقم القطعة', { exact: true }).fill(sku);
 await page.getByLabel('الماركة (العلامة التجارية)', { exact: true }).fill('DTBRAND');
 await pick(page, 'القسم', 'فرامل');
 await page.getByLabel('الوصف', { exact: true }).fill('وصف تجريبي للمنتج داخل اختبار الداش بورد');
-fs.writeFileSync('/tmp/dt.png', png);
+if (process.env.DT_IMAGE) fs.copyFileSync(process.env.DT_IMAGE, '/tmp/dt.png'); else fs.writeFileSync('/tmp/dt.png', png);
 await page.getByLabel('صورة المنتج').setInputFiles('/tmp/dt.png');
 await pick(page, 'الماركة', 'Toyota');
 await pick(page, 'الموديل', 'Corolla');
