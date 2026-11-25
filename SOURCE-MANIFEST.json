@@ -608,6 +608,11 @@
       "sha256": "d158aa0fb24ae8736e345aa083d2ea8b8cea742a30c99316fa401e2e20298927"
     },
     {
+      "path": "apps/web/app/i18n-api-ar.json",
+      "bytes": 5137,
+      "sha256": "1c3564d572c364a0d37c2552bfe84385d986e1ae0ab3ae7467ed5fce2f5556d9"
+    },
+    {
       "path": "apps/web/app/i18n-en.json",
       "bytes": 42324,
       "sha256": "83dd1c0c5818ed9bf9fad7bad23b3ef169884e1e8d3fe29c0d0da20fbcc48a20"
@@ -943,6 +948,11 @@
       "sha256": "0f8ff50c3fd663c0b93b95f1d2fd2a8fb7e4dfb064d1ecd0cf3a80436c1032ef"
     },
     {
+      "path": "docs/HANDOFF-CURRENT.md",
+      "bytes": 2166,
+      "sha256": "4dec02688a726744ea67ea789856798fe0849d971b740b2887d749a50ea059fc"
+    },
+    {
       "path": "docs/HANDOVER.md",
       "bytes": 6300,
       "sha256": "d243733863b7fc43050e865cfae2cc6a8ba6fb6b8474680c4cf2444d55c69e8a"
@@ -1056,6 +1066,11 @@
       "path": "scripts/dashboard-test.mjs",
       "bytes": 10811,
       "sha256": "f0976c9eb9413bf23a22a93b326c0ed702e42da0527f6895411e2edb6351347d"
+    },
+    {
+      "path": "scripts/i18n-check.mjs",
+      "bytes": 2807,
+      "sha256": "b0d2a87bf82198507812c44a5c10ba6d856c7bc95b0ee0831219f1fd2b704425"
     },
     {
       "path": "scripts/reference-check.mjs",
