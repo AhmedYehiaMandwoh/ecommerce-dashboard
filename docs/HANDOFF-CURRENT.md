@@ -26,3 +26,12 @@ Arabic text is the key: `t('نص عربي', arg0)` with `{0}` placeholders. User
 
 ## Running
 Environment variables are in docs/ENVIRONMENT.md (PRIVATE_DOCS_DIR for private documents). A Nuxt build needs about 1 GB free memory: run `NODE_OPTIONS=--max-old-space-size=1100 npx nuxt build`, copy `.output` to a new folder and start the copy, then stop the old process. Secrets are never stored in the repo.
+
+## Recovery after a sandbox restart (no reseed)
+Background processes do not survive a restart; database files and builds do.
+1. Start MariaDB from the existing data directory (do not drop or reseed the preview database).
+2. Start the API (dist/main.js) with its env file; set MEDIA_DIR and PRIVATE_DOCS_DIR.
+3. Start the web build copy with PORT and NUXT_PUBLIC_API_BASE pointing at the API.
+4. Start Expo web with EXPO_PUBLIC_API_URL and EXPO_PUBLIC_ASSET_URL.
+5. Quick public tunnels get new hostnames each time. Start the tunnels first, then restart the API with CORS_ORIGINS, WEBAUTHN_ORIGIN and WEBAUTHN_RP_ID set to the new web/app hosts, and the web/Expo with the new API host.
+6. Verify in a real browser that the pages load and the API calls return 200 from the new origins, not only HTTP 200 on the page.
