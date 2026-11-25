@@ -63,13 +63,13 @@ const badgeVariant = (s: string) => (s === "PLACED" ? "default" : s === "CANCELL
       <NuxtLink to="/dashboard/review"><Card class="flex-row items-center gap-3 p-4"><Package class="size-8 text-primary" /><div class="flex-1"><div class="font-bold">منتجات جديدة</div><div class="text-xs text-muted-foreground">مراجعة منتجات بانتظار الموافقة</div></div><Badge class="bg-accent text-accent-foreground">{{ pendingProducts }}</Badge><ChevronLeft class="size-4" /></Card></NuxtLink>
     </div>
 
-    <Card class="p-5">
-      <div class="mb-3 flex items-center justify-between"><h3 class="flex items-center gap-2 font-extrabold"><Clock class="size-5" /> أحدث الطلبات</h3><NuxtLink to="/dashboard/orders" class="text-sm font-bold text-primary">عرض الكل</NuxtLink></div>
+    <Card class="p-3">
+      <div class="mb-2 flex items-center justify-between"><h3 class="flex items-center gap-2 font-extrabold"><Clock class="size-5" /> أحدث الطلبات</h3><NuxtLink to="/dashboard/orders" class="text-sm font-bold text-primary">عرض الكل</NuxtLink></div>
       <p v-if="!dash.orders.length" class="text-muted-foreground">مفيش طلبات لسه.</p>
-      <NuxtLink v-for="o in dash.orders.slice(0, admin ? 3 : 2)" :key="o.id" :to="'/dashboard/orders?id=' + o.id" class="flex items-center gap-3 border-t py-3">
-        <img :src="imageUrl(o.items[0]?.offer?.product?.image || '/assets/shop-icon.png')" alt="" class="size-16 rounded-xl border bg-secondary object-cover" />
-        <div class="flex-1"><div class="font-bold">#{{ o.id.slice(0, 8) }} • {{ o.shop.name }}</div><div class="text-xs text-muted-foreground">{{ o.items[0]?.title }} • {{ new Date(o.createdAt).toLocaleDateString("ar-EG") }}</div></div>
-        <Badge :variant="badgeVariant(o.status)">{{ statusLabels[o.status] }}</Badge>
+      <NuxtLink v-for="o in dash.orders.slice(0, admin ? 3 : 2)" :key="o.id" :to="'/dashboard/orders?id=' + o.id" class="flex items-center gap-3 border-t py-2">
+        <div class="flex shrink-0 flex-col items-center gap-1"><Badge :variant="badgeVariant(o.status)">{{ statusLabels[o.status] }}</Badge><span class="text-[10px] text-muted-foreground">{{ new Date(o.createdAt).toLocaleDateString("ar-EG") }}</span></div>
+        <div class="min-w-0 flex-1"><div class="truncate font-bold">#{{ o.id.slice(0, 8) }}</div><div class="truncate text-xs text-muted-foreground">{{ o.items[0]?.title }}<template v-if="admin"> • {{ o.shop.name }}</template></div></div>
+        <img :src="imageUrl(o.items[0]?.offer?.product?.image || '/assets/shop-icon.png')" alt="" class="size-14 rounded-xl border bg-secondary object-contain" />
       </NuxtLink>
       <div v-if="!admin" class="mt-3 grid grid-cols-2 gap-3"><NuxtLink to="/dashboard/orders"><Button class="w-full bg-accent text-accent-foreground" size="lg">الطلبات</Button></NuxtLink><NuxtLink to="/dashboard/add-product"><Button class="w-full" variant="outline" size="lg">إضافة منتج</Button></NuxtLink></div>
     </Card>
