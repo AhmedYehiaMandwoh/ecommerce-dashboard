@@ -1,0 +1,27 @@
+// Isolated checkout flow check (test stack only): cart totals, quantity, review-before-confirm enabled states, banner clearing.
+import { chromium } from '@playwright/test';
+const WEB = process.env.WEB_URL || 'http://127.0.0.1:3200';
+const browser = await chromium.launch({ ...(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {}), headless: true, args: ['--no-sandbox'] });
+const page = await (await browser.newContext({ viewport: { width: 1440, height: 900 } })).newPage();
+const nums = (t) => (t.match(/[٠-٩0-9][٠-٩0-9.,٬٫]*/g) || []);
+const body = () => page.evaluate(() => document.body.innerText);
+await page.goto(WEB + '/login'); await page.waitForLoadState('networkidle'); await page.waitForTimeout(600);
+await page.getByRole('button', { name: 'دخول البريد للتطوير والإدارة', exact: true }).click();
+await page.getByRole('button', { name: 'لسه جديد؟ اعمل حساب' }).click();
+await page.getByLabel('الاسم', { exact: true }).fill('عميل تجريبي'); await page.getByLabel('البريد الإلكتروني', { exact: true }).fill('flow' + Date.now().toString(36) + '@example.test');
+await page.getByLabel('كلمة المرور', { exact: true }).fill('Test-pass-12345'); await page.getByRole('button', { name: 'إنشاء الحساب' }).click(); await page.waitForTimeout(2500);
+await page.evaluate(() => window.useNuxtApp().$router.push('/shops')); await page.waitForTimeout(1500);
+await page.getByRole('button', { name: 'التفاصيل' }).first().click(); await page.waitForTimeout(1200);
+await page.getByRole('button', { name: /أضف للسلة/ }).first().click(); await page.waitForTimeout(800);
+console.log('banner after add:', (await body()).includes('اتضاف للسلة'));
+await page.evaluate(() => window.useNuxtApp().$router.push('/cart')); await page.waitForTimeout(1500);
+console.log('banner after route to cart (1.5s):', (await body()).includes('اتضاف للسلة'));
+await page.waitForTimeout(6500);
+console.log('banner after 8s:', (await body()).includes('اتضاف للسلة'));
+console.log('CART TEXT:', (await body()).replace(/\n+/g, ' | ').slice(0, 700));
+await page.evaluate(() => window.useNuxtApp().$router.push('/checkout')); await page.waitForTimeout(1500);
+const confirm = page.getByRole('button', { name: /تأكيد الطلب/ });
+console.log('confirm enabled initially:', await confirm.isEnabled());
+console.log('CHECKOUT TEXT:', (await body()).replace(/\n+/g, ' | ').slice(0, 900));
+await page.screenshot({ path: process.env.OUT || '/tmp/flow-checkout.png' });
+await browser.close();

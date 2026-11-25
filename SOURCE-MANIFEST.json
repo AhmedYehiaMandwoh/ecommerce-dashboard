@@ -309,8 +309,8 @@
     },
     {
       "path": "apps/web/app/app.vue",
-      "bytes": 2455,
-      "sha256": "bc1ffb15d2423a47980876922749f2de5591280bb0aa7f960a5ed469b72bd06f"
+      "bytes": 2758,
+      "sha256": "20fb20d13ba54f252e5f66949bec7eaf145dac6a67cff39429d7f6ad19888cea"
     },
     {
       "path": "apps/web/app/assets/css/tailwind.css",

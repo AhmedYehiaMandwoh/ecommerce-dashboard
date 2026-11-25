@@ -1,5 +1,15 @@
 <script setup lang="ts">
 const { view, cart, user, error, message, busy, go, dashboard, logout } = useMarket();
+const route = useRoute();
+let setAt = 0;
+let timer: any;
+watch(message, (m) => {
+  clearTimeout(timer);
+  if (m) { setAt = Date.now(); timer = setTimeout(() => { message.value = ""; }, 6000); }
+});
+watch(() => route.path, () => {
+  if (message.value && Date.now() - setAt > 800) message.value = "";
+});
 </script>
 
 <template>
