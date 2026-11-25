@@ -46,10 +46,10 @@ const badgeVariant = (s: string) => (s === "PLACED" ? "default" : s === "CANCELL
     <Card v-if="admin" class="p-3">
       <div class="mb-2 flex items-center justify-between"><h3 class="font-extrabold">الطلبات الأسبوعية (آخر ٧ أيام)</h3><span class="flex items-center gap-1 text-[10px] text-muted-foreground"><Info class="size-3" /> بيانات اختبار</span></div>
       <div class="flex gap-2">
-        <div class="flex h-24 flex-col justify-between pb-0 text-[10px] text-muted-foreground" dir="ltr"><span v-for="t in yTicks" :key="t" class="leading-none">{{ t }}</span></div>
+        <div class="flex h-20 flex-col justify-between pb-0 text-[10px] text-muted-foreground" dir="ltr"><span v-for="t in yTicks" :key="t" class="leading-none">{{ t }}</span></div>
         <div class="relative flex-1">
-          <div class="pointer-events-none absolute inset-x-0 top-0 flex h-24 flex-col justify-between"><i v-for="t in yTicks" :key="t" class="block border-t border-dashed border-border" /></div>
-          <div class="relative flex h-24 items-end gap-2">
+          <div class="pointer-events-none absolute inset-x-0 top-0 flex h-20 flex-col justify-between"><i v-for="t in yTicks" :key="t" class="block border-t border-dashed border-border" /></div>
+          <div class="relative flex h-20 items-end gap-2">
             <div v-for="w in week" :key="w.d" class="flex h-full flex-1 items-end"><div class="w-full rounded-t-md bg-accent" :style="{ height: w.n ? w.h + '%' : '2px' }" :title="w.n + ' طلب'" /></div>
           </div>
           <div class="mt-1 flex gap-2"><span v-for="w in week" :key="w.d" class="flex-1 text-center text-[10px] text-muted-foreground">{{ w.d }}</span></div>
