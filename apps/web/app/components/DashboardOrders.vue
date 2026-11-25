@@ -21,7 +21,7 @@ const { busy, dash, decideCancellation, decisionForm, expandedOrder, imageUrl, m
         </div>
         <p class="text-sm text-muted-foreground">منتجات: {{ money(o.subtotal) }} • حصة شحن للمنصة: {{ money(o.delivery) }} • الإجمالي عند التسليم: <b>{{ money(o.total) }}</b></p>
         <p v-if="o.settlementFrozen" class="rounded-lg bg-destructive/10 p-2 text-sm text-destructive">تسوية مجمدة أثناء مراجعة طلب الإلغاء</p>
-        <div v-for="r in o.cancellationReviews?.filter((r: any) => r.state === 'PENDING')" :key="r.id" class="space-y-2 rounded-lg border p-3">
+        <div v-for="r in o.cancellationReviews?.filter((r: any) => r.state === 'PENDING')" :key="r.id" :data-review-order="o.id" class="space-y-2 rounded-lg border p-3">
           <h3 class="font-bold">طلب إلغاء للمراجعة</h3><p class="text-sm">{{ r.reason }}</p>
           <template v-if="user.role === 'ADMIN'">
             <Label>سبب القرار</Label><Textarea v-model="decisionForm(r).reason" minlength="5" maxlength="180" />

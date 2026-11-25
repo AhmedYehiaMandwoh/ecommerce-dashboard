@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ShoppingCart, Package, FileText, Store, Clock, ChevronLeft, Info } from "lucide-vue-next";
+import { ClipboardList, ShoppingCart, Package, FileText, Store, Clock, ChevronLeft, Info } from "lucide-vue-next";
 const { dash, money, user, statusLabels, imageUrl } = useMarket();
 const admin = computed(() => user.value?.role === "ADMIN");
 const todayCount = computed(() => dash.value.orders.filter((o: any) => new Date(o.createdAt).toDateString() === new Date().toDateString()).length);
@@ -71,7 +71,7 @@ const badgeVariant = (s: string) => (s === "PLACED" ? "default" : s === "CANCELL
         <div class="min-w-0 flex-1"><div class="truncate font-bold">#{{ o.id.slice(0, 8) }}</div><div class="truncate text-xs text-muted-foreground">{{ o.items[0]?.title }}<template v-if="admin"> • {{ o.shop.name }}</template></div></div>
         <img :src="imageUrl(o.items[0]?.offer?.product?.image || '/assets/shop-icon.png')" alt="" class="size-12 rounded-xl border bg-secondary object-contain" />
       </NuxtLink>
-      <div v-if="!admin" class="mt-1 grid grid-cols-2 gap-3"><NuxtLink to="/dashboard/orders"><Button class="w-full bg-accent text-accent-foreground" size="lg">الطلبات</Button></NuxtLink><NuxtLink to="/dashboard/add-product"><Button class="w-full" variant="outline" size="lg">إضافة منتج</Button></NuxtLink></div>
+      <div v-if="!admin" class="mt-1 grid grid-cols-2 gap-3"><NuxtLink to="/dashboard/orders"><Button class="w-full bg-accent text-accent-foreground" size="lg"><ClipboardList class="size-6" /> الطلبات</Button></NuxtLink><NuxtLink to="/dashboard/add-product"><Button class="w-full text-primary" variant="outline" size="lg"><Package class="size-6" /> إضافة منتج</Button></NuxtLink></div>
     </Card>
   </div>
 </template>

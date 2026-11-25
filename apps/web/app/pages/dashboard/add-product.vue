@@ -74,7 +74,7 @@ async function submit() {
           <ul class="space-y-1 text-sm"><li v-for="(r, i) in rows" :key="i" class="flex items-center justify-between rounded-lg bg-white px-3 py-2"><span>{{ r.make }} {{ r.model }} • {{ r.fromYear }}-{{ r.toYear }} • {{ r.engine }}</span><button type="button" :aria-label="'حذف توافق ' + (i + 1)" @click="rows.splice(i, 1)"><X class="size-4" /></button></li></ul>
           <div class="flex items-start gap-2 rounded-xl bg-blue-50 p-3 text-xs text-muted-foreground"><Info class="mt-0.5 size-5 shrink-0 text-primary" /><div><b class="block text-sm text-primary">تحقق من بيانات التوافق</b>التوافق يُحفظ كغير مؤكد، وتراجعه الإدارة قبل ظهوره كمؤكد للعملاء.</div></div>
         </div>
-        <div class="px-1 pb-1 pt-1"><Button type="submit" class="w-full bg-accent text-accent-foreground" size="lg" :disabled="busy || !productForm.category">حفظ المنتج وإرساله للمراجعة</Button></div>
+        <div class="sticky bottom-[84px] z-10 bg-background/95 px-1 pb-1 pt-2 md:static md:bg-transparent"><Button type="submit" class="w-full bg-accent text-accent-foreground" size="lg" :disabled="busy || !productForm.category">حفظ المنتج وإرساله للمراجعة</Button></div>
       </form>
     </Card>
     <div class="space-y-4">

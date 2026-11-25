@@ -104,12 +104,13 @@ await ctx.close();
     await nav(page, 'المزيد');
     await page.locator('a[href="/dashboard/legacy-orders"]').first().click();
     await page.waitForTimeout(1200);
-    if (!(await page.getByText('طلب إلغاء للمراجعة').count())) fail('admin UI shows no pending cancellation review');
+    const rv = page.locator('[data-review-order="' + target.id + '"]');
+    if (!(await rv.count())) fail('admin UI shows no pending cancellation review');
     else {
-      await page.locator('textarea').last().fill('تم التحقق من تكلفة الشحن الفعلية');
-      await page.locator('input[type=number]').last().fill('0');
+      await rv.locator('textarea').fill('تم التحقق من تكلفة الشحن الفعلية');
+      await rv.locator('input[type=number]').fill('0');
       await snap(page, 'admin-cancellation-review');
-      await page.getByRole('button', { name: 'الموافقة على الإلغاء' }).first().click();
+      await rv.getByRole('button', { name: 'الموافقة على الإلغاء' }).click();
       await page.waitForTimeout(1800);
       const after = (await call('/dashboard', 'GET', at)).body.orders.find((o) => o.id === target.id);
       if (after.status !== 'CANCELLED') fail('order not cancelled after admin approval: ' + after.status);
