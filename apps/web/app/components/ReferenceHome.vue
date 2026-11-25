@@ -82,4 +82,15 @@ const items = [
  .reference-home .reference-shops{grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:28px}.reference-home .reference-shops>button>img{aspect-ratio:2.2}
  .reference-home .reference-search{max-width:880px}
 }
+@media(min-width:1920px){
+ .reference-home .reference-top{padding:0 max(48px,calc((100% - 2240px)/2))}
+ .reference-home .reference-content{max-width:2240px;padding:48px 64px 0}
+ .reference-home .reference-categories{gap:40px}.reference-home .reference-categories strong{font-size:26px}
+ .reference-home .reference-vehicle strong{font-size:28px}
+ .reference-home .reference-promos{gap:40px}.reference-home .reference-promos .promo-live{height:clamp(300px,15vw,420px)}
+ .reference-home .reference-section-title h2{font-size:34px}.reference-home .reference-section-title button{font-size:22px}
+ .reference-home .reference-shops{grid-template-columns:repeat(auto-fill,minmax(440px,1fr));gap:36px}.reference-home .reference-shops strong{font-size:24px}.reference-home .reference-shops small{font-size:18px}
+ .reference-home .reference-search{max-width:1000px;height:64px}.reference-home .reference-search input{font-size:20px}
+}
 </style>
+

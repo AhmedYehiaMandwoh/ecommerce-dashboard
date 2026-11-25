@@ -334,8 +334,8 @@
     },
     {
       "path": "apps/web/app/components/ReferenceHome.vue",
-      "bytes": 17605,
-      "sha256": "6b2c4b880c46812337c7b3b5b5a16e20d6a4c74ffd62aca94942cb6aa0bd829f"
+      "bytes": 18530,
+      "sha256": "0c3f2bdc88c0b60483902d3a540278e1bf5a745f0e7efe95ea75b03c11fe0010"
     },
     {
       "path": "apps/web/app/components/ReviewTools.vue",
@@ -714,8 +714,8 @@
     },
     {
       "path": "apps/web/package.json",
-      "bytes": 701,
-      "sha256": "8d1556e4e0f5850f8f603cdd20c06599a0e3df8265736aa319590db5a9b04861"
+      "bytes": 700,
+      "sha256": "56b4987e3fef176ad7ee23cefd866fe7e38201bd802bea7b3c09153985eb135b"
     },
     {
       "path": "apps/web/public/assets/belt-sq.png",
@@ -989,8 +989,8 @@
     },
     {
       "path": "pnpm-lock.yaml",
-      "bytes": 308859,
-      "sha256": "c888b9d68a8917888bad15f7a4a932540d1c056731ed2b2ae9c74c819a288fe3"
+      "bytes": 307496,
+      "sha256": "25909faba03cc70a4b33218be3539a2c5a02a961b848855bca02abb7e0a79ab7"
     },
     {
       "path": "pnpm-workspace.yaml",
@@ -1001,6 +1001,11 @@
       "path": "scripts/check-env.mjs",
       "bytes": 524,
       "sha256": "651c846b094e178024d30456e7861d75840940052457b2f7e743fedca725f1e0"
+    },
+    {
+      "path": "scripts/customer-check.mjs",
+      "bytes": 2867,
+      "sha256": "9b4416da40e6e98947a5f406adcea2465109c79c664270ae5d9192c9f0541b50"
     },
     {
       "path": "scripts/dashboard-test.mjs",
