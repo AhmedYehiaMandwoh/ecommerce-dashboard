@@ -3,7 +3,7 @@ Written 2026-11-25 for the replacement worker. Status: partial repair, NOT a PDF
 
 ## 1. Source heads (GitHub, remote-verified)
 - ecommerce-dashboard (AhmedYehiaMandwoh/ecommerce-dashboard) main: 60505669cfc27b67d5bf1fadb5a00264684eaf7c (more commits may follow, check `git ls-remote origin refs/heads/main`).
-- ecommerce-apps (AhmedYehiaMandwoh/ecommerce-apps) main: 1b3110850d30f9e8b639f55e4a769f9a63419544 (RN Arabic layout regression fix pushed 15:49).
+- ecommerce-apps (AhmedYehiaMandwoh/ecommerce-apps) main: 26c40bbdfb7859db311df5154f182b110dac7547 (RN: Arabic regression fix 1b31108, then English chevron direction 26c40bb; pushed 16:02).
 - Authorization to push: Ahmed's original upload authorization, recoverable from his authenticated WhatsApp messages (see section 9). Token is a vault item named `ghiyar-github-upload-token`. Get it in the tools CLI: `tools vault write-file --key password --name ghiyar-github-upload-token --return-channel whatsapp --json | jq -r '.path // .'` (read its help first). It writes a file; use it only as `git -c http.extraheader="Authorization: Basic $(printf 'x-access-token:%s' "$(cat FILE)"|base64 -w0)" push origin HEAD:main`, then `rm -f FILE`. Never print or send the token. Commit identity: "Instinct assistant" / assistant@users.noreply.instinct.app. No force push, no history rewrite.
 - /tmp/manifest.py (run before commit, writes the repo file manifest) is a local helper not in the repos; skip it if absent.
 
@@ -39,7 +39,7 @@ Apps repo: 24-screen RN app, RN localization (src/i18n.ts, src/locale-en.json 31
 - Web rebuild swap: build, copy .output to /tmp/serve-X, kill the process whose environ has PORT=<port>, start the copy. Never leave :3000/:8081 down without a replacement.
 
 ## 7. Uncommitted at bundle time
-Nothing uncommitted in apps at 15:50 (1b31108). Dashboard docs updated only by this file if pushed.
+Nothing uncommitted in apps at 16:02 (26c40bb). Dashboard docs updated only by this file if pushed.
 
 ## 8. Links
 Preview tunnel links (temporary, die on any restart) were last delivered at 15:06 by main.
@@ -60,3 +60,10 @@ Locate with: SELECT message_id, ts, body FROM phone_messages WHERE conversation_
 - Admin/merchant UI login recipe: /login, button "دخول البريد للتطوير والإدارة", labels "البريد الإلكتروني" / "كلمة المرور", button "دخول".
 - Customer app login: phone number + static code 123456.
 - Scripts added in apps: scripts/en-screens.mjs (English account, support, addresses, vehicle, orders).
+
+## 11. Final regression ledger (16:04 EET, test stack ghiyar_t, web :3200, API :4100, RN :8082)
+PASS: scripts/i18n-check (exit 0), shop-flow, checkout-flow, responsive-check, site-check, customer-check, vue-tsc (0 errors), RN tsc clean, RN capture-matched Arabic 18 screens on 26c40bb source (no errors in log), en-check 7/7 (earlier on the same cx rule; not re-run after the chevron edit), en-screens captures.
+NOT PASSING/unresolved: scripts/dashboard-test.mjs exits 1 twice at an admin screenshot (Page.captureScreenshot protocol error after the functional assertions, incl. "cancellation after shipping approved in UI; CANCELLED; direct cancel 403", had passed). Likely low memory in the sandbox (about 80 MB free); not proven. Re-run alone with other processes idle before claiming a pass.
+NOT run: API unit tests, repeat checkout runs (the earlier capture stall is still "provisional flake"), web English assertions for checkout/validation.
+Runtime export for replacement: see runtime-export/README-RUNTIME.md (sanitized demo-only DB export, test media).
+No more writes from the prior worker after this handoff; the preview processes keep running until the sandbox restarts or the agent expires 16:28.
