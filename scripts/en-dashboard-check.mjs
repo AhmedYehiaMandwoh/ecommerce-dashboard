@@ -13,7 +13,7 @@ for (const role of (process.env.ROLES || 'merchant,admin').split(',')) {
   await p.getByLabel('Email', { exact: true }).fill(role + '@example.test'); await p.getByLabel('Password', { exact: true }).fill(process.env.DEMO_PASSWORD);
   await p.getByRole('button', { name: 'Sign in', exact: true }).last().click();
   await p.waitForURL((u) => u.pathname.replace(/\/+$/, '') === '/dashboard'); await p.waitForTimeout(1500);
-  const hrefs = [...new Set(await p.$$eval('a[href^="/dashboard"]', (a) => a.filter((x) => x.offsetParent !== null).map((x) => x.getAttribute('href'))))];
+  const hrefs = [...new Set(await p.$$eval('a[href^="/dashboard"]', (a) => a.filter((x) => x.offsetParent !== null).map((x) => x.getAttribute('href')).filter((h) => !h.includes('?'))))];
   console.log(role, 'pages:', hrefs.join(' '));
   for (const h of hrefs) {
     await p.locator(`a[href="${h}"]:visible`).first().click(); await p.waitForTimeout(1500);
