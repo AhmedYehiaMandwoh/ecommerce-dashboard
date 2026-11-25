@@ -67,7 +67,7 @@ await snap(page, 'admin-23-shop-applications');
 await nav(page, 'المراجعة');
 if (!(await page.getByText(title).count())) fail('merchant product missing from admin review');
 await snap(page, 'admin-24-review-center');
-await page.getByText(title, { exact: true }).locator('xpath=ancestor::*[contains(@class,"flex-row")][1]').getByRole('button', { name: 'قبول', exact: true }).click();
+await page.getByText(title, { exact: true }).locator('xpath=ancestor::*[@data-slot="card"][1]').getByRole('button', { name: 'قبول', exact: true }).click();
 await page.waitForTimeout(1200);
 await nav(page, 'المزيد');
 await snap(page, 'admin-more');

@@ -20,7 +20,7 @@ async function update() {
   <div class="space-y-2">
     <template v-if="selected">
       <div class="grid grid-cols-1 gap-2 lg:grid-cols-2 [&>*]:min-w-0">
-      <Card class="gap-1 p-2">
+      <Card class="gap-2 p-3">
         <div class="flex items-start justify-between">
           <Badge :variant="badgeVariant(selected.status)">{{ statusLabels[selected.status] }}</Badge>
           <div class="text-right"><h2 class="text-lg font-extrabold">طلب #{{ selected.id.slice(0, 8) }}</h2><p class="text-sm text-muted-foreground">{{ selected.shop.name }}</p></div>
@@ -31,17 +31,17 @@ async function update() {
           <b>×{{ i.quantity }}</b>
         </div>
       </Card>
-      <Card class="gap-1 p-2"><h3 class="flex items-center gap-2 text-sm font-extrabold"><MapPin class="size-4" /> عنوان الشحن</h3>
+      <Card class="gap-2 p-3"><h3 class="flex items-center gap-2 text-base font-extrabold"><MapPin class="size-4" /> عنوان الشحن</h3>
         <div class="rounded-xl bg-secondary p-2 text-xs">{{ selected.address.city }} • {{ selected.address.details }}<br /><span dir="ltr">{{ selected.address.phone }}</span></div></Card>
-<Card class="gap-1 p-2">
-<h3 class="flex items-center gap-2 text-sm font-extrabold"><ClipboardList class="size-4" /> حالة الطلب</h3>
+<Card class="gap-2 p-3">
+<h3 class="flex items-center gap-2 text-base font-extrabold"><ClipboardList class="size-4" /> حالة الطلب</h3>
         <Select v-model="target" :disabled="busy || selected.settlementFrozen || !options.length">
           <SelectTrigger class="w-full"><SelectValue placeholder="اختر الحالة" /></SelectTrigger>
           <SelectContent><SelectItem v-for="o in [...new Set(options)]" :key="o" :value="o">{{ statusLabels[o] }}</SelectItem></SelectContent>
         </Select>
 </Card>
-<Card class="gap-1 p-2">
-<h3 class="flex items-center gap-2 text-sm font-extrabold"><Truck class="size-4" /> رقم الشحنة (اختياري)</h3>
+<Card class="gap-2 p-3">
+<h3 class="flex items-center gap-2 text-base font-extrabold"><Truck class="size-4" /> رقم الشحنة (اختياري)</h3>
 <Input v-model="tracking" placeholder="أدخل رقم الشحنة" dir="ltr" maxlength="40" />
 </Card>
         <Button class="mt-0 w-full bg-accent text-accent-foreground" size="lg" :disabled="busy || !target || target === selected.status || (tracking.trim().length > 0 && !/^[A-Za-z0-9\-_.\/ ]{3,40}$/.test(tracking.trim()))" @click="update">تحديث الحالة</Button>
