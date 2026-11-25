@@ -3,8 +3,8 @@ Written 2026-11-25 for the replacement worker. Status: partial repair, NOT a PDF
 
 ## 1. Source heads (GitHub, remote-verified)
 - ecommerce-dashboard (AhmedYehiaMandwoh/ecommerce-dashboard) main: 60505669cfc27b67d5bf1fadb5a00264684eaf7c (more commits may follow, check `git ls-remote origin refs/heads/main`).
-- ecommerce-apps (AhmedYehiaMandwoh/ecommerce-apps) main: 20da9967dc6a3fcf0d231583cf096ab83141a79c (RN English layout fixes pushed 15:31).
-- Authorization to push: Ahmed's original upload authorization. Token is a vault item named `ghiyar-github-upload-token`. Get it in the tools CLI: `tools vault write-file --key password --name ghiyar-github-upload-token --return-channel whatsapp --json | jq -r '.path // .'` (read its help first). It writes a file; use it only as `git -c http.extraheader="Authorization: Basic $(printf 'x-access-token:%s' "$(cat FILE)"|base64 -w0)" push origin HEAD:main`, then `rm -f FILE`. Never print or send the token. Commit identity: "Instinct assistant" / assistant@users.noreply.instinct.app. No force push, no history rewrite.
+- ecommerce-apps (AhmedYehiaMandwoh/ecommerce-apps) main: 1b3110850d30f9e8b639f55e4a769f9a63419544 (RN Arabic layout regression fix pushed 15:49).
+- Authorization to push: Ahmed's original upload authorization, recoverable from his authenticated WhatsApp messages (see section 9). Token is a vault item named `ghiyar-github-upload-token`. Get it in the tools CLI: `tools vault write-file --key password --name ghiyar-github-upload-token --return-channel whatsapp --json | jq -r '.path // .'` (read its help first). It writes a file; use it only as `git -c http.extraheader="Authorization: Basic $(printf 'x-access-token:%s' "$(cat FILE)"|base64 -w0)" push origin HEAD:main`, then `rm -f FILE`. Never print or send the token. Commit identity: "Instinct assistant" / assistant@users.noreply.instinct.app. No force push, no history rewrite.
 - /tmp/manifest.py (run before commit, writes the repo file manifest) is a local helper not in the repos; skip it if absent.
 
 ## 2. Scope and rules (from Ahmed via main)
@@ -30,7 +30,7 @@ Apps repo: 24-screen RN app, RN localization (src/i18n.ts, src/locale-en.json 31
 - test-media-webp.tar.gz: 332 KB of uploaded test shop/product photos (webp) used as MEDIA_DIR contents (/tmp/d/apps/api/media). Test-only. Filenames are UUIDs referenced by DB rows, so they are only useful together with the preview DB; a fresh seed does not need them.
 - Private documents dirs /tmp/d2-private-docs (test) and /tmp/d2-private-docs-prev (preview): test-only, not bundled.
 - Tools not in repos: /tmp/cloudflared (quick tunnels), Chrome at /usr/bin/google-chrome (set CHROME_PATH), /tmp/serve-J (built Nuxt .output copy), /tmp/d2 and /tmp/a clones.
-- Env keys the API reads (values kept out): PORT, DATABASE_URL, NODE_ENV, TEST_CHECKOUT, OTP_MODE=static-test, SMS_SEND_ENABLED=false, CORS_ORIGINS, WEBAUTHN_ORIGIN, WEBAUTHN_RP_ID, MEDIA_DIR, PRIVATE_DOCS_DIR (see docs/ENVIRONMENT.md in the repo). Demo password: use the value main holds; never put it in chat.
+- Env keys the API reads (values kept out): PORT, DATABASE_URL, NODE_ENV, TEST_CHECKOUT, OTP_MODE=static-test, SMS_SEND_ENABLED=false, CORS_ORIGINS, WEBAUTHN_ORIGIN, WEBAUTHN_RP_ID, MEDIA_DIR, PRIVATE_DOCS_DIR (see docs/ENVIRONMENT.md in the repo). Test credentials: resolve securely from your own authorized sources; never put them in chat or files.
 
 ## 6. Start and recover (safe)
 - recover.sh (bundled) restarts DB, tunnels, APIs (4000 preview, 4100 test), web (3000, 3200 from /tmp/serve-J), Expo (8081 preview, 8082 test), writes /tmp/prev-urls. It does not reseed. Quick-tunnel hostnames change on every restart; after it runs, verify in a real browser (loaded UI plus API 200s from the new origins) before sending links.
@@ -39,7 +39,24 @@ Apps repo: 24-screen RN app, RN localization (src/i18n.ts, src/locale-en.json 31
 - Web rebuild swap: build, copy .output to /tmp/serve-X, kill the process whose environ has PORT=<port>, start the copy. Never leave :3000/:8081 down without a replacement.
 
 ## 7. Uncommitted at bundle time
-Nothing uncommitted in apps at 15:31 (20da996). Dashboard docs updated only by this file if pushed.
+Nothing uncommitted in apps at 15:50 (1b31108). Dashboard docs updated only by this file if pushed.
 
 ## 8. Links
 Preview tunnel links (temporary, die on any restart) were last delivered at 15:06 by main.
+
+## 9. Source message locators (Ahmed's authenticated WhatsApp, user +201099627470; read via observation SQL on phone_messages by message_id; do not rely on this summary)
+- Upload request for the two repos, 24 Nov 14:36: wamid.HBgMMjAxMDk5NjI3NDcwFQIAEhgWM0VCMDZFNzc1RkEwOEU0MTZFNzc1RgA=
+- "Finish source fully and push, repos are public", 24 Nov 14:39: wamid.HBgMMjAxMDk5NjI3NDcwFQIAEhgWM0VCMEEzOEEzRkY4RThGQkY4RDRFNAA=
+- Token for upload agreed in principle, 24 Nov 4:12 PM: wamid.HBgMMjAxMDk5NjI3NDcwFQIAEhgWM0VCMDZFMjA0RUE3Q0Y3NzRCQ0UwMwA=. Note: the message at 4:13 PM (wamid ...M0VCMDNBNTMwQTI2MkUxM0IxMkY5RgA=) contained a pasted credential that was revoked; it must never be used or copied. The working token is the vault item `ghiyar-github-upload-token`.
+- 24-screen PDF delivered 24 Nov 5:03 PM (agent doc, source file ghiyar-screen-set-68c2273e.pdf): wamid.HBgMMjAxMDk5NjI3NDcwFQIAEhgUM0FDQUI0RjZCMjQ3Qzc2RUQxNkUA; user wants a "طبق الاصل" copy of the PDF, voice note 24 Nov 7:31 PM: wamid.HBgMMjAxMDk5NjI3NDcwFQIAEhgUM0FFNTQxQzYwRDVFNDExOEZGOUEA (the audit rule is still "partial repair, not PDF match" unless proven).
+- Dashboard reference image and web/dashboard direction, 25 Nov 1:08 PM: image wamid.HBgMMjAxMDk5NjI3NDcwFQIAEhgUM0EzQTc5MTdGRkVEQzc5MkQ1NUQA; voice notes ...M0FCMjFFOTJDRDRFQzI1NkMyRUMA, ...M0EwQUFBMDVFOEExNTdENkUxNEEA, ...M0FGNzg1RjJEM0E0QkU5MjFCMDAA (read the full wamid in the DB; ids here may be shortened by line wrap, search by ts).
+- Shop forms/photos scope, 25 Nov 1:52 PM: ...M0EyOEEyMDk3OUJDM0JERTI5RTYA and ...M0E5Q0UxMDI3MDdBNjk3RjY1NTgA
+- Localization (Arabic+English, RTL/LTR) scope, 25 Nov 1:53 PM: ...M0E3RkMwRDQzMTU0RUYxQkNDNDcA and ...M0FCRDYyQjZGNTE5RDlFOUU2MEEA
+Locate with: SELECT message_id, ts, body FROM phone_messages WHERE conversation_id... author='user' AND ts BETWEEN the times above. Anything beyond these (stop/continue instructions, funding policy, hosting limits) came through main's relays: ask main for those message IDs.
+
+## 10. Added 15:50
+- RN direction model (see apps docs/LOCALIZATION.md): my first localization build set html dir=rtl which double-flipped every Arabic row (tabs, icons, chevrons on the wrong side). Fixed in 1b31108: layout root stays LTR (`#root{direction:ltr}`), html dir stays rtl/ltr per language, Arabic inputs/textareas direction rtl and text unicode-bidi plaintext, English mirrors rows via cx() (all flex-row swapped except h-10/12/14 headers). Verified on the public preview origin: html dir=rtl, root=ltr, 5 API calls 200. Native untested.
+- Preview demo accounts: customer/merchant/admin@example.test, password chosen by Ahmed through a secure vault form and stored in vault item `ghiyar-preview-demo-password-3` (login; use `tools vault write-file --key password --name ghiyar-preview-demo-password-3 --return-channel whatsapp`, read it inside the command that needs it, delete the file). Applied to preview DB `ghiyar` only (3 rows) with the API's own hashPassword (apps/api/dist/security.js); test DB/scripts password unchanged. Verified: API login 201 for all three, UI login lands on /dashboard for merchant and admin. The password is under 12 characters (login accepts it; seed requires 12+). Do not re-seed: it would overwrite it. Authorization: Ahmed's WhatsApp 25 Nov 15:44 (wamid ...M0VCMEQwNUNDNTA3RjE5NzNDNjBDRgA= and ...M0VCMEJCQ0Y5QjI5QTJFREFCMkE1NgA=; the first contains a pasted secret: never retrieve or quote it).
+- Admin/merchant UI login recipe: /login, button "دخول البريد للتطوير والإدارة", labels "البريد الإلكتروني" / "كلمة المرور", button "دخول".
+- Customer app login: phone number + static code 123456.
+- Scripts added in apps: scripts/en-screens.mjs (English account, support, addresses, vehicle, orders).
