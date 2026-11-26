@@ -6,17 +6,6 @@ const { busy, categories, category, fitmentVehicle, go, imageUrl, load, login, m
 <template>
   <div>
       <template v-if="view === 'home' || view === 'shops'">
-        <div v-if="view === 'home'" class="hero hero-rich">
-          <div class="hero-copy">
-            <b>{{ t('من محلات كتير، اختار الأنسب') }}</b>
-            <h1>{{ t('كل اللي عربيتك') }}<br />{{ t('محتاجاه') }} <span>{{ t('في مكان واحد') }}</span></h1>
-            <p>{{ t('قارن عروض القطع، وشوف المتاح عند محلك.') }}</p>
-            <button class="orange" @click="($refs.searchInput as any)?.focus()">
-              {{ t('دوّر على قطعتك ←') }}
-            </button>
-          </div>
-          <img src="/assets/hero-cutout.png" :alt="t('مجموعة قطع غيار توضيحية')" />
-        </div>
         <div class="search">
           <input
             ref="searchInput"
@@ -59,93 +48,6 @@ const { busy, categories, category, fitmentVehicle, go, imageUrl, load, login, m
             <button @click="shopFilter = s.id; load(); ($refs.catalogGrid as any)?.scrollIntoView({behavior: 'smooth'});">{{ t('عرض المنتجات') }}</button>
           </div>
         </div>
-        <div v-if="view === 'home'" class="visual-categories">
-          <button
-            v-for="c in visualCategories"
-            :key="c.label"
-            @click="
-              category = c.value;
-              page = 1;
-              load();
-            "
-          >
-            <img :src="c.image" :alt="c.label" /><strong>{{ c.label }}</strong>
-          </button>
-        </div>
-        <button
-          v-if="view === 'home'"
-          class="vehicle-banner"
-          @click="go(user ? 'profile' : 'login')"
-        >
-          <img
-            class="vehicle-icon-img"
-            src="/assets/car-icon.png"
-            alt=""
-            aria-hidden="true"
-          /><span
-            ><strong>{{ t('اختار عربيتك') }}</strong
-            ><small>{{ t('سجّل بياناتها، وتأكد من التوافق قبل الشراء') }}</small></span
-          ><b><i class="chv"></i></b>
-        </button>
-        <div v-if="view === 'home'" class="campaigns">
-          <button
-            class="campaign maintenance"
-            @click="
-              category = t('فلاتر');
-              load();
-            "
-          >
-            <div>
-              <h2>{{ t('وقت الصيانة؟') }}</h2>
-              <p>{{ t('فلاتر وزيوت لعربيتك') }}</p>
-              <span>{{ t('شوف الاختيارات ←') }}</span>
-            </div>
-            <img src="/assets/category-oil.png" :alt="t('زيت توضيحي')" /></button
-          ><button
-            class="campaign braking"
-            @click="
-              category = t('فرامل');
-              load();
-            "
-          >
-            <div>
-              <h2>{{ t('فرامل وأمان') }}</h2>
-              <p>{{ t('راجع القطعة المناسبة') }}</p>
-              <span>{{ t('شوف الاختيارات ←') }}</span>
-            </div>
-            <img src="/assets/category-brakes.png" :alt="t('فرامل توضيحية')" />
-          </button>
-        </div>
-        <section v-if="view === 'home'" class="shop-showcase">
-          <div class="row between">
-            <h2>{{ t('اكتشف المحلات') }}</h2>
-            <button class="alt" @click="go('shops')">{{ t('عرض الكل ←') }}</button>
-          </div>
-          <div class="shop-cards">
-            <button
-              v-for="(s, n) in shops"
-              :key="s.id"
-              @click="
-                shopFilter = s.id;
-                go('shops');load();
-              "
-            >
-              <img
-                :src="'/assets/shop-demo-' + ((Number(n) % 2) + 1) + '.png'"
-                :alt="t('تصور لمحل قطع غيار، ليس صورة المحل الفعلي')"
-              />
-              <div>
-                <img
-                  class="shop-icon-img"
-                  src="/assets/shop-icon.png"
-                  alt=""
-                  aria-hidden="true"
-                /><strong>{{ s.name }}</strong
-                ><small>{{ s.city }} {{ t('• بيانات وصورة توضيحية') }}</small>
-              </div>
-            </button>
-          </div>
-        </section>
         <section v-if="user && vehicles.length" class="card section-gap"><label>{{ t('تصفية حسب توافق معتمد لعربيتي') }}<select v-model="fitmentVehicle" @change="page=1;load()"><option value="">{{ t('كل المنتجات بدون تأكيد توافق') }}</option><option v-for="v in vehicles" :key="v.id" :value="v.id">{{v.make}} {{v.model}} {{v.year}} {{v.engine}}</option></select></label><p class="muted">{{ t('النتائج تعتمد فقط على سجلات توافق راجعتها الإدارة. عدم وجود نتيجة لا يعني أن القطعة غير مناسبة. راجع رقم القطعة مع البائع.') }}</p></section>
         <div class="chips">
           <button
