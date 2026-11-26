@@ -6,7 +6,7 @@ const WEB = process.env.WEB_URL, API = process.env.API_URL || 'http://localhost:
 const items = (await (await fetch(API + '/products')).json()).items;
 const ids = items.filter(i => i.offers?.length && i.offers[0].stock).slice(0, 2).map(i => i.id);
 const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH, headless: true, args: ['--no-sandbox'] });
-for (const [w, h] of [[1280, 900], [768, 900], [600, 900], [390, 800]]) {
+for (const [w, h] of [[1280, 900], [768, 900], [700, 900], [600, 900], [480, 900], [390, 800]]) {
   const page = await (await browser.newContext({ viewport: { width: w, height: h } })).newPage();
   const shot = async n => { await page.waitForLoadState('networkidle'); await page.waitForTimeout(900); await page.screenshot({ path: `${out}/${n}-${w}.png`, fullPage: true }); };
   for (const r of ['/login', '/shops', '/cart', '/join-shop']) { await page.goto(WEB + r); await shot('anon' + r.replace(/\W+/g, '_')); }

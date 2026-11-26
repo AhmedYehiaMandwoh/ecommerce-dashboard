@@ -13,15 +13,15 @@ const { addresses, busy, cart, deliveryAreas, deliveryQuote, go, imageUrl, login
         <div v-else class="two">
           <div class="card cart-lines">
             <button class="flex w-full items-center gap-[13px] rounded-[14px] bg-[#edf4fc] p-[14px] text-start text-[#152b48] mb-[14px] max-[601px]:p-[11px]" @click="go('shops')"><img class="size-[34px]" src="/assets/shop-icon.png" alt=""/><span class="flex-1 text-[17px] max-[601px]:text-[16px]">{{ new Set(cart.map((i: any)=>i.shopId)).size>1 ? t('سلة من {0} محلات', new Set(cart.map((i: any)=>i.shopId)).size) : (cart[0]?.shopName || t('منتجات المحل')) }}<small class="mt-[4px] block text-[12px] font-normal text-[#7a8aa0]">{{ t('راجع رقم القطعة والتوافق مع البائع') }}</small></span><b class="text-[26px]"><i class="chv"></i></b></button>
-            <div v-for="(i, n) in cart" :key="i.offerId" class="cart-item line">
-              <img :src="imageUrl(i.image)" :alt="i.title" />
-              <div style="flex: 1">
-                <h3>{{ i.title }}</h3>
-                <p class="muted">{{ i.shopName }} • {{ i.partNumber }}</p>
+            <div v-for="(i, n) in cart" :key="i.offerId" class="cart-item line mb-[10px] flex items-center gap-3 rounded-[13px] bg-[#f8fbff] p-[13px] max-[601px]:relative max-[601px]:grid max-[601px]:grid-cols-[116px_1fr] max-[601px]:gap-[10px] max-[601px]:p-3 max-[601px]:pb-[13px]">
+              <img class="size-[135px] rounded-xl bg-[#f9f6f2] object-contain max-[601px]:size-[115px] max-[601px]:[grid-column:1] max-[601px]:[grid-row:1/4]" :src="imageUrl(i.image)" :alt="i.title" />
+              <div class="max-[601px]:[grid-column:2] max-[601px]:[grid-row:1]" style="flex: 1">
+                <h3 class="text-[18px] max-[601px]:m-0 max-[601px]:text-[16px]">{{ i.title }}</h3>
+                <p class="muted max-[601px]:my-1">{{ i.shopName }} • {{ i.partNumber }}</p>
                 <span class="cart-line-price">{{ money(i.price) }}</span>
               </div>
-              <div class="quantity-control flex max-w-[142px] items-center overflow-hidden rounded-[10px] border border-[#d4dfed] bg-white [direction:ltr]"><button class="quantity-minus bg-white text-[#17385d] px-[11px] py-2 text-[20px] leading-[1.1] rounded-none" :disabled="i.quantity<=1" @click="i.quantity--; requestKey=''" :aria-label="t('تقليل الكمية')">−</button><input class="qty border-0! rounded-none w-[44px]! text-center py-2 px-0 [appearance:textfield] [&::-webkit-inner-spin-button]:hidden" v-model.number="i.quantity" type="number" min="1" :max="Math.min(100,i.stock)" :aria-label="t('الكمية')" @change="requestKey=''"/><button class="bg-white text-[#17385d] px-[11px] py-2 text-[20px] leading-[1.1] rounded-none" :disabled="i.quantity>=Math.min(100,i.stock)" @click="i.quantity++; requestKey=''" :aria-label="t('زيادة الكمية')">+</button></div><button
-                class="danger"
+              <div class="quantity-control max-[601px]:[grid-column:2] max-[601px]:[grid-row:2] max-[601px]:self-start flex max-w-[142px] items-center overflow-hidden rounded-[10px] border border-[#d4dfed] bg-white [direction:ltr]"><button class="quantity-minus bg-white text-[#17385d] px-[11px] py-2 text-[20px] leading-[1.1] rounded-none" :disabled="i.quantity<=1" @click="i.quantity--; requestKey=''" :aria-label="t('تقليل الكمية')">−</button><input class="qty border-0! rounded-none w-[44px]! text-center py-2 px-0 [appearance:textfield] [&::-webkit-inner-spin-button]:hidden" v-model.number="i.quantity" type="number" min="1" :max="Math.min(100,i.stock)" :aria-label="t('الكمية')" @change="requestKey=''"/><button class="bg-white text-[#17385d] px-[11px] py-2 text-[20px] leading-[1.1] rounded-none" :disabled="i.quantity>=Math.min(100,i.stock)" @click="i.quantity++; requestKey=''" :aria-label="t('زيادة الكمية')">+</button></div><button
+                class="danger px-3 py-2 max-[601px]:m-0 max-[601px]:[grid-column:1] max-[601px]:[grid-row:4] max-[601px]:justify-self-center max-[601px]:px-[13px] max-[601px]:py-[5px] max-[601px]:text-[12px]"
                 @click="
                   cart.splice(n, 1);
                   requestKey = '';
