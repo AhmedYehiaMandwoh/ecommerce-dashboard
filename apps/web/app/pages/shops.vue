@@ -30,21 +30,21 @@ const { busy, categories, category, fitmentVehicle, go, imageUrl, load, login, m
             </option>
           </select>
         </div>
-        <div v-if="view === 'shops'" class="store-discovery section-gap">
+        <div v-if="view === 'shops'" class="store-discovery section-gap min-[1200px]:grid-cols-[repeat(auto-fill,minmax(360px,1fr))] min-[1200px]:gap-[24px]">
           <div v-for="(s, n) in shops" :key="s.id" class="card store-discovery-card">
             <template v-if="s.photos && s.photos.length">
-              <img class="store-cover" :src="imageUrl((s.photos.find((p: any) => p.role === 'COVER') || s.photos[0]).url)" :alt="t('صورة {0}', s.name)" />
+              <img class="store-cover h-auto aspect-[16/9] w-full object-cover block" :src="imageUrl((s.photos.find((p: any) => p.role === 'COVER') || s.photos[0]).url)" :alt="t('صورة {0}', s.name)" />
               <span v-if="(s.photos.find((p: any) => p.role === 'COVER') || s.photos[0]).demo" class="badge">{{ t('صورة تجريبية') }}</span>
-              <div v-if="s.photos.length > 1" class="shop-thumbs"><img v-for="p in s.photos.filter((x: any) => x.url !== (s.photos.find((q: any) => q.role === 'COVER') || s.photos[0]).url)" :key="p.id" :src="imageUrl(p.url)" :alt="t('صورة من ') + s.name" /></div>
+              <div v-if="s.photos.length > 1" class="mx-[14px] mt-[10px] mb-[4px] grid grid-cols-4 gap-[8px]"><img v-for="p in s.photos.filter((x: any) => x.url !== (s.photos.find((q: any) => q.role === 'COVER') || s.photos[0]).url)" class="block aspect-[4/3] h-auto w-full rounded-[10px] object-cover" :key="p.id" :src="imageUrl(p.url)" :alt="t('صورة من ') + s.name" /></div>
             </template>
             <template v-else>
-              <img class="store-cover" :src="'/assets/shop-demo-'+((Number(n)%2)+1)+'.png'" :alt="t('تصور لمحل تجريبي، ليست صورة المحل الفعلي')" />
+              <img class="store-cover h-auto aspect-[16/9] w-full object-cover block" :src="'/assets/shop-demo-'+((Number(n)%2)+1)+'.png'" :alt="t('تصور لمحل تجريبي، ليست صورة المحل الفعلي')" />
               <span class="badge">{{ t('متجر تجريبي') }}</span>
             </template>
             <h2>{{ s.name }}</h2>
             <p>{{ s.city }}<template v-if="s.district"> • {{ s.district }}</template></p>
-            <p v-if="s.description" class="shop-desc">{{ s.description }}</p>
-            <p v-if="s.workingHours" class="shop-hours">{{ t('مواعيد العمل:') }} {{ s.workingHours }}</p>
+            <p v-if="s.description" class="mx-[14px] my-[4px] text-[15px] leading-[1.6] text-[#334a63]">{{ s.description }}</p>
+            <p v-if="s.workingHours" class="mx-[14px] mb-[10px] mt-[2px] text-[14px] text-[#5b6b80]">{{ t('مواعيد العمل:') }} {{ s.workingHours }}</p>
             <button @click="shopFilter = s.id; load(); ($refs.catalogGrid as any)?.scrollIntoView({behavior: 'smooth'});">{{ t('عرض المنتجات') }}</button>
           </div>
         </div>
@@ -117,9 +117,3 @@ const { busy, categories, category, fitmentVehicle, go, imageUrl, load, login, m
   </div>
 </template>
 
-<style>
-.store-discovery-card .store-cover{width:100%;height:auto!important;aspect-ratio:16/9;object-fit:cover;display:block}
-.shop-thumbs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:10px 14px 4px}.shop-thumbs img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:10px;display:block}
-.shop-desc{color:#334a63;font-size:15px;line-height:1.6;margin:6px 14px 4px}.shop-hours{color:#5b6b80;font-size:14px;margin:2px 14px 10px}
-@media(min-width:1200px){.store-discovery{grid-template-columns:repeat(auto-fill,minmax(360px,1fr))!important;gap:24px!important}}
-</style>
