@@ -1,7 +1,7 @@
-@layer theme, base, legacy, components, utilities;
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap");
+@layer theme, base, components, utilities;
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/preflight.css" layer(base);
-@import "../main.css" layer(legacy);
 @import "tailwindcss/utilities.css" layer(utilities);
 @import "tw-animate-css";
 
@@ -30,6 +30,8 @@
 }
 @theme inline {
   --font-sans: Cairo, Arial, sans-serif;
+  --color-brand: #0757e9;
+  --color-brand-orange: #ff710a;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -53,13 +55,104 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 }
+
+/* ---------- Base layer: element and document rules (was main.css) ---------- */
 @layer base {
-  * { @apply border-border; }
+  * { @apply border-border box-border; }
+  :root { @apply bg-[#f3f7fc] font-sans text-[#132747]; font-synthesis: none; }
+  body { @apply m-0; }
+  body:has(.recovered-home) { @apply bg-white; }
+
+  button,
+  input,
+  select,
+  textarea { font: inherit; }
+  button {
+    @apply cursor-pointer rounded-[12px] border-0 bg-brand px-[19px] py-[11px] font-extrabold text-white;
+  }
+  button:hover { @apply brightness-95; }
+  button:disabled { @apply cursor-wait opacity-50; }
+  button.alt { @apply bg-[#edf4ff] text-brand; }
+  button.orange { @apply bg-brand-orange; }
+  button.danger { @apply bg-[#fff0ed] text-[#bb3322]; }
+  a { @apply text-inherit no-underline; }
+
+  header {
+    @apply flex flex-wrap items-center gap-[25px] bg-brand px-[5%] py-[17px] text-white;
+  }
+  header small { @apply opacity-80; }
+  header button { @apply bg-[#ffffff20]; }
+
+  nav {
+    @apply sticky top-0 z-[5] flex flex-wrap gap-[7px] border-b border-b-[#e3eaf4] bg-white px-[5%] py-[13px];
+  }
+  nav button { @apply bg-transparent text-[#5b6c84]; }
+  nav button.on { @apply bg-[#e9f1ff] text-brand; }
+
+  main { @apply mx-auto my-[25px] max-w-[1240px] px-[24px]; }
+
+  input,
+  select,
+  textarea {
+    @apply w-full min-w-0 rounded-[10px] border border-[#d9e3f1] bg-white p-[12px] text-[#142847];
+  }
+  label { @apply grid gap-[6px] text-[13px] font-bold; }
+
+  table { @apply w-full border-collapse text-start text-[13px]; }
+  th,
+  td { @apply border-b border-b-[#e4edf6] p-[13px]; }
+  th { @apply text-[#6e809b]; }
+
+  h2 { @apply text-[23px]; }
+  h3 { @apply text-[18px]; }
+  footer { @apply p-[35px] text-center text-[12px] text-[#8b99ae]; }
+
+  /* touch targets for chips and nav */
+  nav button { @apply min-h-[44px]; }
+
+  @media (max-width: 800px) {
+    header { @apply gap-[12px]; }
+  }
+  @media (max-width: 480px) {
+    main { @apply px-[14px]; }
+    header small { @apply hidden; }
+    nav { @apply p-[8px]; }
+    nav button { @apply p-[8px] text-[12px]; }
+  }
+  @media (max-width: 420px) {
+    header {
+      @apply grid grid-cols-[1fr_auto] gap-[10px] px-[16px] py-[15px];
+    }
+    header button { @apply justify-self-start px-[12px] py-[9px] text-[12px]; }
+    header button:last-child { @apply col-start-2 row-start-2 justify-self-end; }
+    header button:nth-last-child(2) { @apply col-start-1 row-[1/3]; }
+    nav { @apply relative; }
+    main { @apply mt-0; }
+    nav { @apply grid grid-cols-4 gap-[2px]; }
+    nav button {
+      @apply whitespace-normal px-[3px] py-[9px] text-[10px] leading-[1.5];
+    }
+  }
+
+  /* Destructive/reject actions stay visually distinct from the orange approval action. */
+  button.danger {
+    background: #fff1f2 !important;
+    color: #a71930 !important;
+    border: 1px solid #d9a4ae !important;
+  }
+  button.danger:hover:not(:disabled) {
+    @apply bg-[#ffe1e6] text-[#871226];
+  }
+  button.danger:focus-visible {
+    outline: 3px solid #a71930;
+    outline-offset: 3px;
+  }
 }
 
-/* shadcn buttons must not inherit the legacy global button look (legacy layer sits below components) */
+/* shadcn buttons must not inherit the global button look */
 @layer components {
-  button[data-slot], button[data-slot]:hover {
+  button[data-slot],
+  button[data-slot]:hover {
     background-color: transparent;
     color: inherit;
     padding: 0;
@@ -68,6 +161,247 @@
     filter: none;
   }
   button[data-slot]:disabled { cursor: not-allowed; }
+}
+
+/* ---------- Components layer: shared customer classes (was main.css) ---------- */
+@layer components {
+  .search {
+    @apply my-[20px] flex gap-[10px] rounded-[18px] bg-white p-[16px] shadow-[0_7px_25px_#152b4f08];
+  }
+  .row { @apply flex flex-wrap items-center gap-[12px]; }
+  .row.between { @apply justify-between; }
+
+  .chips { @apply my-[18px] flex gap-[10px] overflow-auto pb-[5px]; }
+  .chips button {
+    @apply whitespace-nowrap border border-[#dce7f5] bg-white text-[#274464];
+  }
+  .chips button.on { @apply bg-brand text-white; }
+
+  .grid { @apply grid grid-cols-3 gap-[20px]; }
+  .card {
+    @apply rounded-[20px] border border-[#e0e8f2] bg-white p-[20px] shadow-[0_5px_20px_#24345e04];
+  }
+  .product img {
+    @apply h-[170px] w-full rounded-[13px] bg-[#f6f8fb] object-contain;
+  }
+  .product h3 { @apply mb-[3px] mt-[12px] text-[17px]; }
+  .muted { @apply text-[13px] text-[#74829a]; }
+  .price { @apply text-[23px] font-black text-brand; }
+  .badge {
+    @apply rounded-[20px] bg-[#edf5ff] px-[12px] py-[4px] text-[12px] text-brand;
+  }
+  .empty { @apply rounded-[20px] bg-white p-[50px] text-center; }
+  .two { @apply grid grid-cols-[1.7fr_1fr] gap-[22px]; }
+  .form { @apply mx-auto grid max-w-[500px] gap-[15px]; }
+  .error { @apply my-[12px] rounded-[12px] bg-[#fff0ed] p-[13px] text-[#a62e1b]; }
+  .success { @apply rounded-[12px] bg-[#e8f8ef] p-[13px] text-[#136c42]; }
+  .line { @apply border-b border-b-[#e5edf6] py-[16px]; }
+  .qty { @apply w-[85px]; }
+  .section-gap { @apply my-[22px]; }
+  .alert {
+    @apply rounded-[12px] border border-dashed border-[#f3b569] bg-[#fff7eb] p-[12px] text-[12px];
+  }
+  .split { @apply flex gap-[12px]; }
+  .split > * { @apply flex-1; }
+
+  /* later overrides in the original cascade */
+  .chips { @apply flex-wrap overflow-visible; }
+  .chips button { @apply min-h-[44px]; }
+
+  @media (max-width: 800px) {
+    .grid { @apply grid-cols-2; }
+    .two { @apply grid-cols-1; }
+    .search { @apply flex-wrap; }
+  }
+  @media (max-width: 480px) {
+    .grid { @apply gap-[10px]; }
+    .card { @apply rounded-[15px] p-[13px]; }
+    .product img { @apply h-[120px]; }
+    .product h3 { @apply text-[14px]; }
+    .price { @apply text-[19px]; }
+    .split { @apply flex-col; }
+  }
+  @media (max-width: 420px) {
+    .search { @apply grid grid-cols-[1fr_auto] gap-[10px] p-[12px]; }
+    .search select { @apply col-span-full; }
+    .search input { @apply text-[12px]; }
+    .chips { @apply gap-[7px]; }
+    .chips button { @apply px-[12px] py-[8px] text-[12px]; }
+  }
+
+  /* Accepted mobile home has its own full-bleed shell. */
+  .recovered-home > footer { display: none; }
+
+  /* Shared customer shell follows the reviewed home, without changing its composition. */
+  .marketplace-shell {
+    max-width: 1200px;
+    margin: auto;
+    background: #fff;
+    min-height: 100vh;
+  }
+  .marketplace-shell main {
+    margin: 18px auto 0;
+    max-width: 1140px;
+    padding: 0 20px 28px;
+  }
+  .marketplace-shell .search {
+    background: linear-gradient(120deg, #0353eb, #0043cf);
+    padding: 14px;
+    border-radius: 18px;
+    margin-bottom: 16px;
+  }
+  .marketplace-shell .search input { border-radius: 28px; background: white; }
+  .marketplace-shell .search button { background: #ff6b09; }
+  .marketplace-shell .card {
+    border: 1px solid #e7edf4;
+    box-shadow: 0 3px 8px #17334c06;
+    border-radius: 17px;
+  }
+  .marketplace-shell .price,
+  .marketplace-shell .cart-item .price { color: #ff620a; }
+  .marketplace-shell .product { padding: 10px; }
+  .marketplace-shell .product > img {
+    border-radius: 13px;
+    background: #f8f5ef;
+    width: 100%;
+    object-fit: contain;
+  }
+  .marketplace-shell .product h3 { margin: 5px 0; }
+  .marketplace-shell .product .row button { background: #ff6c0b; border-radius: 24px; }
+  .marketplace-shell .grid { gap: 12px; }
+  .marketplace-shell .chips { gap: 8px; margin: 12px 0; }
+  .marketplace-shell .chips button {
+    background: #f0f5fc;
+    color: #183150;
+    border-radius: 12px;
+  }
+  .marketplace-shell .chips button.on { background: #0056f3; color: white; }
+  .marketplace-shell .form > button:not(.alt) { background: #ff6b09; }
+  .marketplace-shell .alert {
+    background: #eaf3ff;
+    border: 1px solid #d2e6ff;
+    color: #183a6e;
+  }
+  .marketplace-shell .two > div > button:not(.alt):not(.danger) { background: #ff6b09; }
+
+  @media (max-width: 600px) {
+    .marketplace-shell main { padding: 0 12px 24px; margin-top: 12px; }
+    .marketplace-shell .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 9px;
+    }
+    .marketplace-shell .grid .card:not(.product) { grid-column: 1/-1; }
+    .marketplace-shell .product h3 { font-size: 15px; line-height: 1.7; }
+    .marketplace-shell .product .muted { font-size: 11px; }
+    .marketplace-shell .product .row { flex-wrap: wrap; gap: 5px; }
+    .marketplace-shell .price { font-size: 17px; }
+    .marketplace-shell .product .row button { padding: 7px 13px; font-size: 12px; }
+    .marketplace-shell .search {
+      padding: 10px;
+      gap: 7px;
+      grid-template-columns: 1fr auto;
+    }
+    .marketplace-shell .search select { grid-column: 1/-1; }
+    .marketplace-shell .row.between > h2 { font-size: 20px; }
+    .marketplace-shell .two { gap: 12px; }
+    .marketplace-shell .card.form { padding: 22px 18px; }
+    .marketplace-shell h1 { font-size: 25px; }
+    .marketplace-shell .qty { width: 58px; }
+  }
+
+  .store-discovery {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 15px;
+  }
+  .store-discovery-card { overflow: hidden; padding: 0 0 16px !important; }
+  .store-discovery-card > :not(.store-cover) {
+    margin-right: 16px;
+    margin-left: 16px;
+  }
+  .store-discovery-card .store-cover {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    display: block;
+    margin-bottom: 12px;
+  }
+  .store-discovery-card button { background: #ff6e09; }
+  .store-discovery-card h2 { font-size: 19px; }
+  .catalog-grid { scroll-margin-top: 90px; }
+
+  @media (max-width: 600px) {
+    .store-discovery { grid-template-columns: 1fr; }
+    .store-discovery-card .store-cover { height: 150px; }
+    .marketplace-shell .search input { font-size: 14px; }
+    .marketplace-shell .search select { width: 100%; }
+    .marketplace-shell .grid.catalog-grid .product { grid-column: auto; }
+  }
+  @media (max-width: 600px) {
+    .marketplace-shell .store-discovery-card h2 { font-size: 18px; }
+    .marketplace-shell .row.between > span.muted { font-size: 11px; }
+  }
+  @media (max-width: 600px) {
+    .cart-lines { padding: 11px !important; }
+  }
+  @media (max-width: 600px) {
+    .marketplace-shell main > h1:first-child { font-size: 21px; margin: 8px 0 15px; }
+  }
+
+  .product-detail-layout .product-information h1 { margin: 12px 0 4px; }
+  .product-detail-layout .product-information > p { font-size: 14px; }
+  .product-detail-layout .product-information > p.muted { font-size: 12px; }
+
+  @media (max-width: 600px) {
+    .marketplace-shell .product-information { padding: 12px; }
+    .product-information .alert { font-size: 12px; line-height: 1.9; }
+    .product-information h1 { font-size: 25px; }
+  }
+  @media (max-width: 600px) {
+    .cart-line-price { font-size: 19px; font-weight: 800; color: #ff650a; }
+    .marketplace-shell main > h1:first-child { margin-top: 0; }
+    .marketplace-shell .product-information h1 { font-size: 25px; }
+    .marketplace-shell main > .two > aside.card { padding: 16px; }
+    .marketplace-shell main > .two > aside.card h2 {
+      font-size: 21px;
+      margin: 0 0 12px;
+    }
+    .marketplace-shell main > .two > aside.card > button { width: 100%; }
+  }
+
+  .success-ring {
+    margin: auto;
+    border: 8px solid #fff3dd;
+    box-sizing: content-box;
+    width: 80px;
+    height: 80px;
+    border-radius: 70px;
+    display: grid;
+    place-items: center;
+    background: #ff6c08;
+    color: white;
+    font-size: 55px;
+    font-weight: 800;
+  }
+  .review-history {
+    border-right: 3px solid #d7e7fa;
+    padding: 8px 12px;
+    margin-top: 10px;
+  }
+  .review-history p { font-size: 12px; color: #71839e; }
+
+  /* Direction-invariant chevron: drawn with borders so bidi mirroring can't flip it. */
+  .chv {
+    display: inline-block;
+    width: 0.5em;
+    height: 0.5em;
+    border: solid currentColor;
+    border-width: 0 0 0.17em 0.17em;
+    margin-inline: 0.35em;
+    vertical-align: 0.05em;
+  }
+  html[dir="rtl"] .chv { transform: rotate(45deg); }
+  html[dir="ltr"] .chv { transform: rotate(-135deg); }
 }
 
 /* Dashboards (merchant and admin): neutral shadcn look, black primary, rounded cards */
@@ -90,7 +424,20 @@ html.dash-theme {
 html.dash-theme body { background: var(--background); }
 
 @layer components {
-  .dash-root :is(header, nav, footer, aside, main) { background: transparent; color: inherit; padding: 0; margin: 0; border: 0; box-shadow: none; display: block; position: static; max-width: none; gap: 0; flex-wrap: nowrap; overflow: visible; }
+  .dash-root :is(header, nav, footer, aside, main) {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    box-shadow: none;
+    display: block;
+    position: static;
+    max-width: none;
+    gap: 0;
+    flex-wrap: nowrap;
+    overflow: visible;
+  }
   .dash-root header { position: sticky; }
 }
 
@@ -100,21 +447,49 @@ html.dash-theme body { background: var(--background); }
   .marketplace-shell main { max-width: 1640px; }
 }
 @media (min-width: 1000px) {
-  .marketplace-shell .grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+  .marketplace-shell .grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
 }
 
 /* Customer pages: deliberate desktop layouts (orders, profile, cart and checkout) */
 @media (min-width: 1000px) {
-  .marketplace-shell main > div:has(> .card.section-gap > .order-progress) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: start; }
+  .marketplace-shell main > div:has(> .card.section-gap > .order-progress) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    align-items: start;
+  }
   .marketplace-shell main > div:has(> .card.section-gap > .order-progress) > .card { margin: 0; }
-  .marketplace-shell main > div:has(> .card.section-gap > .order-progress) > :is(.order-success, .empty, .alert) { grid-column: 1 / -1; }
-  .marketplace-shell main > div:has(> h1 + .card.section-gap) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: start; }
-  .marketplace-shell main > div:has(> h1 + .card.section-gap) > :is(h1, .two, .empty, .alert) { grid-column: 1 / -1; }
+  .marketplace-shell main > div:has(> .card.section-gap > .order-progress) > :is(.order-success, .empty, .alert) {
+    grid-column: 1 / -1;
+  }
+  .marketplace-shell main > div:has(> h1 + .card.section-gap) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    align-items: start;
+  }
+  .marketplace-shell main > div:has(> h1 + .card.section-gap) > :is(h1, .two, .empty, .alert) {
+    grid-column: 1 / -1;
+  }
   .marketplace-shell main > div:has(> h1 + .card.section-gap) > .card { margin: 0; }
-  .marketplace-shell main > div:has(> h1 + .card.section-gap) .form { max-width: none; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .marketplace-shell main > div:has(> h1 + .card.section-gap) .form > :is(button, label:has(textarea), p) { grid-column: 1 / -1; }
-  .marketplace-shell main > .two > aside.card, .marketplace-shell main .two > aside.card { position: sticky; top: 76px; align-self: start; }
+  .marketplace-shell main > div:has(> h1 + .card.section-gap) .form {
+    max-width: none;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .marketplace-shell main > div:has(> h1 + .card.section-gap) .form > :is(button, label:has(textarea), p) {
+    grid-column: 1 / -1;
+  }
+  .marketplace-shell main > .two > aside.card,
+  .marketplace-shell main .two > aside.card {
+    position: sticky;
+    top: 76px;
+    align-self: start;
+  }
 }
 @media (min-width: 1500px) {
-  .marketplace-shell main > div:has(> .card.section-gap > .order-progress) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .marketplace-shell main > div:has(> .card.section-gap > .order-progress) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
