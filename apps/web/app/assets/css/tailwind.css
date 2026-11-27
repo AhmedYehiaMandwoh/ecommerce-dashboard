@@ -147,6 +147,12 @@
     outline: 3px solid #a71930;
     outline-offset: 3px;
   }
+
+  /* Dashboard scale (was scoped in pages/dashboard.vue) */
+  html.dash-scale { font-size: 17px; }
+  @media (min-width: 768px) {
+    html.dash-scale { font-size: 16px; }
+  }
 }
 
 /* shadcn buttons must not inherit the global button look */
@@ -491,5 +497,82 @@ html.dash-theme body { background: var(--background); }
 @media (min-width: 1500px) {
   .marketplace-shell main > div:has(> .card.section-gap > .order-progress) {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* ---------- Components layer: shop application form and photo manager (was scoped <style>) ---------- */
+@layer components {
+  .saf-form,
+  .saf-group { @apply grid gap-[12px]; }
+  .saf-group {
+    margin: 12px 0 0;
+    @apply min-w-0 rounded-[16px] border border-[#d8e0ea] px-[16px] py-[14px];
+  }
+  .saf-group legend { @apply px-[8px] text-[17px] font-extrabold; }
+  .saf-group legend small {
+    @apply ms-[8px] text-[13px] font-normal text-[#5b6b80];
+  }
+  .saf-grid { @apply grid grid-cols-2 gap-x-[16px] gap-y-[12px]; }
+  .saf-grid label {
+    @apply grid content-start gap-[4px] text-[14px] font-semibold;
+  }
+  .saf-grid label.wide { @apply col-span-full; }
+  .saf-grid small { @apply font-normal text-[#5b6b80]; }
+  .saf-cols { @apply grid gap-[12px]; }
+  .saf-hint {
+    margin: 12px 0 0;
+    @apply rounded-[16px] border border-dashed border-[#b9c6d8] p-[16px] text-[#5b6b80];
+  }
+  .saf-docs { @apply grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-[12px]; }
+  .saf { padding: 20px 24px !important; }
+  .saf-doc {
+    @apply grid content-start gap-[6px] rounded-[12px] border border-dashed border-[#b9c6d8] p-[12px];
+  }
+  .saf-doc small { @apply text-[#5b6b80]; }
+  .saf-file { @apply break-all text-[13px]; }
+  .saf-x {
+    @apply border-0 bg-transparent px-[6px] py-0 text-[#b3261e] underline;
+  }
+  .saf-up {
+    @apply inline-flex min-h-[42px] cursor-pointer items-center justify-center rounded-[12px] bg-[#eaf1fc] font-bold text-[#0b5bd3];
+  }
+  .saf-up input { @apply hidden; }
+  .saf-err { @apply text-[#b3261e]; }
+  .saf-save { @apply min-w-[200px] justify-self-start; }
+
+  .spm { @apply grid gap-[10px]; }
+  .spm-note { @apply m-0 text-[13px] text-[#5b6b80]; }
+  .spm-err { @apply m-0 text-[14px] text-[#b3261e]; }
+  .spm-grid { @apply grid grid-cols-[repeat(auto-fill,minmax(140px,1fr))] gap-[12px]; }
+  .spm-item {
+    @apply relative m-0 overflow-hidden rounded-[14px] border border-[#d8e0ea] bg-[#f4f7fb];
+  }
+  .spm-item img { @apply block aspect-[4/3] w-full object-cover; }
+  .spm-tag {
+    @apply absolute start-[6px] top-[6px] rounded-[8px] bg-[#0b5bd3] px-[8px] py-[2px] text-[12px] text-white;
+  }
+  .spm-demo {
+    @apply absolute start-[6px] bottom-[38px] rounded-[8px] px-[8px] py-[2px] text-[11px] text-white;
+    background: rgba(16, 32, 53, 0.82);
+  }
+  .spm-del {
+    @apply w-full rounded-none border-0 border-t border-t-[#e3e9f1] bg-white p-[7px] text-[13px] text-[#b3261e];
+  }
+  .spm-empty { @apply col-span-full m-0 text-[#5b6b80]; }
+  .spm-actions { @apply flex flex-wrap items-center gap-[10px]; }
+  .spm-btn {
+    @apply inline-flex min-h-[44px] cursor-pointer items-center justify-center rounded-[12px] bg-[#0b5bd3] px-[16px] font-bold text-white;
+  }
+  .spm-btn.alt { @apply bg-[#eaf1fc] text-[#0b5bd3]; }
+  .spm-btn input { @apply hidden; }
+
+  @media (max-width: 700px) {
+    .saf-grid { @apply grid-cols-1; }
+  }
+  @media (min-width: 1100px) {
+    .saf-cols {
+      @apply grid-cols-[minmax(0,3fr)_minmax(0,2fr)] items-start gap-[24px];
+    }
+    .saf-media { @apply sticky top-[12px]; }
   }
 }

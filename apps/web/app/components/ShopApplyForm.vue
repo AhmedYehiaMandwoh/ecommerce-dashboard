@@ -97,19 +97,3 @@ const docOf = (k: string) => (app.value?.documents || []).find((d: any) => d.kin
   </section>
 </template>
 
-<style scoped>
-.saf-form,.saf-group{display:grid;gap:12px}
-.saf-group{border:1px solid #d8e0ea;border-radius:16px;padding:14px 16px;margin:12px 0 0;min-width:0}
-.saf-group legend{font-weight:800;padding:0 8px;font-size:17px}.saf-group legend small{font-weight:400;color:#5b6b80;font-size:13px;margin-inline-start:8px}
-.saf-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 16px}
-.saf-grid label{display:grid;gap:4px;font-weight:600;font-size:14px;align-content:start}.saf-grid label.wide{grid-column:1/-1}
-.saf-grid small{font-weight:400;color:#5b6b80}
-@media(max-width:700px){.saf-grid{grid-template-columns:1fr}}
-@media(min-width:1100px){.saf-cols{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:24px;align-items:start}.saf-media{position:sticky;top:12px}}
-.saf-hint{border:1px dashed #b9c6d8;border-radius:16px;padding:16px;color:#5b6b80;margin:12px 0 0}
-.saf-docs{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}.saf{padding:20px 24px!important}
-.saf-doc{display:grid;gap:6px;border:1px dashed #b9c6d8;border-radius:12px;padding:12px;align-content:start}.saf-doc small{color:#5b6b80}
-.saf-file{font-size:13px;word-break:break-all}.saf-x{color:#b3261e;background:none;border:0;padding:0 6px;text-decoration:underline}
-.saf-up{display:inline-flex;justify-content:center;align-items:center;min-height:42px;border-radius:12px;background:#eaf1fc;color:#0b5bd3;font-weight:700;cursor:pointer}.saf-up input{display:none}
-.saf-err{color:#b3261e}.saf-save{justify-self:start;min-width:200px}
-</style>

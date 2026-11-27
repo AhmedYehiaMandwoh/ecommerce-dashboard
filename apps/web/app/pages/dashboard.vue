@@ -112,7 +112,3 @@ const title = computed(() => route.path === "/dashboard/orders" && route.query.i
   </div>
 </template>
 
-<style>
-html.dash-scale { font-size: 17px; }
-@media (min-width: 768px) { html.dash-scale { font-size: 16px; } }
-</style>

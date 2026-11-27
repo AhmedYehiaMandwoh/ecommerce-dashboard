@@ -46,16 +46,3 @@ async function remove(p: any) { await run(async () => { await $fetch(base + pref
   </div>
 </template>
 
-<style scoped>
-.spm{display:grid;gap:10px}.spm-note{font-size:13px;color:#5b6b80;margin:0}.spm-err{color:#b3261e;font-size:14px;margin:0}
-.spm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
-.spm-item{position:relative;margin:0;border:1px solid #d8e0ea;border-radius:14px;overflow:hidden;background:#f4f7fb}
-.spm-item img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
-.spm-tag{position:absolute;top:6px;inset-inline-start:6px;background:#0b5bd3;color:#fff;border-radius:8px;font-size:12px;padding:2px 8px}
-.spm-demo{position:absolute;bottom:38px;inset-inline-start:6px;background:rgba(16,32,53,.82);color:#fff;border-radius:8px;font-size:11px;padding:2px 8px}
-.spm-del{width:100%;border-radius:0;background:#fff;color:#b3261e;border:0;border-top:1px solid #e3e9f1;padding:7px;font-size:13px}
-.spm-empty{grid-column:1/-1;color:#5b6b80;margin:0}
-.spm-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-.spm-btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;border-radius:12px;background:#0b5bd3;color:#fff;font-weight:700;cursor:pointer}
-.spm-btn.alt{background:#eaf1fc;color:#0b5bd3}.spm-btn input{display:none}
-</style>
